@@ -1,0 +1,94 @@
+# **Day 21 | Spanning Tree Protocol (Part 2) | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - CCNA Spanning Tree Protocol (STP) - Part 2 Summary**
+
+---
+
+**Main Topics Covered:**
+
+1. **STP Port States**
+    - **Blocking**: Default state for non-designated ports.
+        - Drops regular traffic.
+        - Receives (but does not forward) BPDUs.
+        - No MAC learning.
+    - **Listening** (15 sec default): Transitional state.
+        - Receives/sends BPDUs.
+        - Drops normal traffic.
+        - No MAC learning.
+    - **Learning** (15 sec default): Transitional state.
+        - Receives/sends BPDUs.
+        - Learns MAC addresses.
+        - Still no forwarding of regular traffic.
+    - **Forwarding**: Final stable state for designated and root ports.
+        - Normal operations: forwards traffic, learns MACs, sends/receives BPDUs.
+    - **Disabled**: Interface is administratively shut down.
+
+---
+
+1. **STP Timers**
+    - **Hello Timer**: Root bridge sends BPDUs every 2 seconds by default.
+    - **Forward Delay**: 15 seconds (for each Listening and Learning state).
+    - **Max Age**: 20 seconds. Time a port waits without receiving BPDUs before topology reevaluation.
+    
+    > Total time to go from Blocking → Listening → Learning → Forwarding = 50 seconds.
+    > 
+
+---
+
+1. **BPDU Format (Bridge Protocol Data Unit)**
+    - Destination MAC (PVST+): `0100.0ccc.cccd`
+    - Important fields:
+        - Root ID (Bridge Priority + VLAN ID + MAC)
+        - Bridge ID (sending switch)
+        - Root Path Cost
+        - Port ID (priority + port number)
+        - Timers: Message Age, Max Age, Hello Time, Forward Delay
+
+---
+
+1. **STP Toolkit Features**
+    - **PortFast**:
+        - Enables immediate transition to forwarding state.
+        - Only for host-facing access ports.
+        - Global enable: `spanning-tree portfast default`
+    - **BPDU Guard**:
+        - Shuts down PortFast-enabled ports if BPDUs are received.
+        - Prevents accidental loops from switches being plugged in.
+        - Interface config: `spanning-tree bpduguard enable`
+        - Global config: `spanning-tree portfast bpduguard default`
+    - **Root Guard**:
+        - Prevents superior BPDUs from redefining the root bridge.
+    - **Loop Guard**:
+        - Prevents ports from becoming forwarding if BPDUs are missing (unidirectional link protection).
+
+---
+
+1. **STP Configuration**
+    - **Mode**:
+        - `spanning-tree mode pvst` (classic)
+        - `spanning-tree mode rapid-pvst` (default on modern Cisco switches)
+    - **Root Bridge Priority**:
+        - Primary: `spanning-tree vlan <ID> root primary`
+        - Secondary: `spanning-tree vlan <ID> root secondary`
+        - Manual: `spanning-tree vlan <ID> priority <value>` (must be in increments of 4096)
+    - **STP Load Balancing**:
+        - Different VLANs can use different root bridges to distribute traffic across links.
+    - **Per-Port Configuration**:
+        - Set cost: `spanning-tree vlan <ID> cost <value>`
+        - Set priority: `spanning-tree vlan <ID> port-priority <value>` (0-224 in increments of 32)
+
+---
+
+**Quiz Highlights:**
+
+- **Q8**: Solutions to speed up PC port forwarding = Enable PortFast (A), Reduce Forward Delay Timer (C).
+- **Q9**: Port ID `0x8002` → Port Priority = 128 (C).
+- **Q10**: Prevent loops from rogue switch = BPDU Guard (D).
+
+---
+
+**Boson ExSim Recap:**
+
+- PortFast globally enabled affects all **access ports** (not trunk).
+- Recommends PortFast to skip listening/learning delays.
+- Strong explanation features and official references.

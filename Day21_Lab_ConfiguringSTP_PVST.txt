@@ -1,0 +1,151 @@
+# **Day 21 Lab | Free CCNA | Configuring STP (PVST+) | CCNA 200-301 Complete Course**
+
+## 🧠 Jeremy’s IT Lab – STP Configuration Lab (CCNA)
+
+---
+
+### 📌 Overview
+
+This lab explores basic **Spanning Tree Protocol (STP)** configurations, root bridge selection, load balancing, and port manipulation using Cisco CLI in Packet Tracer. It also introduces **Boson NetSim** labs for deeper STP practice at the CCNP level.
+
+---
+
+### 🧪 Lab Outline
+
+### ✅ **Default STP Behavior**
+
+- STP runs automatically with default settings.
+- Traffic may not follow optimal paths.
+- It’s best practice to manually configure root bridges per VLAN for better load balancing.
+
+---
+
+### 🔎 Step-by-Step Lab
+
+### **Step 1: Observe STP Topology**
+
+- Use: `show spanning-tree`
+- Identify:
+    - Root Bridge (compare MAC in Root ID vs Bridge ID)
+    - Port Roles (Root, Designated, Alternate)
+- All interfaces:
+    - **SW2** is root (all ports are Designated & Forwarding)
+    - **SW1, SW3, SW4** show Root Ports toward SW2
+
+### **Step 2: Configure Load Balancing**
+
+- **SW1**:
+    
+    `spanning-tree vlan 1 root primary`
+    
+    `spanning-tree vlan 2 root secondary`
+    
+- **SW2**:
+    
+    `spanning-tree vlan 1 root secondary`
+    
+    `spanning-tree vlan 2 root primary`
+    
+- Result:
+    - SW1 becomes root for VLAN1
+    - SW2 remains root for VLAN2
+    - Port roles change accordingly
+
+### **Step 3: Change Port Cost**
+
+- On **SW4 F0/2** for VLAN1:
+    
+    `spanning-tree vlan 1 cost 100`
+    
+- Result:
+    - Root Port changes from F0/2 → F0/1 due to higher cost
+
+### **Step 4: Change Port Priority**
+
+- On **SW1 F0/1**:
+    
+    `spanning-tree vlan 1 port-priority 240`
+    
+- Priority increased (which is actually lower priority in STP)
+- **Result**: No change in Root Port on SW3 (cost is still the main factor)
+
+### **Step 5: Enable PortFast & BPDU Guard**
+
+- On **SW3 & SW4 F0/3**:
+    
+    ```
+    shell
+    CopyEdit
+    interface f0/3
+    spanning-tree portfast
+    spanning-tree bpduguard enable
+    
+    ```
+    
+- **Behavior**:
+    - **PortFast**: Interface moves immediately to forwarding state
+    - **BPDU Guard**: Interface shuts down if a switch is connected (prevents loops)
+    - Interface must be manually re-enabled using:
+        
+        ```
+        perl
+        CopyEdit
+        shutdown
+        no shutdown
+        
+        ```
+        
+
+---
+
+### 🔧 Tools Mentioned
+
+### 🧰 **Packet Tracer**
+
+- Used to perform hands-on labs for CCNA.
+
+### 🧪 **Boson NetSim**
+
+- Premium simulator for CCNA/CCNP
+- Includes:
+    - Guided Labs
+    - Concept-checking questions
+    - Deep scenario-based exercises
+- Example: **CCNP PVST Load Balancing Lab**
+    - Covers VLAN/VTP config, STP planning, and topology documentation.
+
+---
+
+### 📘 NetSim CCNP Lab Highlights
+
+- Tasks:
+    1. Initial Configs (trunks, VTP, VLANs)
+    2. Analyze network & plan root bridges
+    3. Configure & verify STP
+    4. Document root/designated/alternate ports
+- Asks in-depth questions like:
+    - “What path will a VLAN 1 packet take?”
+    - “How many root ports per instance?”
+- **Encourages understanding over memorization**
+
+---
+
+### 🎯 Key STP Commands
+
+| Command | Description |
+| --- | --- |
+| `show spanning-tree` | Displays STP info |
+| `spanning-tree vlan X root primary/secondary` | Set root bridge |
+| `spanning-tree vlan X cost Y` | Modify port cost |
+| `spanning-tree vlan X port-priority Z` | Modify port priority |
+| `spanning-tree portfast` | Enable PortFast |
+| `spanning-tree bpduguard enable` | Enable BPDU Guard |
+
+---
+
+### ✅ Tips
+
+- Root Bridge = Lowest Bridge ID (Priority + MAC)
+- Root Port = Lowest Path Cost to Root
+- PortFast is for end devices only
+- BPDU Guard protects against loops

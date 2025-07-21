@@ -1,0 +1,149 @@
+**CCNA Lesson 7: Introduction to IPv4 Addressing (Jeremy's IT Lab)**
+
+---
+
+### **1. Overview**
+
+- This lesson begins the shift from Layer 2 (Ethernet LAN switching) to Layer 3 (Network Layer).
+- Focus: Understanding IPv4 addressing, binary, decimal conversion, and IP address classes.
+
+---
+
+### **2. OSI Model Layer 3 - Network Layer Review**
+
+- **Purpose**: Enables connectivity between devices on different networks.
+- **Uses**: Logical addressing (IP addresses).
+- **Functions**:
+    - Path selection (routing).
+    - Logical addressing.
+- **Devices**: Routers operate at Layer 3.
+
+---
+
+### **3. LAN vs Different Networks**
+
+- **Switches** do not separate LANs. They expand them.
+- Adding a router between two switches separates the network into two.
+
+### **Example**
+
+- Network 1: `192.168.1.0/24` (PC1, PC2, SW1, R1 G0/0)
+- Network 2: `192.168.2.0/24` (PC3, PC4, SW2, R1 G0/1)
+
+Each network must be assigned its own subnet and router interface IP address.
+
+---
+
+### **4. IPv4 Address Format**
+
+- IPv4 = 32 bits (4 bytes).
+- Written in **dotted decimal** format: e.g. `192.168.1.254`
+- Divided into **4 octets**:
+    - `192` = 8 bits, `168` = 8 bits, etc.
+
+### **Binary Equivalent Example**
+
+- `192` = `11000000`
+- `168` = `10101000`
+- `1` = `00000001`
+- `254` = `11111110`
+
+---
+
+### **5. Binary & Decimal Review**
+
+- Decimal: Base-10
+- Hexadecimal: Base-16 (0-9 + A-F)
+- Binary: Base-2
+    - Each digit increases by power of 2.
+    - Max in one octet (8 bits) = 255
+
+### **Binary to Decimal Conversion**
+
+1. Write bit weights: `128 64 32 16 8 4 2 1`
+2. Add positions with 1s.
+
+### **Decimal to Binary Conversion**
+
+1. Subtract largest bit value ≤ current number.
+2. Write 1, else 0.
+3. Repeat.
+
+---
+
+### **6. IPv4 Addressing Concepts**
+
+- **Network Portion**: Identified by the **prefix length** (e.g. `/24`)
+- **Host Portion**: Remaining bits for host identification.
+
+### **Prefix Length Examples**
+
+- `/24` = First 3 octets (192.168.1) = Network
+- `/16` = First 2 octets (154.78) = Network
+- `/8` = First octet (12) = Network
+
+---
+
+### **7. IP Address Classes**
+
+| Class | First Octet Range | Prefix | Hosts per Network | Notes |
+| --- | --- | --- | --- | --- |
+| A | 0 - 127 | /8 | ~16.7 million | 127.x.x.x = Loopback |
+| B | 128 - 191 | /16 | ~65,000 |  |
+| C | 192 - 223 | /24 | 254 |  |
+
+> Class D (224-239): Multicast, Class E (240-255): Experimental.
+> 
+
+---
+
+### **8. Netmasks**
+
+- Alternate way to define network portion:
+    - `/8` = `255.0.0.0`
+    - `/16` = `255.255.0.0`
+    - `/24` = `255.255.255.0`
+
+**Netmask**: 1s for network bits, 0s for host bits.
+
+---
+
+### **9. Special IP Addresses**
+
+- **Network Address**: Host bits = all 0s
+    - Identifies the network itself (e.g. `192.168.1.0`)
+- **Broadcast Address**: Host bits = all 1s
+    - Sends to all devices on the network (e.g. `192.168.1.255`)
+- **Loopback Address**: `127.0.0.0` to `127.255.255.255`
+    - Refers to the local host.
+
+---
+
+### **10. Summary**
+
+- IPv4 = 32-bit logical address.
+- Written in dotted decimal.
+- Divided into network/host portions.
+- Prefix length defines how many bits are for the network.
+- Learned how to:
+    - Convert binary ↔ decimal.
+    - Identify network, host, broadcast addresses.
+    - Use CIDR notation (`/24`) and netmasks.
+    - Recognize IP classes A/B/C.
+
+---
+
+### **Practice Quiz Summary**
+
+- 10 questions focused on converting IPv4 addresses between binary and dotted decimal.
+- Example:
+    - Binary `00111111.00111000.11100111.00010011` → `63.56.231.19`
+    - Dotted decimal `88.46.90.91` → Binary conversion
+
+---
+
+**Tip**: Use Anki flashcards + Packet Tracer labs (available after Part 2) to reinforce understanding.
+
+---
+
+End of Lesson 7 Notes

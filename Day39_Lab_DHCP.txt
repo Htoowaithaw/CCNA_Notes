@@ -1,0 +1,103 @@
+# **Day 39 Lab | DHCP | CCNA 200-301 Complete Course**
+
+**Day 39 - DHCP (Dynamic Host Configuration Protocol) Notes**
+
+---
+
+### 🧠 Technical Breakdown of DHCP (CCNA Level)
+
+### 📌 Purpose of DHCP
+
+- Automatically assigns IP address, subnet mask, default gateway, DNS server to devices.
+- Used for end-user devices like PCs and phones (routers/servers usually use static IPs).
+- Makes large networks scalable and easy to manage.
+
+### 🧱 DHCP Message Process (DORA)
+
+1. **Discover** – Client broadcasts to find a DHCP server.
+2. **Offer** – Server responds with an available IP and config.
+3. **Request** – Client requests to use the offered config.
+4. **Acknowledge (Ack)** – Server confirms the assignment.
+
+🔁 This is known as the **DORA process**.
+
+### 🔄 Other Message Types
+
+- **Release**: Client gives up the IP before lease expires.
+- Can be captured and analyzed in Wireshark.
+
+### 📦 DHCP Packet Details
+
+- Uses **UDP ports 67 (server)** and **68 (client)**.
+- Can be **broadcast or unicast** based on client/server capabilities.
+- Message contains various **options** (e.g., lease time, DNS, default gateway).
+
+### 📡 DHCP Relay Agent
+
+- Routers don’t forward broadcasts. If DHCP server is remote, configure a router as a **relay agent**:
+
+```
+Router(config-if)# ip helper-address <DHCP_server_IP>
+```
+
+- Relay agent forwards client broadcast to DHCP server as unicast.
+
+### 🛠️ DHCP Server Configuration on Cisco Router
+
+```
+Router(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.10
+Router(config)# ip dhcp excluded-address 192.168.2.1 192.168.2.10
+Router(config)# ip dhcp excluded-address 203.0.113.1
+
+Router(config)# ip dhcp pool POOL1
+Router(dhcp-config)# network 192.168.1.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.1.1
+Router(dhcp-config)# dns-server 8.8.8.8
+Router(dhcp-config)# domain-name jeremysitlab.com
+
+Router(config)# ip dhcp pool POOL2
+Router(dhcp-config)# network 192.168.2.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.2.1
+Router(dhcp-config)# dns-server 8.8.8.8
+Router(dhcp-config)# domain-name jeremysitlab.com
+
+Router(config)# ip dhcp pool POOL3
+Router(dhcp-config)# network 203.0.113.0 255.255.255.252
+```
+
+- Use `show run | section dhcp` to verify pools.
+- Use `show ip dhcp binding` to verify address leases.
+- Use `show ip dhcp pool` for address usage stats.
+- Use `show ip dhcp server statistics` for DHCP message counts.
+
+### 📥 DHCP Client Configuration
+
+```
+Router(config-if)# ip address dhcp
+Router(config-if)# no shutdown
+```
+
+- Interface will obtain an IP address from the DHCP server via DORA process.
+
+### 📨 DHCP Relay Configuration
+
+```
+Router(config-if)# ip helper-address <DHCP_server_IP>
+```
+
+- Applied to the interface facing the DHCP clients.
+
+### 🛠️ Troubleshooting DHCP
+
+- `service dhcp` must be **enabled** (it's enabled by default).
+- If `no service dhcp` is set, the router won’t respond to DHCP messages.
+- Use `ipconfig /renew` on PCs to retry DHCP requests.
+
+### 🧪 DHCP Quiz Review (from video)
+
+1. **DORA Order**: Discover → Offer → Request → Ack
+2. **`ipconfig /renew`**: Sends DHCP Discover from PC.
+3. **DHCP Offer Broadcast Flag**: Destination IP is 255.255.255.255
+4. **Unicast Messages**: DHCP Offer, Ack (if client allows), and Release
+5. **DHCP Relay Needed When**: Router isn’t DHCP server but clients on its LAN need IPs from a remote DHCP server
+6. **Boson Example**: Use `ip helper-address <DHCP_server_IP>` on RouterA’s interface facing clients

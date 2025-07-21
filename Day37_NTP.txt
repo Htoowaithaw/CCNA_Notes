@@ -1,0 +1,81 @@
+# **Day 37 | NTP | CCNA 200-301 Complete Course**
+
+**Day 37 – NTP (Network Time Protocol)**
+
+---
+
+### 🧒 Kid-Level Summary (Explain Like I'm 5)
+
+Imagine you and your friends all have watches. If one friend’s watch says it’s 3 PM and another says 5 PM, you might get confused when you try to play a game at the same time. To fix that, everyone checks the school bell to know the real time and sets their watches to match.
+
+**NTP is like that school bell**—it helps routers and switches match their clocks, so they don’t get confused when they talk to each other. When every device knows the right time, they can write good notes (logs) about what happened and when.
+
+You can also:
+
+- Set the time by hand (manual clock setting), like adjusting a watch.
+- Use a trusted time server (NTP Server), like a school bell.
+- Share that time with other friends (act as a server or peer).
+- Protect your time sync with a password (NTP authentication).
+
+---
+
+### 🧠 Technical Explanation
+
+### 📌 Why Time Matters
+
+- **Accurate timestamps** are crucial for logging events like interface failures, OSPF neighbor changes, and troubleshooting.
+- Devices have **internal clocks** (software clock) and **hardware clocks** (calendar). Both can drift over time.
+
+### ⏱ Manual Time Configuration
+
+- `clock set` – Set software clock manually (time, date).
+- `calendar set` – Set hardware clock manually.
+- `clock update-calendar` – Sync calendar from software clock.
+- `clock read-calendar` – Sync software clock from calendar.
+- `clock timezone JST 9` – Set timezone to JST (Japan Standard Time).
+- `clock summer-time EDT recurring 2 Sunday March 2:00 1 Sunday November 2:00` – Configure daylight saving.
+
+### 🌐 NTP Basics
+
+- **NTP = Network Time Protocol**. Uses UDP port 123.
+- NTP clients request time from NTP servers and synchronize their software clocks.
+- Public servers include `time.google.com`, `time.windows.com`.
+- Use `ntp server <IP>` to sync time.
+- Can have multiple servers for redundancy; add `prefer` for priority.
+- Time hierarchy:
+    - Stratum 0: Atomic/GPS clock (not directly reachable)
+    - Stratum 1: Directly connected to stratum 0 (primary)
+    - Stratum 2+: Sync from higher stratum (secondary)
+
+### 🔍 Useful Show Commands
+
+- `show clock detail` – View software clock & source
+- `show calendar` – View hardware clock
+- `show ntp associations` – Shows all servers, which one is selected (`= sys.peer`)
+- `show ntp status` – Shows if the clock is synchronized and current stratum
+
+### 🛠 NTP Configuration Commands
+
+- `ntp server <IP>` – Sets the device as NTP client
+- `ntp source <interface>` – Sets source IP (commonly a loopback)
+- `ntp update-calendar` – Updates hardware clock with NTP time
+- `ntp master [stratum]` – Manually sets router as NTP server (default stratum 8)
+- `ntp peer <IP>` – Enables symmetric active mode with a peer
+
+### 🔒 NTP Authentication (Optional)
+
+- `ntp authenticate` – Enable authentication
+- `ntp authentication-key <#> md5 <password>` – Define key
+- `ntp trusted-key <#>` – Mark key as trusted
+- `ntp server <IP> key <#>` – Apply key to client-server relationship
+- `ntp peer <IP> key <#>` – Apply key to peer relationship
+
+---
+
+### 📌 Quiz Review (from Jeremy & Boson)
+
+- **`clock read-calendar`** – Sync software clock to hardware clock
+- **`clock timezone JST 9`** – Configure timezone
+- **`ntp master 9`** – Sets device as stratum 9 NTP master
+- **`ntp server <IP>`** – Enables client mode
+- Authentication: Need `authenticate`, `authentication-key`, `trusted-key`, and `server ... key <#>`

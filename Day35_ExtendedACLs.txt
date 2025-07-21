@@ -1,0 +1,117 @@
+# **Day 35 | Extended ACLs | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 35: Extended ACLs**
+
+---
+
+### 🧒 Explain Like I'm 5 (ELI5)
+
+- **What are Extended ACLs?**
+Think of network traffic like cars on roads. A regular stop sign (Standard ACL) only looks at where the car came from. But a smart traffic light (Extended ACL) can look at where the car came from, where it's going, what kind of car it is, and what it’s doing.
+- **Why use Extended ACLs?**
+Because sometimes we need more control. For example, maybe we want to allow only bikes (HTTPS traffic) to enter the park (a server) from a specific street (IP address).
+- **Named ACLs are better:**
+Like giving your rules a name. It lets you edit, move, and update them more easily later.
+- **Apply them close to the source:**
+It's like stopping the bad cars at the gate rather than letting them drive halfway through the city.
+
+---
+
+### 💡 Technical Notes
+
+### 📌 ACL Basics Refresher
+
+- ACLs are used to **filter network traffic**.
+- Standard ACLs filter based only on **source IP**.
+- Extended ACLs can filter based on:
+    - Protocol (TCP, UDP, ICMP, etc.)
+    - Source/Destination IP
+    - Port numbers
+
+### 🔢 Numbered ACL Ranges
+
+- Standard: `1–99`, `1300–1999`
+- Extended: `100–199`, `2000–2699`
+
+### 🧱 Configuration Methods
+
+- **Named ACLs:**
+    
+    ```
+    ip access-list extended BLOCK_HTTPS
+    10 deny tcp 192.168.1.0 0.0.0.255 host 10.0.1.100 eq 443
+    20 permit ip any any
+    ```
+    
+- **Numbered ACLs (in named mode):**
+    
+    ```
+    ip access-list extended 100
+    10 deny ip any any
+    ```
+    
+- **Classic Numbered:**
+    
+    ```
+    access-list 100 deny ip any any
+    ```
+    
+
+### 🛠️ Editing ACLs
+
+- Named mode allows easier editing:
+    - `no 30` deletes entry 30
+    - `10 deny tcp any any eq 23` adds a new entry
+    - `ip access-list resequence 100 10 10` resequences ACL 100 to 10, 20, 30...
+
+### 🧠 Extended ACL Match Criteria
+
+- **Protocols:**
+    - Common ones: `ip`, `tcp`, `udp`, `icmp`
+    - Protocol numbers: `1`=ICMP, `6`=TCP, `17`=UDP, `88`=EIGRP, `89`=OSPF
+- **IP Address Format:**
+    - Use `host 1.1.1.1` or `1.1.1.1 0.0.0.0` for /32
+    - `any` = match all
+- **Port Matching (TCP/UDP only):**
+    - `eq 80` = port 80
+    - `gt 1000`, `lt 1000`, `range 20 21`
+    - Can be used for source and/or destination
+
+### 🧭 Placement Strategy
+
+- **Standard ACLs:** As close to **destination** as possible
+- **Extended ACLs:** As close to **source** as possible
+
+### 📋 Examples
+
+```
+# Deny HTTPS traffic from 192.168.1.0/24 to host 10.0.1.100
+ip access-list extended BLOCK_HTTPS
+ 10 deny tcp 192.168.1.0 0.0.0.255 host 10.0.1.100 eq 443
+ 20 permit ip any any
+
+# Deny ping from 192.168.1.0/24 and 192.168.2.0/24 to 10.0.1.0/24 & 10.0.2.0/24
+ip access-list extended BLOCK_PINGS
+ 10 deny icmp 192.168.1.0 0.0.0.255 10.0.1.0 0.0.0.255
+ 20 deny icmp 192.168.1.0 0.0.0.255 10.0.2.0 0.0.0.255
+ 30 deny icmp 192.168.2.0 0.0.0.255 10.0.1.0 0.0.0.255
+ 40 permit ip any any
+```
+
+### 🔍 Verifying ACLs
+
+```
+show ip access-lists
+show run | section access-list
+show ip interface G0/0
+```
+
+---
+
+### 📖 Quiz Summary (Key Points)
+
+1. ACLs configured in named mode allow better editing.
+2. You **cannot** delete specific entries from a numbered ACL in global config mode—only the entire ACL.
+3. `ip access-list resequence <name> <start> <increment>` helps organize ACL entries.
+4. Apply extended ACLs **close to source** to minimize wasted processing.
+5. `deny tcp any any eq 23` blocks telnet (port 23) traffic.

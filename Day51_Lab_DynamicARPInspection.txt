@@ -1,0 +1,157 @@
+# **Day 51 Lab Dynamic ARP Inspection | | CCNA 200-301 Complete Course**
+
+## 🔧 **DAI Packet Tracer Lab – Jeremy’s IT Lab**
+
+---
+
+### 🎯 **Lab Goals**
+
+- Practice **Dynamic ARP Inspection (DAI)** and **DHCP Snooping** configurations.
+- Use **R1 as DHCP Server**, **SW1 and SW2 as Layer 2 switches**, **PC1–PC3 as clients**.
+- Due to Packet Tracer limitations, only **basic DAI features** are supported.
+
+---
+
+### 🖥️ **Step 1 – Configure R1 as DHCP Server**
+
+```bash
+bash
+CopyEdit
+enable
+conf t
+ip dhcp excluded-address 192.168.1.1 192.168.1.9
+ip dhcp pool POOL1
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+
+```
+
+- **Excluded Range:** .1–.9
+- **DHCP Pool Range:** .10–.254
+- **Default Gateway:** 192.168.1.1 (R1)
+
+---
+
+### 🌐 **Step 2 – DHCP Snooping on SW1 & SW2**
+
+### ✅ SW1 Configuration
+
+```bash
+bash
+CopyEdit
+enable
+conf t
+ip dhcp snooping
+ip dhcp snooping vlan 1
+no ip dhcp snooping information option
+interface g0/2
+ ip dhcp snooping trust
+exit
+
+```
+
+- **G0/2 (toward R1)** is trusted.
+- **G0/1 (to SW2)** is untrusted for added security (optional design choice).
+
+### ✅ SW2 Configuration
+
+```bash
+bash
+CopyEdit
+enable
+conf t
+ip dhcp snooping
+ip dhcp snooping vlan 1
+no ip dhcp snooping information option
+interface g0/1
+ ip dhcp snooping trust
+
+```
+
+---
+
+### 🔐 **Step 3 – DAI Configuration**
+
+### ✅ SW2 Configuration
+
+```bash
+bash
+CopyEdit
+ip arp inspection vlan 1
+ip arp inspection validate dst-mac ip src-mac
+interface g0/1
+ ip arp inspection trust
+
+```
+
+- Enabled all **DAI optional validation checks** (must be in one line).
+- G0/1 (uplink to SW1) is trusted.
+
+### ✅ SW1 Configuration
+
+```bash
+bash
+CopyEdit
+ip arp inspection vlan 1
+ip arp inspection validate dst-mac ip src-mac
+interface range g0/1 - 2
+ ip arp inspection trust
+
+```
+
+- Trusted both **G0/1 (to SW2)** and **G0/2 (to R1)**.
+
+---
+
+### ⚠️ **Note on Packet Tracer Limitation**
+
+- **Rate limiting** appears enabled on **trusted ports** in Packet Tracer, contrary to:
+    - **Cisco documentation** (should be disabled by default)
+    - **Physical/virtual switch behavior** (validated by Jeremy)
+
+---
+
+### 🧪 **Step 4 – PC DHCP Testing**
+
+- On PC1, PC2, and PC3:
+    - Change network settings from **Static to DHCP**
+    - They should obtain IPs in range `192.168.1.10–254`
+    - Example:
+        
+        ```
+        makefile
+        CopyEdit
+        > ipconfig
+        IP: 192.168.1.10
+        
+        ```
+        
+    - Test ping:
+        
+        ```
+        markdown
+        CopyEdit
+        > ping 192.168.1.1
+        
+        ```
+        
+
+---
+
+### ✅ **Lab Summary**
+
+| Feature | SW1 | SW2 |
+| --- | --- | --- |
+| DHCP Snooping | Enabled (VLAN 1) | Enabled (VLAN 1) |
+| DHCP Trusted Port | G0/2 | G0/1 |
+| DAI Enabled | VLAN 1 | VLAN 1 |
+| DAI Trusted Port | G0/1, G0/2 | G0/1 |
+| Validation Checks | All 3 | All 3 |
+
+---
+
+### 🧠 **Key Reminders**
+
+- DAI validation checks **must be in one line**.
+- Use `show ip arp inspection interfaces` to confirm trust state and rate limit settings.
+- Packet Tracer may **not accurately reflect** some IOS behaviors (e.g., rate-limiting defaults).

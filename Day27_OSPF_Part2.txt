@@ -1,0 +1,69 @@
+# **Day 27 | OSPF Part 2 | CCNA 200-301 Complete Course**
+
+### **Jeremy’s IT Lab – Day 27: OSPF Explained Like You're 5**
+
+**1. What is OSPF Cost?**
+
+OSPF cost is like a score. Lower scores mean faster roads for your data.
+
+**2. How is Cost Calculated?**
+
+Routers divide a magic number (reference bandwidth) by the speed of the road (interface) to find the cost.
+
+**3. Why Gigabit = FastEthernet in Cost?**
+
+If the score becomes less than 1, it gets changed to 1. So even super-fast roads look the same as fast roads unless we fix the magic number.
+
+**4. How to Make Cost More Accurate**
+
+To see the real speed differences, we increase the magic number so faster roads don’t all look the same.
+
+**5. How to Change Cost Manually**
+
+We can also just say 'Hey, this road costs 100!' by typing `ip ospf cost 100` on the road (interface).
+
+**6. Hello and Dead Timers**
+
+Routers say 'Hi!' every 10 seconds and expect a reply every 40 seconds. If not, they forget their friend.
+
+**7. How Routers Become Friends (Neighbors)**
+
+When routers connect, they say hello. If both reply and agree, they become neighbors and share route stories (LSAs).
+
+**8. The 7 Friendship (Neighbor) Steps**
+
+1. Down = quiet
+2. Init = heard a hello
+3. 2-way = both said hello
+4. Exstart = decide who goes first
+5. Exchange = show what info they have
+6. Loading = ask for missing info
+7. Full = best friends with the same info
+
+**9. OSPF Message Types**
+
+1. Hello – say hi
+2. DBD – here’s what I have
+3. LSR – I need this
+4. LSU – here you go
+5. LSAck – thanks!
+
+**10. Hello Message Address**
+
+Routers send 'hi' messages to 224.0.0.5 (all OSPF routers).
+
+**11. Activating OSPF Without NETWORK**
+
+You can skip the NETWORK command and activate OSPF directly on a road (interface) using `ip ospf 1 area 0`.
+
+**12. Making All Interfaces Quiet (Passive)**
+
+You can say 'Everyone be quiet (`passive-interface default`)', then allow only some roads to talk again (`no passive-interface X`).
+
+**13. Useful Commands to Check**
+
+- `show ip ospf neighbor`
+- `show ip ospf interface`
+- `show ip protocols`
+    
+    These help you check if the routers are talking properly.

@@ -1,0 +1,160 @@
+# **Day 9 Lab | Configuring Interfaces |  CCNA 200-301 Complete Course**
+
+**CCNA Lab - Interface Configuration for Router and Switches**
+
+**Lab Topology:**
+
+- A single LAN: `172.16.0.0/16`
+- Devices: `R1`, `SW1`, `SW2`, `PC1-4`
+
+---
+
+### **Lab Objectives**
+
+1. Configure **hostnames**.
+2. Configure **IP addresses**.
+3. Configure **speed and duplex** settings.
+4. Configure **interface descriptions**.
+5. **Disable unused interfaces**.
+6. **Save configurations** using different methods.
+
+---
+
+### **Router R1 Configuration**
+
+**Step 1: Change hostname**
+
+```
+enable
+configure terminal
+hostname R1
+```
+
+**Step 2: Configure IP address for G0/0**
+
+```
+interface g0/0
+ip address 172.16.255.254 255.255.0.0
+speed 1000
+duplex full
+description ## to SW1 ##
+no shutdown
+```
+
+**Step 3: Configure descriptions for unused interfaces**
+
+```
+interface range g0/1 - 2
+description ## not in use ##
+```
+
+**Step 4: Save configuration**
+
+```
+end
+copy running-config startup-config
+```
+
+---
+
+### **PC1 - PC4 Configuration (Only IP)**
+
+All PCs use subnet mask `255.255.0.0` and gateway `172.16.255.254`
+
+- PC1: `172.16.0.1`
+- PC2: `172.16.0.2`
+- PC3: `172.16.0.3`
+- PC4: `172.16.0.4`
+
+---
+
+### **Switch SW1 Configuration**
+
+**Step 1: Change hostname**
+
+```
+enable
+configure terminal
+hostname SW1
+```
+
+**Step 2: Configure interfaces**
+
+```
+interface g0/1
+speed 1000
+duplex full
+description ## to R1 ##
+
+interface g0/2
+speed 1000
+duplex full
+description ## to SW2 ##
+
+interface range f0/1 - 2
+description ## to end hosts ##
+
+interface range f0/3 - 24
+description ## not in use ##
+shutdown
+```
+
+**Step 3: Save configuration**
+
+```
+end
+write memory
+```
+
+---
+
+### **Switch SW2 Configuration**
+
+**Step 1: Change hostname**
+
+```
+enable
+configure terminal
+hostname SW2
+```
+
+**Step 2: Configure interfaces**
+
+```
+interface g0/1
+speed 1000
+duplex full
+description ## to SW1 ##
+
+interface range f0/1 - 2
+description ## to end hosts ##
+
+interface range g0/2, f0/3 - 24
+description ## not in use ##
+shutdown
+```
+
+**Step 3: Save configuration**
+
+```
+end
+write
+```
+
+---
+
+### **Commands to Verify Configurations**
+
+- `show ip interface brief`
+- `show interfaces status`
+- `show startup-config`
+- `do show run`
+
+---
+
+**Note:**
+Packet Tracer may display incorrect negotiation indicators (e.g., `a-1000` instead of `1000`). This is not the case on real Cisco devices.
+
+---
+
+**End of Lab**

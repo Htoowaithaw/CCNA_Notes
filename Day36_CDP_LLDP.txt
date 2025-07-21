@@ -1,0 +1,116 @@
+# **Day 36 | CDP & LLDP | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 36: CDP & LLDP**
+
+---
+
+### 🧢 Explain Like I'm 5 (Kid-Level Summary)
+
+**What are CDP and LLDP?**
+
+- Imagine your toys are talking to each other to say "Hi, I’m a robot!" or "Hi, I’m a car!"
+- CDP and LLDP are the ways that computers and network devices say "Hi, I’m here, and this is what I do!"
+- CDP is like a special language made by one toy company (Cisco).
+- LLDP is a common language all toys (devices) can use, no matter who made them.
+- They don’t use names (like IP addresses), just basic labels (MAC addresses) to say hello.
+- But sometimes these hellos can share *too much info*, so your parents (network admins) might turn it off.
+
+---
+
+### 💡 Technical Explanation (CCNA-Level)
+
+### ✉️ L2 Discovery Protocols Overview
+
+- CDP (Cisco Discovery Protocol) and LLDP (Link Layer Discovery Protocol) operate at Layer 2.
+- Purpose: Discover directly connected devices and exchange basic info.
+- Do not use IP; instead, use Layer 2 multicast frames.
+- Can share Layer 3 details like IP addresses, but no routing needed to work.
+- Used for topology mapping, troubleshooting, and network documentation.
+
+### ✨ CDP Specifics
+
+- **Cisco proprietary** protocol.
+- Enabled by default on Cisco devices.
+- Sends messages to **multicast MAC address: `01:00:0C:CC:CC:CC`** every 60 seconds.
+- Default holdtime: 180 seconds.
+- Only neighbors on the same Layer 2 segment are discovered.
+- Version 2 (default) adds features like native VLAN mismatch detection.
+
+**CDP Commands:**
+
+- `show cdp` – See timers, version, and global status.
+- `show cdp traffic` – Number of CDP packets sent/received.
+- `show cdp interface` – Per-interface CDP status and timers.
+- `show cdp neighbors` – Lists directly connected devices.
+- `show cdp neighbors detail` – Includes IOS version, IP address, VTP info, duplex, native VLAN, etc.
+- `show cdp entry <NAME>` – View detail for one neighbor.
+
+**CDP Config:**
+
+```
+cdp run                ! Globally enable
+no cdp run             ! Disable globally
+interface X
+ cdp enable            ! Enable on an interface
+ no cdp enable         ! Disable on an interface
+cdp timer 60
+cdp holdtime 180
+cdp advertise-v2       ! Default
+```
+
+---
+
+### ✨ LLDP Specifics
+
+- **Industry standard** protocol: IEEE 802.1AB
+- Disabled by default on Cisco devices
+- Sends messages to **multicast MAC address: `01:80:C2:00:00:0E`** every 30 seconds
+- Default holdtime: 120 seconds
+- Optional `reinit` timer = 2 seconds (used for LLDP flapping prevention)
+
+**LLDP Commands:**
+
+- `show lldp` – Timers, global status
+- `show lldp traffic` – Stats on sent/received messages
+- `show lldp interface` – Per-interface Tx/Rx status
+- `show lldp neighbors`
+- `show lldp neighbors detail` – Shows OS version, TTL, capabilities (System & Enabled)
+- `show lldp entry <NAME>`
+
+**LLDP Config:**
+
+```
+lldp run                 ! Globally enable
+no lldp run              ! Disable globally
+interface X
+ lldp transmit          ! Enable LLDP Tx
+ lldp receive           ! Enable LLDP Rx
+lldp timer 30
+lldp holdtime 120
+lldp reinit 2
+```
+
+---
+
+### 🔹 Key Differences: CDP vs LLDP
+
+| Feature | CDP (Cisco) | LLDP (Standard) |
+| --- | --- | --- |
+| Vendor | Cisco-only | Multi-vendor (IEEE 802.1AB) |
+| Enabled by default | Yes | No |
+| Multicast MAC | 01:00:0C:CC:CC:CC | 01:80:C2:00:00:0E |
+| Default Timer | 60 sec | 30 sec |
+| Default Holdtime | 180 sec | 120 sec |
+| Extra Capability | VTP info, VLAN mismatch | System vs Enabled capabilities |
+
+---
+
+### 🎓 Boson Practice Question Summary
+
+**Q: What does `show cdp neighbors` reveal? (4 answers)**
+
+- Device ID (hostname)
+- Local interface
+- Neighbor interface (Port ID)
+- Capabilities and platform/model
+- ❌ NOT IP address or software version (use `detail` version)

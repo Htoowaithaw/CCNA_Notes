@@ -1,0 +1,105 @@
+## **CCNA Day 16 – VLAN Configuration Lab Summary**
+
+### **Lab Goals**
+
+- Configure basic VLAN access ports on a Cisco switch.
+- Assign IPs and gateways to PCs.
+- Use one router with three interfaces to route between VLANs.
+- Verify inter-VLAN connectivity.
+- Use simulation mode to observe frame flow.
+
+---
+
+### **Network Overview**
+
+- **VLAN 10 – Engineering**: 10.0.0.0/26
+    - PCs: 10.0.0.1, 10.0.0.2
+    - Gateway: 10.0.0.62
+- **VLAN 20 – HR**: 10.0.0.64/26
+    - PCs: 10.0.0.65, 10.0.0.66
+    - Gateway: 10.0.0.126
+- **VLAN 30 – Sales**: 10.0.0.128/26
+    - PCs: 10.0.0.129, 10.0.0.130
+    - Gateway: 10.0.0.190
+
+---
+
+### **Step-by-Step Lab Summary**
+
+### **Step 1: PC IP Addressing**
+
+- Assign each PC a static IP address in its subnet.
+- Set the gateway as the **last usable address** of each /26 subnet.
+
+### **Step 2: Router Interface Configuration (R1)**
+
+- Use 3 physical connections between R1 and SW1 (one per VLAN).
+- Configure each router interface with the respective gateway IP:
+    
+    ```
+    plaintext
+    CopyEdit
+    G0/0 → 10.0.0.62/26
+    G0/1 → 10.0.0.126/26
+    G0/2 → 10.0.0.190/26
+    
+    ```
+    
+- Use `no shutdown` to enable interfaces.
+- Verify using: `show ip interface brief`
+
+### **Step 3: Switch Configuration (SW1)**
+
+- Assign ports to access mode and their respective VLANs:
+    
+    ```
+    plaintext
+    CopyEdit
+    interface range g0/1, f3/1, f4/1
+      switchport mode access
+      switchport access vlan 10
+    
+    interface range g1/1, f5/1, f6/1
+      switchport mode access
+      switchport access vlan 20
+    
+    interface range g2/1, f7/1, f8/1
+      switchport mode access
+      switchport access vlan 30
+    
+    ```
+    
+- Rename VLANs for clarity:
+    
+    ```
+    plaintext
+    CopyEdit
+    vlan 10
+      name ENGINEERING
+    vlan 20
+      name HR
+    vlan 30
+      name SALES
+    
+    ```
+    
+- Verify using: `show vlan brief`
+
+### **Step 4: Connectivity Testing**
+
+- **Ping from PC1 to PC3 (VLAN20)**: Success.
+- **Ping from PC1 to PC5 (VLAN30)**: Success.
+- **Simulation mode** confirms:
+    - Traffic goes through SW1 → R1 → back to SW1 → destination.
+- **Ping broadcast address (10.0.0.63)**:
+    - Only reaches devices in **VLAN10**, showing VLAN isolation.
+
+---
+
+### **Key Takeaways**
+
+- VLANs separate broadcast domains at Layer 2.
+- Switches need **routers** to perform **inter-VLAN routing**.
+- Each router interface should be in a different VLAN for routing.
+- Use access mode for end-device switchports.
+- Use simulation mode in Packet Tracer to visualize traffic flow.

@@ -1,0 +1,80 @@
+**Spanning Tree Protocol (STP) Toolkit: Root Guard - Jeremy's IT Lab Summary**
+
+---
+
+### ✅ What is Root Guard?
+
+Root Guard is a Spanning Tree Protocol (STP) feature that **prevents other switches from becoming the root bridge** by blocking ports that receive **superior BPDUs**. It's designed to **enforce the root bridge placement** in a network and is typically used **at the edge** of a network where **you connect to external networks** (e.g., customer or partner switches).
+
+---
+
+### 🌐 Real-World Use Case
+
+- **Service Provider vs Customer**:
+    - A service provider connects to a customer's switch.
+    - The provider wants to ensure its own switch remains the **root bridge**.
+    - If the customer's switch advertises a better (lower) Bridge ID, it could disrupt the provider's topology.
+    - Root Guard protects against this by **blocking the interface** if superior BPDUs are received.
+
+---
+
+### ⚖️ Root Bridge Importance
+
+- The **root bridge** should be:
+    - Close to the **default gateway** (like a router).
+    - On a **stable, high-performance switch**.
+- Correct placement improves **traffic efficiency** (low latency/congestion).
+- Without control, an external switch with a lower Bridge ID (e.g., lower MAC) can become the root.
+
+---
+
+### ⚠️ Problem Example
+
+- Without Root Guard:
+    - SW1 (priority 0) is the intended root.
+    - SW6 (customer switch, lower MAC) sends superior BPDUs.
+    - SW6 becomes root; traffic is rerouted inefficiently through the customer's network.
+
+---
+
+### 🔒 How Root Guard Works
+
+- **Command**: `spanning-tree guard root` (configured in **interface config mode only**).
+- If a superior BPDU is received:
+    - The port enters **Root Inconsistent** state.
+    - Also called **broken**: port is blocked and stops forwarding frames.
+- **Recovery**:
+    - Once superior BPDUs stop arriving (e.g., after Max Age = 20s), the port **automatically recovers**.
+    - No need for `shutdown`/`no shutdown` or ErrDisable Recovery.
+
+---
+
+### 👁️ CLI Output
+
+- `show spanning-tree` shows status as:
+    - `BKN` (Broken)
+    - `ROOT_Inc` (Root Inconsistent)
+
+---
+
+### ✅ When and Where to Configure
+
+- **Do**: Configure Root Guard on ports connecting to switches **you don’t control**.
+- **Don’t**: Use it on every port or **on customer switches**.
+- There is **no global default** command like PortFast.
+- Must be **manually configured per interface**.
+
+---
+
+### ✅ Summary Points
+
+- Root Guard enforces **root bridge stability**.
+- Blocks ports receiving superior BPDUs.
+- Used **between provider and external networks**.
+- Ports automatically recover after superior BPDUs stop.
+- CLI: `spanning-tree guard root`
+- Show output: `BKN`, `ROOT_Inc`.
+
+---
+
+Use Root Guard when **you want to guarantee** your switch stays the root in a shared or multi-organization network.

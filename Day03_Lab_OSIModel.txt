@@ -1,0 +1,95 @@
+# **Day 3 Lab | OSI Model |  CCNA 200-301 Complete Course**
+
+# 🧪 Packet Tracer Lab - Observing OSI & TCP/IP Models in Action (CCNA Notes)
+
+---
+
+## 1. Lab Overview
+
+- Use **Cisco Packet Tracer’s Simulation Mode** to observe network traffic.
+- Setup:
+    - **2 Routers**: R1, R2
+    - **2 Switches**: SW1, SW2
+    - **1 Server**: SRV1
+    - **1 PC**: PC1
+- **Interface labels**:
+    - `G0/x` = GigabitEthernet (1 Gbps)
+    - `F0/x` = FastEthernet (100 Mbps)
+- **Network Addresses**:
+    - `192.168.1.0/24` (Server, PC, Switches, R1 G0/0)
+    - `10.0.0.0/24` (R1 G0/1 and R2 G0/0)
+
+---
+
+## 2. Reading a Network Diagram
+
+- **Router connects different networks**.
+- `.100` or `.1` at device label = Host address in that subnet.
+- `/24` means subnet mask 255.255.255.0 (concept explained in future lessons).
+
+---
+
+## 3. Step-by-Step Lab Walkthrough
+
+---
+
+### 🔹 Step 1: Observing Network Traffic
+
+- **Activate Simulation Mode** in Packet Tracer.
+- Click through packets to see traffic types and OSI Layer information.
+
+| Device | Protocol | OSI Layers Involved |
+| --- | --- | --- |
+| SW2 | STP | Layer 2 and Layer 1 |
+| R1 | OSPF | Layer 3, Layer 2, and Layer 1 |
+
+### STP (Spanning-Tree Protocol)
+
+- **Layer 2** protocol (Ethernet frame).
+- **Encapsulation**: PDU into an Ethernet frame.
+- **Layer 1**: Shows physical interfaces sending the frame.
+
+### OSPF (Open Shortest Path First)
+
+- **Layer 3** protocol.
+- **Encapsulation**: Includes Layer 3 IP addresses, Layer 2, and Layer 1 details.
+
+---
+
+### 🔹 Step 2: Generating and Observing DHCP Traffic
+
+- **PC1** uses **DHCP (Layer 7 protocol)** to get an IP address.
+
+**Commands used**:
+
+- `ipconfig` → Show current IP.
+- `ipconfig /release` → Release IP address.
+- `ipconfig /renew` → Request new IP address.
+
+**DHCP Message Observations**:
+
+- **Layer 7**: Application layer (no separate 5/6 in TCP/IP model).
+- **Layer 4**: UDP segment (PDU = Segment).
+- **Layer 3**: IP addresses.
+- **Layer 2**: Ethernet frame.
+- **Layer 1**: Physical transmission details.
+
+---
+
+## 4. Key Concepts Reinforced in the Lab
+
+| Concept | Key Takeaway |
+| --- | --- |
+| Simulation Mode | View real network traffic and protocol behaviors. |
+| OSI Model | Visualize encapsulation/de-encapsulation live. |
+| TCP/IP Model | Layers 5-7 combined into **Application Layer**. |
+| Protocol Behavior | STP at L2, OSPF at L3, DHCP at L7. |
+| PDUs | Frame (L2), Packet (L3), Segment (L4). |
+
+---
+
+## 5. Conclusion
+
+- You **observed OSI and TCP/IP models** in live packet exchanges.
+- **Understanding will deepen** once you study individual protocols like STP, OSPF, DHCP.
+- Packet Tracer's Simulation Mode is an excellent tool to reinforce theory with visual practice.

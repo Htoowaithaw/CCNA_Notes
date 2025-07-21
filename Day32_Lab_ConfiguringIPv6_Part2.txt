@@ -1,0 +1,185 @@
+# **Day 32 Lab | Configuring IPv6 (Part 2) | CCNA 200-301 Complete Course**
+
+## 📘 CCNA Day 32 — IPv6 Addressing and Static Routing
+
+### 🔧 Objectives:
+
+- Configure IPv6 addresses using EUI-64.
+- Enable IPv6 on interfaces without manually setting an address.
+- Configure IPv6 static routes.
+- Preview dynamic routing with RIPng (Boson NetSim).
+
+---
+
+### 🧪 Step-by-Step Lab Summary
+
+### ✅ Step 1: Configure IPv6 using EUI-64 on R1 and R2 (Interface G0/1)
+
+- EUI-64 auto-generates the interface ID using MAC address:
+    - Split MAC in half.
+    - Insert `FFFE` in the middle.
+    - Flip the 7th bit (U/L bit).
+- Commands:
+    
+    ```
+    shell
+    CopyEdit
+    ipv6 unicast-routing
+    interface g0/1
+    ipv6 address 2001:db8::/64 eui-64
+    
+    ```
+    
+- Validate with:
+    
+    ```
+    shell
+    CopyEdit
+    do show ipv6 interface brief
+    
+    ```
+    
+
+### ✅ Step 2: Configure IPv6 Address and Default Gateway on PC1 and PC2
+
+- PC1:
+    - IPv6: `2001:db8::2/64`
+    - Gateway: IPv6 address of R1’s G0/1
+- PC2:
+    - IPv6: `2001:db8:0:1::2/64`
+    - Gateway: IPv6 address of R2’s G0/1
+
+Each PC also auto-generates a **link-local** address based on its MAC.
+
+---
+
+### ✅ Step 3: Enable IPv6 on R1 and R2 G0/0 without manual address config
+
+- Command:
+    
+    ```
+    shell
+    CopyEdit
+    interface g0/0
+    ipv6 enable
+    
+    ```
+    
+- This command auto-generates a **link-local** address (`FE80::/10`).
+- Each interface gets a unique link-local address using EUI-64.
+
+---
+
+### ✅ Step 4: Configure IPv6 Static Routes
+
+- Use `ipv6 route` with link-local next-hop and exit interface.
+- On R1:
+    
+    ```
+    shell
+    CopyEdit
+    ipv6 route 2001:db8:0:1::/64 g0/0 fe80::R2-link-local
+    
+    ```
+    
+- On R2:
+    
+    ```
+    shell
+    CopyEdit
+    ipv6 route 2001:db8::/64 g0/0 fe80::R1-link-local
+    
+    ```
+    
+
+> Note: When using link-local next-hop in IPv6 static routes, the exit interface must be specified due to the scope-limited nature of link-local addresses.
+> 
+- Verify:
+    
+    ```
+    shell
+    CopyEdit
+    ping 2001:db8:0:1::2
+    
+    ```
+    
+
+---
+
+### 🧪 Boson NetSim Lab Preview — Configuring IPv6 1
+
+### 🔹 Lab Objectives:
+
+- Implement IPv6 addressing.
+- Implement RIPng dynamic routing.
+
+### 🔹 Devices: Tampa, Orlando, Daytona, Miami
+
+### Enable IPv6 Routing:
+
+```
+shell
+CopyEdit
+ipv6 unicast-routing
+
+```
+
+### Assign IPv6 Addresses (example):
+
+```
+shell
+CopyEdit
+interface s0/0
+ipv6 address 2001:0:1:3::2/64
+
+```
+
+### Enable RIPng:
+
+Two options:
+
+1. **Global Mode**:
+    
+    ```
+    shell
+    CopyEdit
+    ipv6 router rip boson
+    
+    ```
+    
+2. **Interface Mode**:
+    
+    ```
+    shell
+    CopyEdit
+    interface s0/0
+    ipv6 rip boson enable
+    
+    ```
+    
+
+> If configured on the interface, the ipv6 router rip command is auto-created.
+> 
+
+### Verify:
+
+```
+shell
+CopyEdit
+show ipv6 protocols
+show ipv6 route
+
+```
+
+RIP routes should appear with the source as `rip`.
+
+---
+
+### 📝 Key Takeaways:
+
+- `ipv6 address <prefix> eui-64` → auto-generates the interface ID from MAC.
+- `ipv6 enable` → generates only a link-local address.
+- Static routes using link-local addresses **must** include the exit interface.
+- RIPng:
+    - Requires a process name.
+    - Configured per interface using `ipv6 rip <process> enable`.

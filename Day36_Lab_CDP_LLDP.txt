@@ -1,0 +1,151 @@
+# **Day 36 Lab | CDP & LLDP | CCNA 200-301 Complete Course**
+
+**Jeremy’s IT Lab – Day 36: CDP & LLDP Lab Summary**
+
+---
+
+### ✅ Lab Objective
+
+- Use **CDP** to map out the network and identify IPs, interfaces, and neighbors.
+- Disable **CDP** and switch to **LLDP**.
+- Practice verifying device connections using both protocols.
+
+---
+
+### 🧪 CDP Configuration and Discovery (Steps 1 & 2)
+
+### PC1
+
+- Use `ipconfig` to discover:
+    - IP: `192.168.1.1`
+    - Gateway: `192.168.1.254` → R1’s IP
+    - Subnet: `192.168.1.0/24`
+
+### SW1
+
+- `show cdp neighbors` → SW1 G0/1 ↔ R1 G0/2
+- `show interfaces status` → F0/10 connected to PC1
+- Disable CDP on F0/10:
+    
+    ```
+    interface F0/10
+     no cdp enable
+    ```
+    
+
+### R1
+
+- `show cdp neighbors` →
+    - G0/2 ↔ SW1 G0/1
+    - G0/0 ↔ R3 G0/1
+    - G0/1 ↔ R2 G0/0
+- Use `show interfaces G0/0` and `G0/1` to find IPs and subnet masks:
+    - G0/0: 10.0.13.1/30
+    - G0/1: 10.0.12.1/30
+- Use `show cdp entry R3` to verify R3’s IP (10.0.13.2)
+
+### PC2
+
+- `ipconfig` → IP: 192.168.2.1, Gateway: 192.168.2.254 → R2
+
+### SW2
+
+- `show cdp neighbors` → G0/2 ↔ R2 G0/1
+- `show interfaces status` → F0/1 connected to PC2
+- Disable CDP on F0/1
+
+### R2
+
+- `show cdp neighbors` → G0/2 ↔ R3 G0/2
+- `show interface G0/2` → IP: 10.0.23.1/30
+
+### PC3
+
+- `ipconfig` → IP: 192.168.3.1, Gateway: 192.168.3.254 → R3
+
+### SW3
+
+- `show cdp neighbors` → G0/1 ↔ R3 G0/0
+- `show interfaces status` → F0/24 connected to PC3
+- Disable CDP on F0/24
+
+### R3
+
+- Confirmed via CDP from neighbors:
+    - G0/0: 192.168.3.254 (to SW3)
+    - G0/1: 10.0.13.2 (to R1)
+    - G0/2: 10.0.23.2 (to R2)
+
+---
+
+### 🔄 LLDP Configuration (Steps 3 & 4)
+
+### Process
+
+1. **Disable CDP globally:** `no cdp run`
+2. **Enable LLDP globally:** `lldp run`
+3. **Enable LLDP on each router/switch interface that connects to another device:**
+
+```
+interface [INT]
+ lldp transmit
+ lldp receive
+```
+
+### Devices & Interfaces
+
+- **SW1:** G0/1
+- **SW2:** G0/2
+- **SW3:** G0/1
+- **R1, R2, R3:** G0/0–2 via `interface range G0/0 – 2`
+
+---
+
+### 🔍 Simulation Mode (Verify LLDP)
+
+- Switch to Simulation mode in Packet Tracer.
+- Check for LLDP messages in transit.
+- Can also observe EIGRP, STP, DTP.
+
+---
+
+### 🧠 Boson NetSim LLDP Bonus Lab Summary
+
+**Topology:** 2 routers directly connected
+
+### Key Commands
+
+```
+show lldp
+show lldp neighbors
+show lldp neighbors detail
+show lldp interface f0/0
+lldp run
+interface f0/0
+ lldp transmit
+ lldp receive
+ no lldp transmit
+ lldp transmit
+lldp holdtime 60
+lldp timer 15
+```
+
+### Tasks
+
+1. Configure LLDP globally
+2. Enable/disable LLDP on interfaces
+3. Tune LLDP timers (from 120 → 60, 30 → 15)
+
+### Verification
+
+- Use `show lldp` to verify status and timers
+- `grade lab` confirms all tasks completed correctly
+
+---
+
+### Key Takeaways
+
+- CDP helps identify directly connected Cisco devices.
+- LLDP is vendor-neutral and needs to be explicitly enabled.
+- LLDP `run` usually enables both transmit & receive, but verify per interface.
+- Use simulation mode or `show lldp neighbors` to confirm successful configuration.

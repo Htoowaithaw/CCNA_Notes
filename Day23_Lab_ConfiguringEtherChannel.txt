@@ -1,0 +1,110 @@
+### **Overview**
+
+This lab walks through the configuration of Layer 2 and Layer 3 EtherChannels between access and distribution layer switches using LACP, PAgP, and static EtherChannel. Also covers EtherChannel load-balancing settings and static routing on multilayer switches.
+
+---
+
+### **Step-by-Step Summary**
+
+### **Step 1: Configure LACP EtherChannel between ASW1 and DSW1**
+
+- On ASW1:
+    - `interface range g0/1 - 2`
+    - `channel-group 1 mode active`
+    - `interface po1`
+    - `switchport mode trunk`
+- On DSW1:
+    - `interface range g1/0/3 - 4`
+    - `channel-group 1 mode active`
+    - `interface po1`
+    - `switchport trunk encapsulation dot1q`
+    - `switchport mode trunk`
+- Verify:
+    - `show etherchannel summary` -> flags: `SU` for port-channel, `P` for members
+    - `show interfaces trunk`
+    - `show spanning-tree` -> now shows only Po1, no individual links
+
+### **Step 2: Configure PAgP EtherChannel between ASW2 and DSW2**
+
+- On ASW2:
+    - `interface range g0/1 - 2`
+    - `channel-group 1 mode desirable`
+    - `interface po1`
+    - `switchport mode trunk`
+- On DSW2:
+    - `interface range g1/0/3 - 4`
+    - `channel-group 1 mode desirable`
+    - `interface po1`
+    - `switchport trunk encapsulation dot1q`
+    - `switchport mode trunk`
+- Verify:
+    - `show etherchannel summary` -> `SU`, `P`
+
+### **Step 3: Configure Static Layer 3 EtherChannel between DSW1 and DSW2**
+
+- On DSW2:
+    - `interface range g1/0/1 - 2`
+    - `no switchport`
+    - `channel-group 2 mode on`
+    - `interface po2`
+    - `ip address 10.0.0.2 255.255.255.252`
+- On DSW1:
+    - `interface range g1/0/1 - 2`
+    - `no switchport`
+    - `channel-group 2 mode on`
+    - `interface po2`
+    - `ip address 10.0.0.1 255.255.255.252`
+- Verify:
+    - `show etherchannel summary` -> flags `RU`, `P`
+    - `ping 10.0.0.2`
+
+### **Step 4: Configure Static Routing**
+
+- On DSW1:
+    - `ip routing`
+    - `ip route 172.16.2.0 255.255.255.0 10.0.0.2`
+- On DSW2:
+    - `ip routing`
+    - `ip route 172.16.1.0 255.255.255.0 10.0.0.1`
+- Test:
+    - `ping 172.16.2.1` from PC1 (should succeed after initial ARP)
+
+### **Step 5: Check EtherChannel Load-Balancing**
+
+- On ASW1:
+    - `show etherchannel load-balance` -> default: source MAC
+- On DSW1:
+    - same as above
+
+### **Step 6: Change Load-Balancing to Source and Destination IP**
+
+- On all switches:
+    - `port-channel load-balance src-dst-ip`
+    - Confirm with: `show etherchannel load-balance`
+
+---
+
+### **Key Commands Review**
+
+- `channel-group <#> mode [on | active | passive | desirable | auto]`
+- `interface port-channel <#>`
+- `switchport mode trunk`
+- `no switchport` (for Layer 3 EtherChannel)
+- `port-channel load-balance src-dst-ip`
+- `show etherchannel summary`
+- `show interfaces trunk`
+- `show spanning-tree`
+- `ip routing`
+- `ip route <destination> <mask> <next-hop>`
+
+---
+
+### **Additional Notes**
+
+- EtherChannel member interfaces must match in:
+    - Speed
+    - Duplex
+    - Trunk/access mode
+    - Allowed VLANs & native VLAN (for trunks)
+- Use `show run` and `show etherchannel summary` for verification.
+- EtherChannel load-balancing defaults vary by switch model.

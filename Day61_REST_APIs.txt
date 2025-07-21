@@ -1,0 +1,87 @@
+# **Day 61 | REST APIs | CCNA 200-301 Complete Course**
+
+**REST APIs – Simple CCNA Notes (Jeremy’s IT Lab)**
+
+1. **What is an API?**
+    - Like a radio call between software. It lets programs talk and share data.
+    - Example: Your app asks the system, “What’s the weather?” The API gives back the answer.
+2. **Why REST APIs matter in networking:**
+    - They let your programs interact with network devices (like asking a router to give you info).
+    - Commonly used in SDN (Software Defined Networking) — a modern way to control networks.
+
+---
+
+### CRUD = Actions We Perform
+
+Just like work shifts:
+
+- **C - Create**: Add something new (e.g., Add new flight info)
+- **R - Read**: View details (e.g., Check passenger list)
+- **U - Update**: Edit details (e.g., Change gate number)
+- **D - Delete**: Remove info (e.g., Delete a cancelled flight)
+
+---
+
+### HTTP = The Method Used
+
+REST APIs usually use **HTTP** to talk to devices.
+
+Each CRUD action matches an HTTP **verb**:
+
+- **POST = Create**
+- **GET = Read**
+- **PUT/PATCH = Update**
+- **DELETE = Delete**
+
+---
+
+### HTTP Request = What We Send
+
+When we send a request using an API:
+
+- We include:
+    - The **verb** (like “GET” to fetch data)
+    - The **URL/URI** (like the address of a system or resource)
+    - Optional: **Headers** (extra info like login or format type)
+
+---
+
+### HTTP Response = What We Get Back
+
+- Server replies with a **status code** (like an airport check-in result):
+    - **1xx**: Info
+    - **2xx**: Success
+        - Example: **200 OK**, **201 Created**
+    - **3xx**: Redirect (check another location)
+    - **4xx**: Client mistake
+        - Example: **404 Not Found**
+    - **5xx**: Server mistake
+
+---
+
+### REST API Features to Know:
+
+1. **Client-Server**
+    - Like an agent asking HQ for info — they’re separate and don’t depend on each other.
+2. **Stateless**
+    - Each request is a fresh one. No memory of previous talk. (Like handling each passenger one by one without history.)
+3. **Cacheable**
+    - Info can be stored for reuse (like boarding pass saved in app).
+
+---
+
+### Real World Practice (DevNet + Postman)
+
+- Used Cisco’s DNA Center with Postman (a tool to test APIs).
+- First, send a **POST** to get a token (like login pass).
+- Then send a **GET** with the token to fetch device info (like switch details).
+
+---
+
+**Quiz Highlights:**
+
+- **404** = Not Found
+- **REST is Stateless** (not stateful)
+- **2xx** = Successful response
+- **PUT/PATCH** = Update
+- **HTTPS** = Common URI scheme (secure)

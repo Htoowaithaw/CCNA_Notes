@@ -1,0 +1,106 @@
+# **No.24,Day 12 | The Life of a Packet | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 13 Summary: Packet Tracer Simulation MAC Address Lab**
+
+---
+
+**Purpose:**
+Reinforce the concepts from Day 12 "Life of a Packet" by using Cisco Packet Tracer in simulation mode to analyze how MAC addresses are used in packet forwarding.
+
+---
+
+### **Lab Focus:**
+
+- No configuration required
+- Analyze MAC address encapsulation at various points as packets traverse the network
+- Track source/destination MACs as a packet travels from PC1 to PC4
+
+---
+
+### **Key Concepts Recap:**
+
+1. **IP addresses remain constant** across all hops (Layer 3)
+2. **MAC addresses change** at each Layer 2 segment (router hop)
+3. Switches **do not modify** MAC addresses; they only forward based on MAC tables
+4. MAC addresses are tied to **interfaces**, not devices
+
+---
+
+### **Question 1: PC1 to PC4 Ping – MAC Address Transitions**
+
+### Segment A: PC1 -> SW1
+
+- Source MAC: PC1 (FastEthernet0) - **1111**
+- Destination MAC: R1 G0/0 (Default Gateway) - **AAAA**
+
+### Segment B: SW1 -> R1
+
+- Same as A (Switch does not change MACs)
+- Source MAC: **1111**
+- Destination MAC: **AAAA**
+
+### Segment C: R1 -> R2
+
+- Source MAC: R1 G0/1 - **BBBB**
+- Destination MAC: R2 G0/0 - **CCCC**
+
+### Segment D: R2 -> R3
+
+- Source MAC: R2 G0/1 - **DDDD**
+- Destination MAC: R3 G0/0 - **EEEE**
+
+### Segment E: R3 -> SW2
+
+- Source MAC: R3 G0/1 - **FFFF**
+- Destination MAC: PC4 FastEthernet0 - **4444**
+
+### Segment F: SW2 -> PC4
+
+- Same as E
+- Source MAC: **FFFF**
+- Destination MAC: **4444**
+
+---
+
+### **Question 2: PC1 to PC3 Ping (Same Subnet)**
+
+- Both devices on 192.168.1.0/24, so **no gateway** used
+
+### Segment A: PC1 -> SW1
+
+- Source MAC: PC1 - **1111**
+- Destination MAC: PC3 - **3333**
+
+### Segment B: SW1 -> PC3
+
+- Same as A
+- Source MAC: **1111**
+- Destination MAC: **3333**
+
+---
+
+### **CLI Tools Used:**
+
+- `ipconfig /all` (on PCs)
+- `show interface [int]` (on routers)
+- `show running-config` to confirm statically assigned MACs
+
+---
+
+### **Packet Tracer Tips:**
+
+- Use **Simulation Mode**
+- Step through pings to observe Layer 2 headers
+- Click packets and analyze In/Out layers
+
+---
+
+### **Question 3:** PC4 to PC1 (Reverse Path)
+
+- Users should practice identifying MAC addresses at each hop **in reverse direction**
+- Exercise left to viewer
+
+---
+
+**Conclusion:**
+This simulation-focused lab strengthens your understanding of the role of MAC addresses in packet forwarding and how routers de-encapsulate/re-encapsulate packets while IP addresses stay the same. Mastering this helps greatly in understanding networking fundamentals for the CCNA.

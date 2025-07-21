@@ -1,0 +1,89 @@
+# **Day 60 | JSON, XML, & YAML | CCNA 200-301 Complete Course**
+
+### 🧾 What is Data Serialization?
+
+- It's a way to format data so **different systems can understand and share it**.
+- Example: One system is using English (Python), another uses French (Java). They both need a **common format** to talk — that’s data serialization.
+
+---
+
+### 🧱 JSON (JavaScript Object Notation)
+
+- **Most important for CCNA exam**.
+- Used a lot in **APIs**.
+- **Easy to read** for both computers and humans.
+
+### 💡 4 Primitive Data Types:
+
+1. **String** – Text inside double quotes: `"Hello"`
+2. **Number** – Numbers without quotes: `123`
+3. **Boolean** – `true` or `false` (no quotes)
+4. **Null** – Means "no value": `null`
+
+### 🧱 2 Structured Data Types:
+
+1. **Object** – `{}` — A group of key-value pairs like:
+    
+    ```json
+    json
+    CopyEdit
+    {
+      "interface": "Gig1/1",
+      "is_up": true}
+    
+    ```
+    
+2. **Array** – `[]` — A list of values like:
+    
+    ```json
+    json
+    CopyEdit
+    ["Gig1/1", "Gig1/2"]
+    
+    ```
+    
+
+---
+
+### 🔖 XML (eXtensible Markup Language)
+
+- Looks like **HTML** (web code).
+- Format: uses **tags**.
+    
+    ```xml
+    xml
+    CopyEdit
+    <interface>Gig1/1</interface>
+    
+    ```
+    
+- Still used in some Cisco commands:
+    
+    `show ip interface brief | format`
+    
+
+---
+
+### 📄 YAML (YAML Ain’t Markup Language)
+
+- Used in **Ansible** (automation tool).
+- Very clean, simple format:
+    
+    ```yaml
+    yaml
+    CopyEdit
+    interface: Gig1/1
+    status: up
+    
+    ```
+    
+- **Whitespace and indentation matter** (very important!).
+
+---
+
+### ✅ CCNA Exam Tips
+
+- JSON is the only one **you must know**.
+- XML & YAML are just good to be aware of.
+- Know how to read **basic JSON data** (especially arrays and nested objects).
+- **Practice identifying errors** like extra commas, missing brackets, etc.

@@ -1,0 +1,76 @@
+# **Day 21 (part 1) | PortFast (STP Toolkit) | CCNA 200-301**
+
+**Jeremy's IT Lab - CCNA Notes: STP Toolkit - PortFast**
+
+**Overview:**
+This video is part of the CCNA course by Jeremy's IT Lab and introduces the Spanning Tree Protocol (STP) Toolkit, focusing on PortFast. PortFast is used to bypass the 30-second delay from Listening and Learning states when a host device connects to a switch port.
+
+---
+
+**What is PortFast?**
+
+- **Purpose:** Allows a switch port to immediately enter the STP forwarding state, bypassing Listening (15s) and Learning (15s) stages.
+- **Use Case:** Intended for ports connected to end hosts (e.g., PCs, printers) where loops are not a concern.
+- **User Experience:** Reduces the initial connection delay and avoids user frustration caused by the 30s wait time.
+
+**STP States Recap:**
+
+1. **Blocking**: Port does not forward traffic.
+2. **Listening**: Preparing to forward, but not yet.
+3. **Learning**: Learns MAC addresses but doesn't forward.
+4. **Forwarding**: Normal operational state.
+
+**How PortFast Solves the Problem:**
+
+- Ports with PortFast skip directly to the Forwarding state.
+- Helps hosts connect instantly, improving network responsiveness.
+
+**Configuration Methods:**
+
+1. **Per-Interface Mode:**
+    - Command: `spanning-tree portfast`
+    - Only enables PortFast on the specific interface.
+    - Adds `EDGE` keyword automatically (i.e., `spanning-tree portfast edge`).
+    - Warning shown if port is connected to switches, hubs, etc.
+2. **Global Mode:**
+    - Command: `spanning-tree portfast default`
+    - Enables PortFast on **all access ports**, not trunk ports.
+    - Can be disabled per-port: `spanning-tree portfast disable`
+
+**Verification:**
+
+- Command: `show spanning-tree interface [interface] detail`
+- Look for line: `The port is in the portfast edge mode` or `portfast edge mode by default`
+
+**Important Notes:**
+
+- **Trunk Port Support:**
+    - Use `spanning-tree portfast trunk` to enable PortFast on trunk ports.
+    - Valid for connections to routers (router-on-a-stick) or virtualized servers.
+
+**PortFast Modes:**
+
+- **Edge Mode:** Standard mode for host connections.
+- **Network Mode:** Used in Bridge Assurance scenarios (not CCNA level).
+
+**Command Variants:**
+
+- `spanning-tree portfast` becomes `spanning-tree portfast edge`
+- `spanning-tree portfast trunk` becomes `spanning-tree portfast edge trunk`
+- `spanning-tree portfast default` becomes `spanning-tree portfast edge default`
+
+**Summary:**
+
+- PortFast improves host experience by skipping STP delay.
+- Should **only** be used on ports connected to end hosts or routers.
+- Avoid enabling on switch-to-switch connections unless explicitly needed.
+- Remember CLI differences and verification techniques for exam and real-world use.
+
+---
+
+**Next Topics in STP Toolkit (Coming in Future Videos):**
+
+- BPDU Guard
+- BPDU Filter
+- Root Guard
+- Loop Guard

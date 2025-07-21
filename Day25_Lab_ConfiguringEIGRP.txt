@@ -1,0 +1,126 @@
+## 🧪 **Day 25 Lab – EIGRP Configuration & Concepts**
+
+> Practical lab + mini-lecture on EIGRP configuration, metric, route selection, and unequal-cost load-balancing. Builds hands-on understanding and prepares you for OSPF and real exam scenarios.
+> 
+
+---
+
+### 🛠️ Lab Network Overview
+
+- **EIGRP AS 100** across R1–R4.
+- Interfaces:
+    - R1–R2 = GigabitEthernet (higher bandwidth)
+    - Other links = FastEthernet
+- Includes loopback interfaces (used for router IDs).
+
+---
+
+### 🔧 Step-by-Step Lab Tasks
+
+### **Step 1: Configure Basic IP Settings**
+
+- Set hostname, assign IP addresses, enable interfaces.
+
+### **Step 2: Configure Loopback Interfaces**
+
+```bash
+bash
+CopyEdit
+interface loopback0
+ ip address 1.1.1.1 255.255.255.255  # R1 (similar for R2–R4)
+
+```
+
+- Loopback interfaces are **virtual** and always stay **up/up** unless manually shut down.
+- Typically configured with a **/32 mask**.
+
+### **Step 3: Configure EIGRP**
+
+```bash
+bash
+CopyEdit
+router eigrp 100
+ network <ip> <wildcard-mask>
+ no auto-summary
+ passive-interface <interface>
+
+```
+
+- **AS number (100)** must match between routers to form adjacencies.
+- Enable EIGRP using:
+    - Specific network/wildcard pairs (recommended)
+    - `network 0.0.0.0 255.255.255.255` (for lab/testing only)
+- **Disable auto-summary** to avoid classful summarization.
+- Make **Loopback and non-neighbor interfaces passive** to reduce unnecessary EIGRP traffic.
+
+---
+
+### 🔍 EIGRP Verification Commands
+
+```bash
+bash
+CopyEdit
+show ip protocols
+show ip eigrp neighbors
+show ip route eigrp
+show ip eigrp topology
+
+```
+
+---
+
+## 🧠 EIGRP Concepts Explained
+
+### 📏 Metric Calculation
+
+- Metric = **bandwidth of slowest link** + **sum of delay values**
+- Default K-values: `K1=1, K2=0, K3=1, K4=0, K5=0`
+    - So only **bandwidth (K1)** and **delay (K3)** affect metric
+- Delay values are **default settings**, not real-time measurements
+
+---
+
+### 📘 EIGRP Terminology
+
+| Term | Description |
+| --- | --- |
+| **Feasible Distance (FD)** | Metric from **this router** to the destination |
+| **Reported Distance (RD)** | Metric reported by the **neighbor router** (aka Advertised Distance) |
+| **Successor** | Best path to a destination (lowest FD) |
+| **Feasible Successor** | Backup path; RD must be **< FD of successor** (feasibility condition) |
+
+> 🧠 Feasibility Condition prevents routing loops by only allowing loop-free backups
+> 
+
+---
+
+### ⚖️ Unequal-Cost Load-Balancing (EIGRP Exclusive Feature)
+
+- **Default variance = 1** → Only ECMP (Equal-Cost MultiPath) is used
+- `variance <value>` command allows **unequal-cost multipath**
+    - Example: `variance 2` allows paths with FD ≤ 2 × successor’s FD
+- **Only feasible successors** can be used for load balancing
+- Traffic is **distributed proportionally** based on metric
+
+---
+
+### 🧪 Boson ExSim Practice Recap
+
+**Match the term with its definition:**
+
+| Definition | Term |
+| --- | --- |
+| Best path to a destination | Successor |
+| Backup path guaranteed to be loop-free | Feasible Successor |
+| Metric from this router to destination | Feasible Distance |
+| Metric advertised by the neighbor | Advertised Distance |
+
+---
+
+### ✅ Key Takeaways
+
+- EIGRP is Cisco’s hybrid IGP that supports fast convergence and **unequal-cost load-balancing**.
+- Loopbacks are used for router ID and should be made passive.
+- Use wildcard masks carefully in `network` commands.
+- Understand the **4 key terms** and how the **feasibility condition** works.
+- Practice reading output from `show ip eigrp topology`.

@@ -1,0 +1,37 @@
+# **Day 61 (part 2) | REST API Authentication | CCNA 200-301**
+
+**REST API Authentication - Summary Notes**
+
+**4 Types of Authentication You Need to Know:**
+
+1. **Basic Authentication**
+- Sends username and password in every request.
+- Credentials are encoded with Base64 (not encrypted).
+- Must use HTTPS for security.
+1. **Bearer Authentication**
+- Uses a **token** instead of username/password.
+- Token is obtained from an **auth server**.
+- Token included in the **Authorization header**.
+- Tokens **expire** for security.
+- If token is stolen, attacker can access until it expires.
+1. **API Key Authentication**
+- Uses a **static API key** issued by the provider.
+- Key included in the **Authorization header** (recommended), not in URL.
+- Key **doesn’t expire automatically** — must be **manually revoked**.
+- Often used for tracking usage (e.g., cloud services, third-party APIs).
+1. **OAuth 2.0**
+- Used for **access delegation**.
+- Grants limited access to 3rd-party apps **without exposing credentials**.
+- Uses **access tokens** (expire) and **refresh tokens** (get new access tokens).
+- Common in “Login with Google/Facebook” etc.
+- Involves:
+    - Resource Owner (you)
+    - Client App (3rd party)
+    - Auth Server (gives token)
+    - Resource Server (holds data)
+
+**Important Points for All Methods:**
+
+- Always use **HTTPS** to protect data.
+- Tokens are more secure than passwords.
+- OAuth 2.0 is the most flexible and secure among the four.

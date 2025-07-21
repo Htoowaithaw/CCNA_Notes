@@ -1,0 +1,127 @@
+# **Day 42 | SSH | CCNA 200-301 Complete Course**
+
+**Day 42 – SSH, Telnet, and Console Security**
+
+---
+
+### 🧒 Explain Like I’m 5 (Kid-Level Summary)
+
+- 🧵 **Console cable** is like a special wire to talk to a switch or router when you’re sitting right next to it.
+- 🔐 But anyone who plugs in can talk to it! So we need passwords.
+- 🌍 **SSH** is like talking to the device from far away, through the internet, **securely** like a locked mailbox.
+- 🧃 **Telnet** is like sending a message in a clear water bottle — anyone can read it. Not safe!
+- 🧙 You need to give the device a **name and a magic key** so it can use SSH.
+- 💡 Switches that can’t route (Layer 2) still need a special “IP door” to talk to them — that’s a **management IP**.
+
+---
+
+### 👨‍💻 Technical Summary
+
+### 🔐 Console Port Security
+
+- By default: **no password** needed via console cable.
+- Secure with:
+
+```
+line console 0
+ password ccna
+ login
+```
+
+- `login` tells the device to ask for the password.
+- Or, use username/password:
+
+```
+username jeremy secret ccnp
+line console 0
+ login local
+```
+
+- `exec-timeout` logs you out after inactivity:
+
+```
+exec-timeout 3 30  # 3 mins 30 secs
+```
+
+### 🧑‍💻 Management IP on Layer 2 Switch
+
+- Layer 2 switches can’t route, but can get an IP on a VLAN interface (SVI) for management:
+
+```
+interface vlan 1
+ ip address 192.168.1.2 255.255.255.0
+ no shutdown
+ip default-gateway 192.168.1.1
+```
+
+- Without a default gateway, remote devices outside the LAN can’t reach the switch.
+
+### 📡 Telnet
+
+- Sends everything in **plain text** — including passwords.
+- Uses **TCP port 23**.
+- Configuration:
+
+```
+enable secret cisco
+username jeremy secret ccnp
+line vty 0 15
+ login local
+ transport input telnet
+ exec-timeout 5 0
+ access-class 1 in
+```
+
+- Access-class applies an ACL to VTY lines. Only specific hosts can connect.
+
+### 🔒 SSH (Secure Shell)
+
+- Developed in 1995 to replace Telnet.
+- Encrypts traffic — can’t read the username, password, or commands in transit.
+- Uses **TCP port 22**.
+- SSH version 2 is more secure. Version 1.99 means both 1 & 2 are supported.
+- Requires:
+    1. **Non-default hostname**
+    2. **Domain name**
+    3. **RSA key pair**
+
+```
+hostname SW1
+ip domain-name jeremysitlab.com
+crypto key generate rsa modulus 2048
+```
+
+- Show support:
+
+```
+show ip ssh
+show version  # look for 'K9' in image
+```
+
+### SSH VTY Line Configuration
+
+```
+username jeremy secret ccnp
+ip ssh version 2
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5 0
+ access-class 1 in
+```
+
+- Use ACL to restrict which IPs can SSH in.
+
+---
+
+### 🧪 Quiz Summary
+
+1. To generate RSA keys, you need a **hostname** and **domain name**.
+2. To allow both Telnet and SSH:
+    - `transport input telnet ssh` or `transport input all`
+3. To allow SSH only from one IP:
+    - Use ACL + `access-class` on VTY
+4. SSH needs:
+    - K9 IOS image
+    - RSA key ≥ 768 bits for SSHv2
+5. SSH server = device being accessed (e.g. switch), client = PC

@@ -1,0 +1,50 @@
+# **Day 21 (part 4) | Loop Guard (STP Toolkit) | CCNA 200-301**
+
+**Loop Guard - Summary Notes**
+
+**Purpose of Loop Guard:**
+Loop Guard is a Spanning Tree Protocol (STP) feature used to prevent Layer 2 loops caused by unidirectional links. While STP is designed to prevent loops, certain physical or software failures can break this protection. Loop Guard adds an extra layer of safety to stop a non-designated or root port from mistakenly transitioning to a forwarding state if it stops receiving BPDUs.
+
+---
+
+**Key Concepts Covered:**
+
+1. **Unidirectional Links:**
+    - A link where data can flow in only one direction.
+    - Often caused by physical layer issues (e.g. damaged fiber cables, faulty transceivers).
+    - Especially common with fiber-optic cables using separate Tx/Rx fibers.
+2. **STP Vulnerability:**
+    - In STP, root and non-designated ports rely on receiving BPDUs to stay in a blocking state.
+    - If a unidirectional link stops BPDUs from arriving, the port may incorrectly become designated and forward traffic, causing a loop.
+3. **Loop Guard Function:**
+    - If a port stops receiving BPDUs unexpectedly, it enters a *broken (loop-inconsistent)* state.
+    - This blocks the port from forwarding or receiving frames, preventing a loop.
+    - The port is automatically re-enabled if BPDUs are received again (automatic recovery).
+4. **Configuration Methods:**
+    - **Per-Port:**
+        - `spanning-tree guard loop` (interface config mode)
+    - **Globally (Default):**
+        - `spanning-tree loopguard default` (global config mode)
+        - To disable on specific ports: `spanning-tree guard none`
+5. **Best Practice:**
+    - Apply Loop Guard on all non-designated and root ports (ports expected to receive BPDUs).
+6. **Mutual Exclusivity with Root Guard:**
+    - **Cannot use Loop Guard and Root Guard on the same port.**
+    - If both are configured, the last one applied overrides the other.
+    - Root Guard is used on designated ports to prevent them from becoming root ports.
+    - Loop Guard is used on root or non-designated ports to prevent them from becoming designated ports due to missing BPDUs.
+7. **Verification & CLI Behavior:**
+    - Blocked ports show as `BKN` (broken) and `LOOP_Inc` (Loop Inconsistent).
+    - `show spanning-tree interface [interface] detail` shows Loop Guard status.
+    - Recovery happens automatically once the BPDU flow resumes.
+
+---
+
+**Conclusion:**
+Loop Guard enhances the reliability of STP in real-world networks, especially those using fiber-optic cabling. It helps prevent silent Layer 2 loops by monitoring the presence of BPDUs on ports that should be receiving them and taking action if they disappear.
+
+Remember:
+
+- Use Loop Guard on ports expected to receive BPDUs.
+- Do not use it with Root Guard on the same port.
+- Configuration is simple and recovery is automatic.

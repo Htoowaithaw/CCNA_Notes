@@ -1,0 +1,120 @@
+**Day 47 - QoS Concepts (Jeremy's IT Lab)**
+
+---
+
+### 🧠 **Explain Like I'm 5 (Kid Version)**
+
+- **QoS = Traffic Cop for the Internet**
+QoS (Quality of Service) is like a traffic police officer who makes sure important traffic (like phone calls or video chats) gets to where it needs to go quickly and without getting lost.
+- **Marking & Classifying**
+You put color stickers on toy cars (packets). Red = voice, Blue = video, Gray = normal. That way, the traffic cop knows which ones are more important!
+- **PCP (CoS) & DSCP**
+    - PCP is like a color sticker on the side of a car that shows how important it is. Only works if the car (packet) is on a tagged road (VLAN trunk).
+    - DSCP is like a magic code written on the roof of the car. Even if the road isn’t tagged, traffic cops can still read it.
+- **AF (Assured Forwarding)** is like giving some cars better gas so they can go faster, and others a warning they might be stopped if there’s too much traffic.
+- **EF (Expedited Forwarding)** is for ambulances (voice traffic) – always goes first!
+- **Trust Boundaries** are like letting only the ambulance station mark their vehicles – random cars can't pretend to be ambulances.
+- **Queuing** is lining up cars when there's a jam. But important cars (EF) get a special lane (strict priority queue) that always moves.
+- **Policing vs. Shaping**
+    - **Policing** is like a speed camera – too fast? You get stopped!
+    - **Shaping** is like a toll gate – too fast? You wait your turn in line.
+
+---
+
+### 💻 **Technical Explanation**
+
+**📌 What is QoS (Quality of Service)?**
+
+- A set of techniques to prioritize network traffic during congestion.
+- Goal: Reduce latency, jitter, and packet loss for critical applications like voice and video.
+
+---
+
+### 🔹 Classification & Marking
+
+**Classification** = identifying traffic type (voice, video, data) using:
+
+- ACLs
+- NBAR (deep packet inspection)
+- Header fields: PCP (Layer 2), DSCP (Layer 3)
+
+**Marking** = tagging packets with priority using:
+
+- **PCP (CoS)**: 3 bits in 802.1Q header (Layer 2). Used only on tagged (trunk or voice VLAN) links.
+    - PCP 0 = Best Effort (default)
+    - PCP 5 = Voice
+    - PCP 4 = Video
+    - PCP 3 = Voice signaling
+- **DSCP (Differentiated Services Code Point)**: 6 bits in IP header ToS field (Layer 3)
+    - **DSCP 0** = Default Forwarding (DF)
+    - **DSCP 46** = Expedited Forwarding (EF, for voice)
+    - **AFxy**: Assured Forwarding (x = class, y = drop precedence)
+        - Formula: `DSCP = 8x + 2y`
+        - e.g., AF41 = 8*4 + 2*1 = DSCP 34
+    - **CSx**: Class Selector for backward compatibility with IPP
+        - e.g., CS5 = 5 * 8 = DSCP 40
+
+---
+
+### 🔹 Queuing & Congestion Management
+
+When outgoing traffic exceeds link capacity:
+
+- **Tail Drop**: drops packets at end of queue
+- **WRED**: early random drop to prevent congestion
+
+**Multiple Queues + Scheduling**:
+
+- **CBWFQ**: Class-Based Weighted Fair Queuing
+    - Assigns traffic to queues
+    - Guarantees bandwidth share per class
+- **LLQ**: Low Latency Queuing
+    - Adds strict priority queue
+    - Voice/video traffic gets served immediately
+    - Risk: starvation of other queues (mitigated with policing)
+
+---
+
+### 🔹 Shaping & Policing
+
+**Shaping** = buffer and delay excess traffic
+
+- Smooths traffic to conform to configured rate
+- Uses queues
+
+**Policing** = drops excess traffic
+
+- Hard limit, but allows short bursts
+- Used by ISPs to enforce service level
+
+Example:
+
+- Customer pays for 300Mbps
+- ISP applies **policing** to incoming traffic
+- Customer applies **shaping** to outgoing to avoid drops
+
+---
+
+### 🔹 Trust Boundary
+
+Defines where QoS markings are accepted vs. rewritten:
+
+- Trust IP phone markings (EF/CoS5)
+- Don’t trust PC markings (can be manipulated)
+- Move trust boundary to IP phone via switch config
+
+---
+
+### ✅ Summary
+
+| QoS Concept | Function |
+| --- | --- |
+| Classification | Identify traffic type |
+| Marking | Set priority (PCP/DSCP) |
+| Queuing | Temporarily hold traffic |
+| Scheduling | Decide which queue goes first |
+| CBWFQ | Fair sharing + class-based queues |
+| LLQ | Immediate forwarding for priority traffic |
+| Shaping | Delay extra traffic |
+| Policing | Drop extra traffic |
+| Trust Boundary | Defines where markings are trusted |

@@ -1,0 +1,95 @@
+### **🧠 Static Routing – CCNA Video Summary (Jeremy’s IT Lab)**
+
+---
+
+### ✅ **Topics Covered**
+
+1. Review of **Connected** and **Local** Routes
+2. Introduction to **Static Routes**
+3. Configuration of Static Routes in CLI
+4. Concept and Configuration of **Default Routes**
+5. Optional Static Route Configuration Styles
+6. Communication between **PC1 and PC4**
+7. Static Route Troubleshooting Scenarios
+
+---
+
+### 🔁 **Connected vs Local Routes Recap**
+
+- **Connected Routes (C)**: Added when IP is assigned & interface is enabled. Covers the **entire subnet**.
+- **Local Routes (L)**: Added for **exact IP** of the interface, with `/32` mask.
+- Automatically added – no manual config needed.
+- Cannot route to **remote** networks without additional routes.
+
+---
+
+### 📦 **Static Routing – What & Why**
+
+- **Manually configured routes** to reach **remote networks**.
+- Syntax:
+    
+    `ip route [destination-network] [subnet-mask] [next-hop-IP or exit-interface]`
+    
+- Example:
+    
+    `ip route 192.168.4.0 255.255.255.0 192.168.13.3`
+    
+
+---
+
+### 📌 **Next-Hop vs Exit Interface**
+
+- **Next-Hop IP** (recommended): Precise routing.
+- **Exit Interface**: Simpler, may appear “directly connected” in table (uses **proxy ARP**).
+- **Both** can be specified (redundancy or clarity).
+
+---
+
+### 🔁 **Two-Way Reachability**
+
+- For two hosts (e.g., PC1 ↔ PC4) to communicate, **each router in path** must have:
+    - Route to **PC1's network** (`192.168.1.0/24`)
+    - Route to **PC4's network** (`192.168.4.0/24`)
+
+---
+
+### 🔧 **Static Route Configuration Example**
+
+| Router | Destination | Next Hop IP |
+| --- | --- | --- |
+| R1 | 4.0/24 | 192.168.13.3 (→ R3) |
+| R3 | 1.0/24 | 192.168.13.1 (→ R1) |
+| R3 | 4.0/24 | 192.168.34.4 (→ R4) |
+| R4 | 1.0/24 | 192.168.34.3 (→ R3) |
+
+---
+
+### 🌍 **Default Routes**
+
+- Syntax:
+    
+    `ip route 0.0.0.0 0.0.0.0 [next-hop-IP]`
+    
+- Used when no other route matches (least specific).
+- Often points to **Internet router** or **edge device**.
+- Displays as:
+    
+    `S* 0.0.0.0/0 [AD/Metric] via X.X.X.X`
+    
+
+---
+
+### 🔁 **MAC Address Role in Routing**
+
+- IP address = stays constant
+- MAC address = **changes at each hop**
+- Routers re-encapsulate packet into new frames with updated MAC headers.
+
+---
+
+### ❓ **Quiz Highlights**
+
+- **Default route command?** → `ip route 0.0.0.0 0.0.0.0 <next-hop>`
+- **R1 forwards 8.8.8.8?** → Uses **default route**, check next hop’s connected interface.
+- **Exit-only static route** appears as “directly connected” in table.
+- **Route counts?** For full reachability, calculate **remote networks** not directly connected.

@@ -1,0 +1,53 @@
+# **Day 27 Lab | Configuring OSPF (2) | CCNA 200-301 Complete Course**
+
+### **Jeremy’s IT Lab – Day 27: Lab Video Summary (Technical)**
+
+**1. Intro & Setup**
+
+Configured OSPF manually per interface using `ip ospf 1 area 0` instead of `network` command. Avoided enabling OSPF on ISP-facing G3/0 on R1.
+
+**2. Step 3 - OSPF Activation per Interface**
+
+Used `interface range` to apply OSPF config on multiple interfaces:
+
+Example: `interface range g0/0, f1/0, l0` followed by `ip ospf 1 area 0`.
+
+**3. Step 3 - Passive Interfaces**
+
+Applied `passive-interface` on loopbacks individually or used `passive-interface default` and then enabled specific interfaces with `no passive-interface X`.
+
+**4. Step 4 - Reference Bandwidth**
+
+Used `auto-cost reference-bandwidth 10000` to ensure FastEthernet = cost 100, Gigabit = 10.
+
+Formula: `cost = ref_bw / interface_bw`.
+
+**5. Step 5 - Default Route Advertisement**
+
+On R1:
+
+- Advertised default route using `default-information originate`.
+- Configured static default route: `ip route 0.0.0.0 0.0.0.0 203.0.113.2`.
+
+**6. Step 6 - Default Route Cost (E2 vs. E1)**
+
+OSPF default route type is E2 by default — internal OSPF cost to ASBR is ignored.
+
+Packet Tracer bug: only one default route shows, even with ECMP. Real routers install both.
+
+**7. Step 7 - Simulation: OSPF Hello Message**
+
+Used Simulation Mode to inspect OSPF Hello:
+
+- Sent to `224.0.0.5`
+- Type 1, Version 2
+- Contains Router ID, Area ID (0.0.0.0), timers, DR/BDR, neighbor list.
+- Protocol number in IP header is 89 (hex 0x59).
+
+**8. Boson NetSim Lab - OSPF Configuration**
+
+Troubleshooting: incorrect wildcard mask in OSPF `network` command.
+
+Corrected using `/24` mask: `network 200.120.45.0 0.0.0.255 area 0`.
+
+Verified OSPF adjacency with Miami router and route installation.

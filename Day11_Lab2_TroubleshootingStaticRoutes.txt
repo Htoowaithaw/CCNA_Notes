@@ -1,0 +1,91 @@
+**Day 11 - Static Route Troubleshooting Lab Summary**
+
+**Lab Goal:**
+
+- Identify and fix one misconfiguration per router (R1, R2, R3) to restore full communication between PC1 and PC2.
+
+**Initial Problem:**
+
+- PC1 cannot ping PC2 (192.168.3.1)
+
+---
+
+### Step 1: Confirm the Problem
+
+- PC1 ping to 192.168.3.1 failed.
+- PC1 can ping its default gateway (192.168.1.254) successfully.
+
+### Step 2: Troubleshooting R1
+
+- **Command Used:** `show ip route`
+- **Issue Found:** Static route incorrectly configured:
+    - Incorrect next hop: `192.168.12.3`
+    - Correct next hop: `192.168.12.2` (R2’s G0/0)
+- **Fix:**
+    - Remove incorrect route:
+        
+        ```
+        no ip route 192.168.3.0 255.255.255.0 192.168.12.3
+        ```
+        
+    - Add correct route:
+        
+        ```
+        ip route 192.168.3.0 255.255.255.0 192.168.12.2
+        ```
+        
+
+### Step 3: Troubleshooting R2
+
+- **Command Used:** `show ip route`
+- **Issue Found:** Static route to 192.168.3.0/24 pointing to wrong exit interface (G0/0 instead of G0/1)
+- **Fix:**
+    - Add correct static route:
+        
+        ```
+        ip route 192.168.3.0 255.255.255.0 g0/1
+        ```
+        
+    - Remove incorrect static route:
+        
+        ```
+        no ip route 192.168.3.0 255.255.255.0 g0/0
+        ```
+        
+
+### Step 4: Troubleshooting R3
+
+- **Command Used:** `show ip interface brief`
+- **Issue Found:** Incorrect IP address on G0/0
+    - Configured: `192.168.23.3`
+    - Should be: `192.168.13.3`
+- **Fix:**
+    - Overwrite with correct IP:
+        
+        ```
+        interface g0/0
+        ip address 192.168.13.3 255.255.255.0
+        ```
+        
+
+### Final Step: Test Ping
+
+- From PC1, ping 192.168.3.1
+- Successful after ARP resolution (0% packet loss expected)
+
+---
+
+**Summary:**
+
+- R1: Fixed next-hop IP in static route
+- R2: Fixed exit interface in static route
+- R3: Fixed incorrect IP address on interface
+- Result: Full communication restored between PC1 and PC2
+
+**Commands Recap:**
+
+- View routing table: `show ip route`
+- View interface summary: `show ip interface brief`
+- View routes in config: `show run | include ip route`
+- Remove route: `no ip route ...`
+- Add static route: `ip route <destination> <mask> <next-hop/interface>`

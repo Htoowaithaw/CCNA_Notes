@@ -1,0 +1,199 @@
+# **Day 18 Lab | VLANs (Part 3) | CCNA 200-301 Complete Course**
+
+## 📘 CCNA – Inter-VLAN Routing via SVIs (Lab) – Jeremy’s IT Lab
+
+### 🔧 Objective
+
+Convert an existing **Router on a Stick (ROAS)** topology to **SVI-based inter-VLAN routing** using a **Layer 3 switch (SW2)**.
+
+---
+
+### 🛠️ Step 1: Replace ROAS with Layer 3 P2P Link
+
+### ▶️ R1 Configuration:
+
+1. Remove ROAS subinterfaces:
+    
+    ```bash
+    bash
+    CopyEdit
+    no interface g0/0.10
+    no interface g0/0.20
+    no interface g0/0.30
+    
+    ```
+    
+2. Configure new IP on physical interface:
+    
+    ```bash
+    bash
+    CopyEdit
+    interface g0/0
+    ip address 10.0.0.194 255.255.255.252
+    
+    ```
+    
+
+### ▶️ SW2 Configuration (Interface G1/0/2):
+
+1. Reset and convert to Layer 3 routed port:
+    
+    ```bash
+    bash
+    CopyEdit
+    default interface g1/0/2
+    interface g1/0/2
+    no switchport
+    ip address 10.0.0.193 255.255.255.252
+    
+    ```
+    
+2. Enable routing:
+    
+    ```bash
+    bash
+    CopyEdit
+    ip routing
+    
+    ```
+    
+3. Add default route to R1:
+    
+    ```bash
+    bash
+    CopyEdit
+    ip route 0.0.0.0 0.0.0.0 10.0.0.194
+    
+    ```
+    
+
+---
+
+### 🛠️ Step 2: Configure SVIs on SW2
+
+### ✅ Ensure VLANs Exist:
+
+```bash
+bash
+CopyEdit
+show vlan brief
+
+```
+
+Should list VLANs 10, 20, 30.
+
+### ▶️ Create SVIs:
+
+```bash
+bash
+CopyEdit
+interface vlan 10
+ip address 10.0.0.62 255.255.255.192
+no shutdown
+
+interface vlan 20
+ip address 10.0.0.126 255.255.255.192
+no shutdown
+
+interface vlan 30
+ip address 10.0.0.190 255.255.255.192
+no shutdown
+
+```
+
+### ✅ Verify SVI Status:
+
+```bash
+bash
+CopyEdit
+show ip interface brief
+
+```
+
+Should show all SVIs as **UP/UP**.
+
+---
+
+### ✅ Testing & Verification
+
+1. **Ping test from VLAN10 PC to VLAN30 PC**:
+    - Successful, routed locally by SW2 via SVIs.
+2. **Simulation Mode**:
+    - Verify traffic is NOT routed to R1 – SW2 handles it internally.
+3. **Ping to Internet (1.1.1.1)**:
+    - Successful, confirms default route to R1 is working.
+
+---
+
+## 🧪 NetSim Lab Preview – Troubleshooting Inter-VLAN Routing
+
+### 🧭 Task Overview
+
+1. Verify workstation configs
+2. Check switch configs
+3. Router config (not covered in video)
+
+---
+
+### 🖥️ Task 1: PC3 Can’t Ping
+
+- **Initial Problem**:
+    - PC3 can’t ping any host or default gateway.
+- **Diagnosis**:
+    - Incorrect subnet mask: `/24` instead of `/25`.
+- **Fix**:
+    
+    ```bash
+    bash
+    CopyEdit
+    IPCONFIG /IP 192.168.100.3 255.255.255.128
+    
+    ```
+    
+- Still fails — issue not just at PC.
+
+---
+
+### 🕵️ Task 2: Check Switch Configs
+
+### 🔹 Cause 1: Incorrect VLAN Assignment
+
+- PC3 should be in VLAN10 but is in VLAN12.
+- Fix:
+    
+    ```bash
+    bash
+    CopyEdit
+    interface f0/3
+    switchport access vlan 10
+    
+    ```
+    
+
+### 🔹 Cause 2: Trunk Port Config (Checked)
+
+- Trunks configured correctly.
+- VLANs 10 & 12 allowed and native VLAN is default (1).
+
+### ✅ After Fix:
+
+- PC3 can now ping PCs in same and different VLANs.
+- **Issue resolved.**
+
+---
+
+### 🛑 Ongoing Issue: PC2 Can’t Reach Gateway
+
+- PC2 can ping PC4 (same VLAN) but not default gateway (192.168.100.129).
+- Indicates remaining issue likely in Router1 or Switch1 config.
+
+---
+
+## 🔚 Conclusion & Recommendations
+
+- Converted ROAS to **SVI-based inter-VLAN routing**.
+- Verified traffic routing with pings and simulation.
+- Practiced real troubleshooting using **NetSim**.
+- Encouraged further lab practice and tool usage like:
+    - **Packet Tracer** for basic labs
+    - **Boson NetSim** for CCNA/CCNP-level guided labs

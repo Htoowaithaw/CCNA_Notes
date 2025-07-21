@@ -1,0 +1,287 @@
+# **Jeremy IT Lab Free CCNA 200-301 Course Notes**
+
+**Video 1: Introduction to Networking Devices**
+
+**Overview**
+
+- Course goal: Complete CCNA 200-301 coverage (lectures, labs, quizzes).
+- Audience: Beginners aiming for CCNA or a networking career.
+
+**Key Concepts**
+
+**What is a Network?**
+
+- Group of devices sharing resources (files, printers, Internet).
+
+**Building a Network: Devices & Their Roles**
+
+| **Device** | **Role** |
+| --- | --- |
+| Client | End-user device (PC, smartphone). |
+| Server | Provides services to clients. |
+| Switch | Connects multiple devices inside a LAN using MAC addresses. |
+| Router | Connects multiple networks; routes traffic using IP addresses. |
+| Firewall | Secures networks; controls incoming/outgoing traffic. |
+
+**Device Relationships**
+
+- Clients request services from Servers.
+- Switches form LANs; Routers connect LANs/WANs.
+- Firewalls protect traffic entering/leaving the network.
+
+**Supplementary Materials**
+
+- Flashcards
+- Packet Tracer Labs
+- CCNA Books Vol 1 & 2
+- Boson ExSim & NetSim
+
+**Self-Quiz (Quick Review)**
+
+- What’s the role of a switch?
+- How does a router forward traffic?
+- What protects a network from unauthorized traffic?
+
+# **Quick Takeaways**
+
+- Switches = MAC Address based forwarding
+- Routers = IP Address based forwarding
+- Firewalls = Security at network boundaries
+
+[**Day 1 Video 2 Free CCNA 200-301 Course Notes**](https://www.notion.so/Day-1-Video-2-Free-CCNA-200-301-Course-Notes-1e260843cca580159b23d3c78d55d959?pvs=21)
+
+[**Day 2 – Network Interfaces and Cabling Basics**](https://www.notion.so/Day-2-Network-Interfaces-and-Cabling-Basics-1e260843cca580409ac6e193fffbeb73?pvs=21)
+
+[**Day 2 – Lab 1: Ethernet Cabling Practice (Packet Tracer)**](https://www.notion.so/Day-2-Lab-1-Ethernet-Cabling-Practice-Packet-Tracer-1e260843cca580e6854de6868a1f04c8?pvs=21)
+
+[**Day 3 | OSI Model & TCP/IP Suite |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-3-OSI-Model-TCP-IP-Suite-CCNA-200-301-Complete-Course-1e360843cca580ba9642f28d63b6cbfd?pvs=21)
+
+[**Day 3 Lab | OSI Model |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-3-Lab-OSI-Model-CCNA-200-301-Complete-Course-1e360843cca58049a8a4f3490de549c8?pvs=21)
+
+[**Day 4 | Intro to the CLI |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-4-Intro-to-the-CLI-CCNA-200-301-Complete-Course-1e360843cca580db8a6de577d366d74b?pvs=21)
+
+[**Day 4 Lab | Basic Device Security |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-4-Lab-Basic-Device-Security-CCNA-200-301-Complete-Course-1e360843cca5801fa72fdffa85f4a317?pvs=21)
+
+[**Day 5 | Ethernet LAN Switching (Part 1) |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-5-Ethernet-LAN-Switching-Part-1-CCNA-200-301-Complete-Course-1e460843cca5806ea1c8dbfb1cbb95e5?pvs=21)
+
+[**Day 6 | Ethernet LAN Switching (Part 2) |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-6-Ethernet-LAN-Switching-Part-2-CCNA-200-301-Complete-Course-1e460843cca58072a08eef3c357e712a?pvs=21)
+
+[**Day 7 | IPv4 Addressing (Part 1) |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-7-IPv4-Addressing-Part-1-CCNA-200-301-Complete-Course-1e760843cca5805a9a86e6f3c87098b3?pvs=21)
+
+[**Day 8 | IPv4 Addressing (Part 2) |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-8-IPv4-Addressing-Part-2-CCNA-200-301-Complete-Course-1e960843cca5804bbecae94ebe1b86dd?pvs=21)
+
+[**Day 9 | Switch Interfaces |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-9-Switch-Interfaces-CCNA-200-301-Complete-Course-1e960843cca5806c9145c92ea04bf574?pvs=21)
+
+[**Day 9 Lab | Configuring Interfaces |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-9-Lab-Configuring-Interfaces-CCNA-200-301-Complete-Course-1e960843cca5804bac72e00f35bfd791?pvs=21)
+
+[**Day 10 | IPv4 Header |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-10-IPv4-Header-CCNA-200-301-Complete-Course-1e960843cca58062bf8dc73e10a82515?pvs=21)
+
+[**Day 11 (part 1) | Routing Fundamentals |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-11-part-1-Routing-Fundamentals-CCNA-200-301-Complete-Course-1e960843cca580ce9935c13276a8a882?pvs=21)
+
+[**Day 11 (part 2) | Static Routing |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-11-part-2-Static-Routing-CCNA-200-301-Complete-Course-1e960843cca580eb8e94cbb9ce317a1e?pvs=21)
+
+[**Day 11 Lab 1 | Configuring Static Routes |  CCNA 200-301 Complete Course**](https://www.notion.so/Day-11-Lab-1-Configuring-Static-Routes-CCNA-200-301-Complete-Course-1ea60843cca580fa9e76f88fe15a83fb?pvs=21)
+
+[**Day 11 Lab 2 | Troubleshooting Static Routes | CCNA 200-301 Complete Course**](https://www.notion.so/Day-11-Lab-2-Troubleshooting-Static-Routes-CCNA-200-301-Complete-Course-1ea60843cca580258b49dc005cfb7d1c?pvs=21)
+
+[**No.23,Day 12 | The Life of a Packet | CCNA 200-301 Complete Course**](https://www.notion.so/No-23-Day-12-The-Life-of-a-Packet-CCNA-200-301-Complete-Course-1ea60843cca580b79ffec38b994e944a?pvs=21)
+
+[**No.24,Day 12 | The Life of a Packet | CCNA 200-301 Complete Course**](https://www.notion.so/No-24-Day-12-The-Life-of-a-Packet-CCNA-200-301-Complete-Course-1ea60843cca58096b096d6e048a3400e?pvs=21)
+
+[**Day 13 | Subnetting (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-13-Subnetting-Part-1-CCNA-200-301-Complete-Course-1ec60843cca580e1a5c6c05ef57a7b7f?pvs=21)
+
+[**Day 14 | Subnetting (Part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-14-Subnetting-Part-2-CCNA-200-301-Complete-Course-1ec60843cca580a89c51fef1a2fc8ba3?pvs=21)
+
+[**Day 15 | Subnetting (Part 3 - VLSM) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-15-Subnetting-Part-3-VLSM-CCNA-200-301-Complete-Course-1ec60843cca58084bd2cdeb457c04a16?pvs=21)
+
+[ **Day 15 Lab | Subnetting (VLSM) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-15-Lab-Subnetting-VLSM-CCNA-200-301-Complete-Course-1ec60843cca5807a8036e30fa9b5f7f8?pvs=21)
+
+[**Day 16 | VLANs (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-16-VLANs-Part-1-CCNA-200-301-Complete-Course-1ec60843cca5806290c0fc1cca5718cc?pvs=21)
+
+[**Day 16 Lab | VLANs (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-16-Lab-VLANs-Part-1-CCNA-200-301-Complete-Course-1ec60843cca580378bbedf14a39980a7?pvs=21)
+
+[**Day 17 | VLANs (Part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-17-VLANs-Part-2-CCNA-200-301-Complete-Course-1ec60843cca5804b8295e0ddb171235c?pvs=21)
+
+[**Day 17 | VLANs (Part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-17-VLANs-Part-2-CCNA-200-301-Complete-Course-1ec60843cca580f88d72c243bb76bf13?pvs=21)
+
+[**Day 18 | VLANs (Part 3) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-18-VLANs-Part-3-CCNA-200-301-Complete-Course-1ef60843cca580d89a86f417067b6b6b?pvs=21)
+
+[**Day 18 Lab | VLANs (Part 3) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-18-Lab-VLANs-Part-3-CCNA-200-301-Complete-Course-1f060843cca580d2b17ddf7ade615d35?pvs=21)
+
+[**Day 19 | DTP/VTP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-19-DTP-VTP-CCNA-200-301-Complete-Course-1f060843cca5808393cde5d2c19852d7?pvs=21)
+
+[**Day 19 Lab | DTP/VTP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-19-Lab-DTP-VTP-CCNA-200-301-Complete-Course-1f060843cca58049adc2e0cab577e20c?pvs=21)
+
+[**Day 20 | Spanning Tree Protocol (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-20-Spanning-Tree-Protocol-Part-1-CCNA-200-301-Complete-Course-1f060843cca58003b468d700e7d3badb?pvs=21)
+
+[**Day 20 Lab | Analyzing STP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-20-Lab-Analyzing-STP-CCNA-200-301-Complete-Course-1f160843cca58045832cfb2a89f408dd?pvs=21)
+
+[**Day 21 | Spanning Tree Protocol (Part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-21-Spanning-Tree-Protocol-Part-2-CCNA-200-301-Complete-Course-1f160843cca58069a977f52d006124ec?pvs=21)
+
+[**Day 21 (part 1) | PortFast (STP Toolkit) | CCNA 200-301** ](https://www.notion.so/Day-21-part-1-PortFast-STP-Toolkit-CCNA-200-301-1f160843cca58034846cdb38ae2ddd83?pvs=21)
+
+[**Day 21 (part 2) | CCNA 200-301 |BPDU Guard & BPDU Filter (STP Toolkit) |** ](https://www.notion.so/Day-21-part-2-CCNA-200-301-BPDU-Guard-BPDU-Filter-STP-Toolkit-1f160843cca5806eaabfd3f9036d2688?pvs=21)
+
+[**Day 21 (part 3) | Root Guard (STP Toolkit) | CCNA 200-301** ](https://www.notion.so/Day-21-part-3-Root-Guard-STP-Toolkit-CCNA-200-301-1f160843cca58098983bcb7c39c46c06?pvs=21)
+
+[**Day 21 (part 4) | Loop Guard (STP Toolkit) | CCNA 200-301** ](https://www.notion.so/Day-21-part-4-Loop-Guard-STP-Toolkit-CCNA-200-301-1f260843cca580d7969fed464064e897?pvs=21)
+
+[**Day 21 Lab | Free CCNA | Configuring STP (PVST+) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-21-Lab-Free-CCNA-Configuring-STP-PVST-CCNA-200-301-Complete-Course-1f260843cca580018c37f2573bf766e4?pvs=21)
+
+[**Day 22 | Rapid Spanning Tree Protocol | CCNA 200-301 Complete Course**](https://www.notion.so/Day-22-Rapid-Spanning-Tree-Protocol-CCNA-200-301-Complete-Course-1f260843cca580acb2bdc1a3997c19d2?pvs=21)
+
+[**Day 22 Lab | Rapid STP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-22-Lab-Rapid-STP-CCNA-200-301-Complete-Course-1f260843cca580c0bf8ac7c8b5144cad?pvs=21)
+
+[**Day 23 | EtherChannel | CCNA 200-301 Complete Course**](https://www.notion.so/Day-23-EtherChannel-CCNA-200-301-Complete-Course-1f360843cca580588bdae03cf5fa5e9a?pvs=21)
+
+[**Day 23 Lab | Configuring EtherChannel | CCNA 200-301 Complete Course**](https://www.notion.so/Day-23-Lab-Configuring-EtherChannel-CCNA-200-301-Complete-Course-1f560843cca5802ab6bcf45d9db19480?pvs=21)
+
+[**Day 24 | Dynamic Routing | CCNA 200-301 Complete Course**](https://www.notion.so/Day-24-Dynamic-Routing-CCNA-200-301-Complete-Course-1f860843cca580bc976fc7666c41ba8d?pvs=21)
+
+[**Day 25 | RIP & EIGRP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-25-RIP-EIGRP-CCNA-200-301-Complete-Course-1fa60843cca5804ca161f0a06c7c54f1?pvs=21)
+
+[**Day 25 Lab | Configuring EIGRP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-25-Lab-Configuring-EIGRP-CCNA-200-301-Complete-Course-1ff60843cca5801bacd5fccb5ab96558?pvs=21)
+
+[**Day 26 | OSPF Part 1 | CCNA 200-301 Complete Course**](https://www.notion.so/Day-26-OSPF-Part-1-CCNA-200-301-Complete-Course-20160843cca5806fbf84d4bcef83479a?pvs=21)
+
+[**Day 26 Lab | Configuring OSPF (1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-26-Lab-Configuring-OSPF-1-CCNA-200-301-Complete-Course-20160843cca580d9b109cd3f75cb6d38?pvs=21)
+
+[**Day 27 | OSPF Part 2 | CCNA 200-301 Complete Course**](https://www.notion.so/Day-27-OSPF-Part-2-CCNA-200-301-Complete-Course-20260843cca580948927d3f0f5198fe6?pvs=21)
+
+[**Day 27 Lab | Configuring OSPF (2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-27-Lab-Configuring-OSPF-2-CCNA-200-301-Complete-Course-20260843cca580d896f1daac3c8d1cbc?pvs=21)
+
+[**Day 28 | OSPF Part 3 | CCNA 200-301 Complete Course**](https://www.notion.so/Day-28-OSPF-Part-3-CCNA-200-301-Complete-Course-20260843cca580e285f6d8037cd8946c?pvs=21)
+
+[**Day 28 Lab | Configuring OSPF (3) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-28-Lab-Configuring-OSPF-3-CCNA-200-301-Complete-Course-20460843cca5807b9d9ff04a6a4c5af6?pvs=21)
+
+[**Day 29 | First Hop Redundancy Protocols | CCNA 200-301 Complete Course**](https://www.notion.so/Day-29-First-Hop-Redundancy-Protocols-CCNA-200-301-Complete-Course-20460843cca580df81a3fc974c028315?pvs=21)
+
+[**Day 29 Lab | Configuring HSRP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-29-Lab-Configuring-HSRP-CCNA-200-301-Complete-Course-20460843cca580fdafd0e8999f876706?pvs=21)
+
+[**Day 30 | TCP & UDP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-30-TCP-UDP-CCNA-200-301-Complete-Course-20560843cca580ffaed0c6a73fd23501?pvs=21)
+
+[**Day 30 Lab | Wireshark Demo (TCP/UDP) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-30-Lab-Wireshark-Demo-TCP-UDP-CCNA-200-301-Complete-Course-20560843cca5805ab43cc9258276ec4f?pvs=21)
+
+[**Day 31 | IPv6 Part 1 | CCNA 200-301 Complete Course**](https://www.notion.so/Day-31-IPv6-Part-1-CCNA-200-301-Complete-Course-20560843cca58096b0afee37f9292936?pvs=21)
+
+[**Day 31 Lab | Configuring IPv6 (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-31-Lab-Configuring-IPv6-Part-1-CCNA-200-301-Complete-Course-20560843cca580e58ee1d07d47eba767?pvs=21)
+
+[**Day 32 | IPv6 Part 2 | CCNA 200-301 Complete Course**](https://www.notion.so/Day-32-IPv6-Part-2-CCNA-200-301-Complete-Course-20560843cca58057a079f0e42a31b0d8?pvs=21)
+
+[**Day 32 Lab | Configuring IPv6 (Part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-32-Lab-Configuring-IPv6-Part-2-CCNA-200-301-Complete-Course-20560843cca58003b4add61714019915?pvs=21)
+
+[**Day 33 | IPv6 Part 3 | CCNA 200-301 Complete Course**](https://www.notion.so/Day-33-IPv6-Part-3-CCNA-200-301-Complete-Course-20560843cca580779a4eff5c3930946c?pvs=21)
+
+[**Day 33 Lab | Configuring IPv6 (Part 3) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-33-Lab-Configuring-IPv6-Part-3-CCNA-200-301-Complete-Course-20660843cca580c08893ddd8fe06375e?pvs=21)
+
+[**Day 34 | Standard ACLs | CCNA 200-301 Complete Course**](https://www.notion.so/Day-34-Standard-ACLs-CCNA-200-301-Complete-Course-20660843cca58037a97ec917a54059bc?pvs=21)
+
+[Day 34 Lab | Standard ACLs | CCNA 200-301 Complete Course](https://www.notion.so/Day-34-Lab-Standard-ACLs-CCNA-200-301-Complete-Course-20660843cca580449aa0ea4dc5212340?pvs=21)
+
+[**Day 35 | Extended ACLs | CCNA 200-301 Complete Course**](https://www.notion.so/Day-35-Extended-ACLs-CCNA-200-301-Complete-Course-20760843cca5804f95e1e15659a57f0e?pvs=21)
+
+[**Day 35 Lab | Extended ACLs | CCNA 200-301 Complete Course**](https://www.notion.so/Day-35-Lab-Extended-ACLs-CCNA-200-301-Complete-Course-20760843cca5803c9d81f48abecaf239?pvs=21)
+
+[**Day 36 | CDP & LLDP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-36-CDP-LLDP-CCNA-200-301-Complete-Course-20760843cca5804f9da4e4a521c3abdb?pvs=21)
+
+[**Day 36 Lab | CDP & LLDP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-36-Lab-CDP-LLDP-CCNA-200-301-Complete-Course-20960843cca5804fa27dec4f5ad66b14?pvs=21)
+
+[**Day 37 | NTP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-37-NTP-CCNA-200-301-Complete-Course-20960843cca58093a928f85f32ca7844?pvs=21)
+
+[**Day 37 Lab | NTP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-37-Lab-NTP-CCNA-200-301-Complete-Course-20960843cca580a19b54c2d8d5462319?pvs=21)
+
+[**Day 38 | DNS | CCNA 200-301 Complete Course**](https://www.notion.so/Day-38-DNS-CCNA-200-301-Complete-Course-20960843cca5803283efed095f6aadce?pvs=21)
+
+[**Day 38 Lab | DNS | CCNA 200-301 Complete Course**](https://www.notion.so/Day-38-Lab-DNS-CCNA-200-301-Complete-Course-20a60843cca580209ac0e5ea5e98e831?pvs=21)
+
+[**Day 39 | DHCP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-39-DHCP-CCNA-200-301-Complete-Course-20a60843cca5805083c1ce3d18b23d3c?pvs=21)
+
+[**Day 39 Lab | DHCP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-39-Lab-DHCP-CCNA-200-301-Complete-Course-20a60843cca58026870bd52b9be6a746?pvs=21)
+
+[**Day 40 | SNMP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-40-SNMP-CCNA-200-301-Complete-Course-20a60843cca58037800ace01908f8e69?pvs=21)
+
+[**Day 40 Lab | SNMP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-40-Lab-SNMP-CCNA-200-301-Complete-Course-20a60843cca580bfbc1cd77d6879bbd8?pvs=21)
+
+[**Day 41 | Syslog | CCNA 200-301 Complete Course**](https://www.notion.so/Day-41-Syslog-CCNA-200-301-Complete-Course-20a60843cca580c69b58d32bc0289cd5?pvs=21)
+
+[**Day 41 Lab | Syslog | Day 41 Lab | CCNA 200-301 Complete Course**](https://www.notion.so/Day-41-Lab-Syslog-Day-41-Lab-CCNA-200-301-Complete-Course-20a60843cca58013892ef0c3ac04db01?pvs=21)
+
+[**Day 42 | SSH | CCNA 200-301 Complete Course**](https://www.notion.so/Day-42-SSH-CCNA-200-301-Complete-Course-20a60843cca5804993e4e63d751b3604?pvs=21)
+
+[**Day 42 Lab | SSH | CCNA 200-301 Complete Course**](https://www.notion.so/Day-42-Lab-SSH-CCNA-200-301-Complete-Course-20b60843cca58094b752cac6beb463f1?pvs=21)
+
+[**Day 43 | FTP & TFTP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-43-FTP-TFTP-CCNA-200-301-Complete-Course-20b60843cca580269e3dee61019d46ff?pvs=21)
+
+[**Day 43 Lab | FTP & TFTP | CCNA 200-301 Complete Course**](https://www.notion.so/Day-43-Lab-FTP-TFTP-CCNA-200-301-Complete-Course-20c60843cca580d98b66d490e78e0313?pvs=21)
+
+[**Day 44 | NAT (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-44-NAT-Part-1-CCNA-200-301-Complete-Course-20c60843cca58022a84fcfa6573a87a9?pvs=21)
+
+[**Day 44 Lab | Static NAT | CCNA 200-301 Complete Course**](https://www.notion.so/Day-44-Lab-Static-NAT-CCNA-200-301-Complete-Course-20c60843cca580a4bb2af278b0aa6239?pvs=21)
+
+[**Day 45 | NAT (part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-45-NAT-part-2-CCNA-200-301-Complete-Course-20c60843cca58019984dd22e66ad4b82?pvs=21)
+
+[**Day 45 Lab | Dynamic NAT | CCNA 200-301 Complete Course**](https://www.notion.so/Day-45-Lab-Dynamic-NAT-CCNA-200-301-Complete-Course-20d60843cca580cb8ee1dcff91f4ff64?pvs=21)
+
+[**Day 46 | QoS (Part 1) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-46-QoS-Part-1-CCNA-200-301-Complete-Course-20d60843cca58032961decca8b305952?pvs=21)
+
+[**Day 46 Lab | Voice VLANs | CCNA 200-301 Complete Course**](https://www.notion.so/Day-46-Lab-Voice-VLANs-CCNA-200-301-Complete-Course-20d60843cca5805398c4e7a2f1df2b72?pvs=21)
+
+[**Day 47 | QoS (Part 2) | CCNA 200-301 Complete Course**](https://www.notion.so/Day-47-QoS-Part-2-CCNA-200-301-Complete-Course-20d60843cca58090a93ffe4aeb3887bd?pvs=21)
+
+[**Day 47 Lab | QoS | CCNA 200-301 Complete Course**](https://www.notion.so/Day-47-Lab-QoS-CCNA-200-301-Complete-Course-20d60843cca58016a7d1e78493483be9?pvs=21)
+
+[**Day 48 | Security Fundamentals | CCNA 200-301 Complete Course**](https://www.notion.so/Day-48-Security-Fundamentals-CCNA-200-301-Complete-Course-20e60843cca580bfb76ed10793fce32c?pvs=21)
+
+[**Day 49 | Port Security | CCNA 200-301 Complete Course**](https://www.notion.so/Day-49-Port-Security-CCNA-200-301-Complete-Course-20e60843cca580ff83ccfc9dc7333adb?pvs=21)
+
+[**Day 49 Lab | Port Security | CCNA 200-301 Complete Course**](https://www.notion.so/Day-49-Lab-Port-Security-CCNA-200-301-Complete-Course-20e60843cca58061a136faabbeb6b1e3?pvs=21)
+
+[**Day 50 | DHCP Snooping | CCNA 200-301 Complete Course**](https://www.notion.so/Day-50-DHCP-Snooping-CCNA-200-301-Complete-Course-20f60843cca580f19e0cfa40661d5050?pvs=21)
+
+[**Day 50 Lab | DHCP Snooping | CCNA 200-301 Complete Course**](https://www.notion.so/Day-50-Lab-DHCP-Snooping-CCNA-200-301-Complete-Course-20f60843cca580dca014f2a2e8eb9c08?pvs=21)
+
+[**Day 51 | Dynamic ARP Inspection | CCNA 200-301 Complete Course**](https://www.notion.so/Day-51-Dynamic-ARP-Inspection-CCNA-200-301-Complete-Course-20f60843cca5804aaa41fabe829cfdd0?pvs=21)
+
+[**Day 51 Lab Dynamic ARP Inspection | | CCNA 200-301 Complete Course**](https://www.notion.so/Day-51-Lab-Dynamic-ARP-Inspection-CCNA-200-301-Complete-Course-20f60843cca580369b45d013762228d3?pvs=21)
+
+[**Day 52 | LAN Architectures | CCNA 200-301 Complete Course**](https://www.notion.so/Day-52-LAN-Architectures-CCNA-200-301-Complete-Course-20f60843cca5808b81b2cc2e5c4afc3e?pvs=21)
+
+[**Day 52 Lab | STP & FHRP Synchronization | CCNA 200-301 Complete Course**](https://www.notion.so/Day-52-Lab-STP-FHRP-Synchronization-CCNA-200-301-Complete-Course-20f60843cca58005a06cd81a8543b410?pvs=21)
+
+[**Day 53 | WAN Architectures | CCNA 200-301 Complete Course**](https://www.notion.so/Day-53-WAN-Architectures-CCNA-200-301-Complete-Course-21160843cca580289330d4032f69c4eb?pvs=21)
+
+[**Day 53 Lab | GRE Tunnels | CCNA 200-301 Complete Course**](https://www.notion.so/Day-53-Lab-GRE-Tunnels-CCNA-200-301-Complete-Course-21160843cca580599b80e66e3085b4c3?pvs=21)
+
+[**Day 54 (part 1) | Virtualization & Cloud | CCNA 200-301 Complete Course**](https://www.notion.so/Day-54-part-1-Virtualization-Cloud-CCNA-200-301-Complete-Course-21160843cca580a7a13bd0de911989aa?pvs=21)
+
+[**Day 54 (part 2) | Containers | CCNA 200-301 Complete Course**](https://www.notion.so/Day-54-part-2-Containers-CCNA-200-301-Complete-Course-21260843cca58099a538e530d9c3bdf0?pvs=21)
+
+[**Day 54 (part 3) | VRF | CCNA 200-301 Complete Course**](https://www.notion.so/Day-54-part-3-VRF-CCNA-200-301-Complete-Course-21260843cca58091abe1ffbd66606727?pvs=21)
+
+[**Day 54 Lab | Oracle VirtualBox | CCNA 200-301 Complete Course**](https://www.notion.so/Day-54-Lab-Oracle-VirtualBox-CCNA-200-301-Complete-Course-21260843cca580b28e60e62b335f146f?pvs=21)
+
+[**Day 55 | Wireless Fundamentals | CCNA 200-301 Complete Course**](https://www.notion.so/Day-55-Wireless-Fundamentals-CCNA-200-301-Complete-Course-21260843cca580b4a6f0ff489b6d0a94?pvs=21)
+
+[**Day 56 | Wireless Architectures | CCNA 200-301 Complete Course**](https://www.notion.so/Day-56-Wireless-Architectures-CCNA-200-301-Complete-Course-21260843cca5800ea367d9bc91e91149?pvs=21)
+
+[**Day 58 | Wireless Configuration | CCNA 200-301 Complete Course**](https://www.notion.so/Day-58-Wireless-Configuration-CCNA-200-301-Complete-Course-21260843cca580aba2b1fd9eeb4dcfa8?pvs=21)
+
+[**Day 58 Lab | Wireless LANs | CCNA 200-301 Complete Course**](https://www.notion.so/Day-58-Lab-Wireless-LANs-CCNA-200-301-Complete-Course-21260843cca58091a144ebd6c377f07c?pvs=21)
+
+[**Day 59 (part 1) | Intro to Network Automation | CCNA 200-301** ](https://www.notion.so/Day-59-part-1-Intro-to-Network-Automation-CCNA-200-301-21260843cca5801ba9cefe12e90fabf8?pvs=21)
+
+[**Day 59 (part 2) | AI & Machine Learning | CCNA 200-301** ](https://www.notion.so/Day-59-part-2-AI-Machine-Learning-CCNA-200-301-21260843cca5809bb997d1f369a625bb?pvs=21)
+
+[**Day 60 | JSON, XML, & YAML | CCNA 200-301 Complete Course**](https://www.notion.so/Day-60-JSON-XML-YAML-CCNA-200-301-Complete-Course-21260843cca58068a78cc5e369ee5322?pvs=21)
+
+[**Day 61 | REST APIs | CCNA 200-301 Complete Course**](https://www.notion.so/Day-61-REST-APIs-CCNA-200-301-Complete-Course-21360843cca580699dabf704f1b3e567?pvs=21)
+
+[**Day 61 (part 2) | REST API Authentication | CCNA 200-301** ](https://www.notion.so/Day-61-part-2-REST-API-Authentication-CCNA-200-301-21460843cca5801d8c3feb96923ad331?pvs=21)
+
+[**Day 62 | Software-Defined Networking | CCNA 200-301 Complete Course**](https://www.notion.so/Day-62-Software-Defined-Networking-CCNA-200-301-Complete-Course-21660843cca58064aae2efab65c242b7?pvs=21)
+
+[**Day 63 (part 1) | Ansible, Puppet, & Chef | CCNA 200-301 Complete Course**](https://www.notion.so/Day-63-part-1-Ansible-Puppet-Chef-CCNA-200-301-Complete-Course-21660843cca5804aa843c838eaf2d529?pvs=21)
+
+[**Day 63 (part 2) | Terraform | CCNA 200-301** ](https://www.notion.so/Day-63-part-2-Terraform-CCNA-200-301-21660843cca5806dbd55c139b1406fce?pvs=21)
+
+[**CCNA Mega Lab! / Complete Network Configuration // OSPF, VLANs, STP, DHCP, Security, Wireless + more**](https://www.notion.so/CCNA-Mega-Lab-Complete-Network-Configuration-OSPF-VLANs-STP-DHCP-Security-Wireless-more-21660843cca580759269cf867ea51b29?pvs=21)

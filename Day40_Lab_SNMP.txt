@@ -1,0 +1,113 @@
+# **Day 40 Lab | SNMP | CCNA 200-301 Complete Course**
+
+**Day 40 - SNMP (Simple Network Management Protocol) Notes**
+
+---
+
+### 🧠 Technical Breakdown of SNMP (CCNA Level)
+
+### 📌 SNMP Purpose
+
+- Protocol used to manage and monitor network devices (routers, switches, servers, etc.).
+- Collects performance data, monitors device status, and sends alerts.
+
+### 🧱 SNMP Structure
+
+- **Managed Devices**: Devices being monitored (e.g., R1).
+- **NMS (Network Management Station)**: The management software (e.g., PC1 using MIB Browser).
+- **Agent**: Software on the managed device that communicates with the NMS.
+- **MIB (Management Information Base)**: Hierarchical database of variables (OIDs).
+- **OIDs (Object Identifiers)**: Unique identifiers for variables (e.g., sysName, sysUpTime).
+
+### 🔐 SNMP Versions
+
+- **SNMPv1**: Basic version, uses community strings (plaintext).
+- **SNMPv2c**: Adds GetBulk, still uses community strings.
+- **SNMPv3**: Adds encryption, authentication.
+
+### 🔑 SNMP Community Strings
+
+- Used as passwords in SNMPv1/v2c:
+    - **Read-Only (RO)**: Allows `GET` requests (e.g., `Cisco1`).
+    - **Read-Write (RW)**: Allows `SET` requests (e.g., `Cisco2`).
+
+### 🔄 SNMP Operations
+
+| Operation | Direction | Description |
+| --- | --- | --- |
+| Get | NMS → Agent | Requests value of a variable |
+| GetNext | NMS → Agent | Requests next variable in hierarchy |
+| GetBulk (v2+) | NMS → Agent | Bulk read of multiple variables |
+| Set | NMS → Agent | Changes value of a variable |
+| Trap | Agent → NMS | Unacknowledged alert message |
+| Inform | Agent → NMS | Acknowledged alert (rarely used in CCNA) |
+
+### 📡 Ports Used
+
+- **UDP 161**: SNMP Agent receives requests here.
+- **UDP 162**: SNMP Manager (NMS) listens for traps/informs here.
+
+### 🛠️ SNMP Configuration (Packet Tracer - Limited Support)
+
+```
+R1(config)# snmp-server community Cisco1 RO
+R1(config)# snmp-server community Cisco2 RW
+```
+
+- In Packet Tracer: No support for `snmp-server host`, `location`, `contact`.
+- Can test SNMP using MIB Browser on PC1.
+
+### Using MIB Browser:
+
+- Set IP to R1: `192.168.1.254`
+- Set Community:
+    - Read: Cisco1
+    - Write: Cisco2
+- SNMP Version: v1
+
+### Sample OIDs to Query:
+
+- **sysUpTime**: Shows R1’s uptime
+- **sysName**: Shows hostname
+- **ifNumber**: Number of interfaces
+- **ifDescr**: Interface descriptions (e.g., G0/0, G0/1)
+- **ifType**: Type of interface (e.g., ethernetCsmacd)
+- **ifAdminStatus**: Admin status (1=up, 2=down)
+
+### Using `Set` in MIB Browser:
+
+- OID: `sysName`
+- Type: OctetString
+- Value: e.g., `R11`
+- Result: Router hostname updates to R11
+
+### 🛠️ SNMP Configuration (Boson NetSim - ENCOR Level)
+
+```
+R1(config)# snmp-server community boson RO
+R1(config)# snmp-server contact snmp@boson.com
+R1(config)# snmp-server location R1_SNMP
+R1(config)# snmp-server host 10.10.0.2 version 2c snmp_logs
+```
+
+- `boson` = read-only community
+- `snmp_logs` = trap community string
+- `host` command configures PC1 to receive traps (UDP 162)
+
+### Verification Commands:
+
+```
+R1# show snmp
+R1# show snmp community
+R1# show snmp location
+R1# show snmp contact
+R1# show snmp host
+```
+
+- Confirm community strings, SNMP version, contact/location, and trap receiver.
+
+### ⚠️ Notes
+
+- SNMP configuration is **not on the CCNA exam topics**.
+- Knowing the basics (Get/Set/Trap, ports, community strings) is useful.
+- Configuration is required at **CCNP level** (e.g., ENCOR 350-401).

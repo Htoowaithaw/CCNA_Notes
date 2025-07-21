@@ -1,0 +1,78 @@
+# **Day 63 (part 2) | Terraform | CCNA 200-301**
+
+**🛠️ Terraform – CCNA Summary Notes**
+
+---
+
+### 🔹 What is Terraform?
+
+- Open-source **Infrastructure as Code (IaC)** tool by **HashiCorp**.
+- Focuses on **provisioning**: creating, changing, and destroying infrastructure (e.g. servers, routers, storage).
+- Works with **cloud** (AWS, Azure, GCP) and **Cisco platforms** (Catalyst, ACI, IOS-XE).
+- **Agentless** and uses a **push model** (no software needed on devices).
+- Interacts with cloud or device **APIs**.
+
+---
+
+### 🔹 Infrastructure as Code (IaC)
+
+- Manage infrastructure using **code files**, not manual CLI/GUIs.
+- Ensures **consistency**, **repeatability**, and **automation**.
+- Tools: Terraform (for provisioning), Ansible, Puppet, Chef (for configuration).
+
+---
+
+### 🔹 Terraform vs Ansible
+
+| Feature | Terraform | Ansible |
+| --- | --- | --- |
+| Purpose | Provisioning | Configuration Management |
+| Style | Declarative (what to build) | Procedural (step-by-step) |
+| Infrastructure Type | Immutable (replace, not edit) | Mutable (edit in place) |
+| Agentless? | Yes | Yes |
+| Language | HCL (HashiCorp Config Lang) | YAML (playbooks) |
+
+---
+
+### 🔹 Terraform Key Concepts
+
+### 1. **Provisioning vs Configuration Management**
+
+- Provisioning: Build resources from scratch (Terraform).
+- Config Mgmt: Manage settings of existing systems (Ansible, Puppet, Chef).
+
+### 2. **Immutable vs Mutable Infrastructure**
+
+- Immutable: Cannot change after deployment; must replace (Terraform).
+- Mutable: Can change in place (Ansible, Puppet, Chef).
+
+### 3. **Declarative vs Procedural**
+
+- Declarative: Describe **what** the system should look like. Tool figures out **how** (Terraform).
+- Procedural: Step-by-step instructions. User defines **how** (Ansible, Chef).
+
+---
+
+### 🔹 Terraform Components
+
+1. **Terraform Core** – Main engine (written in Go).
+2. **Configuration Files** – Declare what to build (written in HCL).
+3. **State File** – Tracks current infrastructure state.
+4. **Providers** – Cloud/network platforms (e.g., AWS, Cisco, Azure).
+
+---
+
+### 🔹 Terraform Workflow (3 Steps)
+
+1. **Write** – Define infrastructure in HCL config files.
+2. **Plan** – Preview what Terraform will do.
+3. **Apply** – Deploy the infrastructure.
+
+*(Optional 4th: Destroy – delete resources when done.)*
+
+---
+
+### 🔹 Language Used
+
+- **Terraform Core**: Written in **Go**
+- **Config Files**: Written in **HCL (HashiCorp Configuration Language)**

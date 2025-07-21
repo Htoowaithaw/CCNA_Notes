@@ -1,0 +1,128 @@
+**Notion Notes Summary - CCNA Lesson 6: Ethernet LAN Switching (Part 2)**
+
+---
+
+### ✨ Key Focus: Ethernet LAN Switching Continued
+
+- Continuation of Layer 2 operations in LANs using Ethernet
+- Deeper dive into Ethernet frames, ARP, MAC address tables, and PING utility
+
+---
+
+### 🔍 Ethernet Frame Details
+
+- **Header (18 bytes total)**:
+    - Destination MAC (6 bytes)
+    - Source MAC (6 bytes)
+    - Type (2 bytes)
+    - **Trailer**: Frame Check Sequence (FCS, 4 bytes)
+- **Minimum frame size**: 64 bytes
+    - Payload must be ≥46 bytes
+    - If payload <46 bytes: **padding (0s)** is added
+    - Preamble (7 bytes) + SFD (1 byte) not counted in the header but always sent
+
+---
+
+### 🧳 IP vs MAC
+
+- Data is sent using IP addresses (L3), but switches use MAC (L2)
+- Devices must map known IPs to unknown MACs before sending
+
+---
+
+### 🔹 Address Resolution Protocol (ARP)
+
+- **Used to find MAC address** when only IP is known
+- **ARP Request**:
+    - Broadcast frame (dest MAC: `FF:FF:FF:FF:FF:FF`)
+    - Sent by requester to entire network
+- **ARP Reply**:
+    - Unicast frame to the requester
+    - Provides target’s MAC address
+
+### ARP Example Flow:
+
+1. PC1 sends ARP Request to learn PC3's MAC (broadcast)
+2. Switches flood the ARP request
+3. PC3 sends ARP Reply (unicast)
+4. PC1 adds MAC to its ARP table
+
+---
+
+### 📊 ARP Table Example
+
+- Command: `arp -a` (Windows/macOS/Linux) or `show arp` (Cisco IOS)
+- Shows IP <-> MAC mapping
+- Type: **dynamic** (learned via ARP) or **static**
+
+---
+
+### ⚙️ Cisco Switch MAC Address Table
+
+- Command: `show mac address-table`
+- Fields:
+    - **VLAN**
+    - **MAC address**
+    - **Type** (dynamic or static)
+    - **Port**
+
+### MAC Address Aging & Clearing
+
+- **Aging time**: 5 minutes of inactivity
+- Clear all: `clear mac address-table dynamic`
+- Clear specific MAC: `clear mac address-table dynamic address <mac>`
+- Clear by interface: `clear mac address-table dynamic interface <intf>`
+
+---
+
+### ✉️ Ping (ICMP)
+
+- Tests reachability + round-trip time
+- Uses:
+    - **ICMP Echo Request** (sent)
+    - **ICMP Echo Reply** (received)
+- Requires destination MAC ➔ ARP resolves it first
+- Cisco command: `ping <IP>`
+- Default: 5 requests, 100 bytes each
+- First ping may fail due to ARP resolution delay
+
+---
+
+### 📊 Wireshark Analysis
+
+- Captures + shows:
+    - ARP packets: who has IP? tell IP
+    - ICMP packets: echo request/reply
+    - Padding: 36-byte ping shows 10 bytes of padding to meet 46-byte minimum
+    - Type values:
+        - IPv4: `0x0800`
+        - IPv6: `0x86DD`
+        - ARP: `0x0806`
+
+---
+
+### ✅ Quiz Highlights
+
+1. **Padding bytes** fill small payloads (<46 bytes)
+2. **ARP Request** is broadcast
+3. **show mac address-table** includes: VLAN, MAC, Type, Port
+4. **Switch floods**: broadcast + unknown unicast
+5. **Clear MAC table on interface**: `clear mac address-table dynamic interface <intf>`
+
+---
+
+### 🔧 Tools Mentioned
+
+- Packet Tracer (Cisco network simulator)
+- GNS3 (uses real IOS)
+- Wireshark (packet capture)
+
+---
+
+### 🚀 Recommendation
+
+- Use **Packet Tracer** for CCNA-level hands-on
+- Practice commands regularly to build muscle memory
+- Supplement with **Anki cards** + **labs** provided in video links
+
+---

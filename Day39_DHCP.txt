@@ -1,0 +1,177 @@
+# **Day 39 | DHCP | CCNA 200-301 Complete Course**
+
+**Day 39 - DHCP (Dynamic Host Configuration Protocol) Notes**
+
+---
+
+### 👶 DHCP Explained Like a Kid
+
+Imagine you’re visiting a hotel. Instead of picking your own room, you go to the front desk and they give you one with a room number, WiFi password, and breakfast info. That’s what DHCP does for your computer!
+
+- Your device asks the network, “Can I have an IP address?”
+- The DHCP server says, “Sure! Use this one, and here’s your gateway and DNS info too!”
+- It even says how long you can keep the address, like booking your room for 5 hours.
+
+DHCP makes it easy for phones, laptops, and PCs to join a network without typing all the numbers manually!
+
+---
+
+### 🧠 Technical Breakdown of DHCP (CCNA Level)
+
+### 📌 Purpose of DHCP
+
+- Automatically assigns IP address, subnet mask, default gateway, DNS server to devices.
+- Used for end-user devices like PCs and phones (routers/servers usually use static IPs).
+- Makes large networks scalable and easy to manage.
+
+### 🧱 DHCP Message Process (DORA)
+
+1. **Discover** – Client broadcasts to find a DHCP server.
+2. **Offer** – Server responds with an available IP and config.
+3. **Request** – Client requests to use the offered config.
+4. **Acknowledge (Ack)** – Server confirms the assignment.
+
+🔁 This is known as the **DORA process**.
+
+### 🔄 Other Message Types
+
+- **Release**: Client gives up the IP before lease expires.
+- Can be captured and analyzed in Wireshark.
+
+### 📦 DHCP Packet Details
+
+- Uses **UDP ports 67 (server)** and **68 (client)**.
+- Can be **broadcast or unicast** based on client/server capabilities.
+- Message contains various **options** (e.g., lease time, DNS, default gateway).
+
+### 📡 DHCP Relay Agent
+
+- Routers don’t forward broadcasts. If DHCP server is remote, configure a router as a **relay agent**:
+
+```
+Router(config-if)# ip helper-address <DHCP_server_IP>
+```
+
+- Relay agent forwards client broadcast to DHCP server as unicast.
+
+### 🛠️ DHCP Server Configuration on Cisco Router
+
+```
+Router(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.10
+Router(config)# ip dhcp pool MYPOOL
+Router(dhcp-config)# network 192.168.1.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.1.1
+Router(dhcp-config)# dns-server 8.8.8.8
+Router(dhcp-config)# domain-name jeremysitlab.com
+Router(dhcp-config)# lease 0 5 30  ! 0 days, 5 hours, 30 minutes
+```
+
+- Use `show ip dhcp binding` to verify assigned addresses.
+
+### 📥 DHCP Client Configuration
+
+```
+Router(config-if)# ip address dhcp
+```
+
+- Router interface will use DHCP to get its own IP address.
+
+---
+
+### 🧪 DHCP Quiz Review (from video)
+
+1. **DORA Order**: Discover → Offer → Request → Ack
+2. **`ipconfig /renew`**: Sends DHCP Discover from PC.
+3. **DHCP Offer Broadcast Flag**: Destination IP is 255.255.255.255
+4. **Unicast Messages**: DHCP Offer, Ack (if client allows), and Release
+5. **DHCP Relay Needed When**: Router isn’t DHCP server but clients on its LAN need IPs from a remote DHCP server
+6. **Boson Example**: Use `ip helper-address <DHCP_server_IP>` on RouterA’s interface facing clients
+
+---
+
+**Day 40 - DHCP (Dynamic Host Configuration Protocol) Notes**
+
+---
+
+### 👶 DHCP Explained Like a Kid
+
+Imagine you’re visiting a hotel. Instead of picking your own room, you go to the front desk and they give you one with a room number, WiFi password, and breakfast info. That’s what DHCP does for your computer!
+
+- Your device asks the network, “Can I have an IP address?”
+- The DHCP server says, “Sure! Use this one, and here’s your gateway and DNS info too!”
+- It even says how long you can keep the address, like booking your room for 5 hours.
+
+DHCP makes it easy for phones, laptops, and PCs to join a network without typing all the numbers manually!
+
+---
+
+### 🧠 Technical Breakdown of DHCP (CCNA Level)
+
+### 📌 Purpose of DHCP
+
+- Automatically assigns IP address, subnet mask, default gateway, DNS server to devices.
+- Used for end-user devices like PCs and phones (routers/servers usually use static IPs).
+- Makes large networks scalable and easy to manage.
+
+### 🧱 DHCP Message Process (DORA)
+
+1. **Discover** – Client broadcasts to find a DHCP server.
+2. **Offer** – Server responds with an available IP and config.
+3. **Request** – Client requests to use the offered config.
+4. **Acknowledge (Ack)** – Server confirms the assignment.
+
+🔁 This is known as the **DORA process**.
+
+### 🔄 Other Message Types
+
+- **Release**: Client gives up the IP before lease expires.
+- Can be captured and analyzed in Wireshark.
+
+### 📦 DHCP Packet Details
+
+- Uses **UDP ports 67 (server)** and **68 (client)**.
+- Can be **broadcast or unicast** based on client/server capabilities.
+- Message contains various **options** (e.g., lease time, DNS, default gateway).
+
+### 📡 DHCP Relay Agent
+
+- Routers don’t forward broadcasts. If DHCP server is remote, configure a router as a **relay agent**:
+
+```
+Router(config-if)# ip helper-address <DHCP_server_IP>
+```
+
+- Relay agent forwards client broadcast to DHCP server as unicast.
+
+### 🛠️ DHCP Server Configuration on Cisco Router
+
+```
+Router(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.10
+Router(config)# ip dhcp pool MYPOOL
+Router(dhcp-config)# network 192.168.1.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.1.1
+Router(dhcp-config)# dns-server 8.8.8.8
+Router(dhcp-config)# domain-name jeremysitlab.com
+Router(dhcp-config)# lease 0 5 30  ! 0 days, 5 hours, 30 minutes
+```
+
+- Use `show ip dhcp binding` to verify assigned addresses.
+
+### 📥 DHCP Client Configuration
+
+```
+Router(config-if)# ip address dhcp
+```
+
+- Router interface will use DHCP to get its own IP address.
+
+---
+
+### 🧪 DHCP Quiz Review (from video)
+
+1. **DORA Order**: Discover → Offer → Request → Ack
+2. **`ipconfig /renew`**: Sends DHCP Discover from PC.
+3. **DHCP Offer Broadcast Flag**: Destination IP is 255.255.255.255
+4. **Unicast Messages**: DHCP Offer, Ack (if client allows), and Release
+5. **DHCP Relay Needed When**: Router isn’t DHCP server but clients on its LAN need IPs from a remote DHCP server
+6. **Boson Example**: Use `ip helper-address <DHCP_server_IP>` on RouterA’s interface facing clients

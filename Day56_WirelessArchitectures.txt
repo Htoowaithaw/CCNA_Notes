@@ -1,0 +1,65 @@
+# **Day 56 | Wireless Architectures | CCNA 200-301 Complete Course**
+
+### 🛫 Wireless LAN Like Changi Airport Wi-Fi
+
+### 1. **802.11 Frames – Like Passenger Forms**
+
+- Think of each **Wi-Fi message** like a **form** a passenger fills at the airport.
+- These forms contain details like:
+    - Who sent the message (passenger’s name).
+    - Where it’s going (destination gate).
+    - Purpose (boarding, check-in, customs).
+- Some forms have **more fields** (like 4 address fields), just like some passengers fill out more detailed immigration forms.
+- Not every message uses every field, just like not every passenger needs every service.
+
+---
+
+### 🛫 Association Process – Like Boarding a Flight
+
+1. **Scanning (Active/Passive) –** Like a passenger looking at the screen or asking for their gate.
+2. **Authentication –** Like showing a boarding pass + passport to get approved.
+3. **Association –** Like entering the gate and sitting in the plane — now you’re ready to fly (send/receive data).
+
+---
+
+### 📡 Types of Access Points (APs)
+
+### 1. **Autonomous AP – Like Manual Check-in Counter**
+
+- Each AP works by itself, like a CSA handling everything manually.
+- Every AP must be configured separately.
+- Fine for a **small gate** or **VIP room**, but impossible for the whole airport.
+- Traffic (passenger flow) is directly sent to the destination via the usual route (wired network).
+
+### 2. **Lightweight AP – Like Self Check-in + Central Control Room**
+
+- AP does simple tasks like greeting passengers (signal handling), but the **central controller (WLC)** handles everything:
+    - Assigning gates (channels).
+    - Power adjustment (signal strength).
+    - Security and crowd control (QoS, policies).
+- All traffic is first sent to WLC, even if passengers are sitting next to each other.
+- Great for **large airports** like Changi. You don’t need to configure each counter individually.
+
+**Modes**:
+
+- **Local Mode** – Normal operation, like regular gates.
+- **FlexConnect** – Like CSAs manually checking passengers if system is down.
+- **Monitor/Sniffer/Rogue Detector** – Like CCTV security scanning for threats or suspicious people.
+- **Bridge/Mesh** – Like connecting two terminals using a train line.
+- **SE-Connect** – Like RF scanners checking for interference (metal detectors).
+
+### 3. **Cloud-based AP – Like Outsourcing Check-in to a Web Kiosk**
+
+- APs still work alone but are **managed online**, like **Cisco Meraki**.
+- You log in to a dashboard to make changes.
+- Regular passenger traffic (data) doesn’t go to the cloud, only management stuff does.
+- Think of it like a **remote team** watching the check-in counters online but letting passengers move freely.
+
+---
+
+### 🧠 WLC Deployment – Like Different Control Rooms
+
+1. **Unified** – One big central WLC device, like **Airport Ops Center** managing everything.
+2. **Cloud-Based** – Control room is **offsite**, like HQ managing airport operations remotely.
+3. **Embedded** – Control room inside a **switch**, like a mini-ops room inside each gate.
+4. **Mobility Express** – One of the APs acts as a mini control room for nearby APs, like a **lead CSA** guiding others.

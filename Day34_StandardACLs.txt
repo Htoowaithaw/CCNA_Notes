@@ -1,0 +1,132 @@
+**Day 34 - Standard ACLs (Access Control Lists) - Jeremy's IT Lab**
+
+---
+
+### 👶 Explain Like I'm 5 (Kid-Friendly Summary)
+
+**What are ACLs?**
+Think of ACLs like a list of rules that says who is allowed to go into a room and who isn’t. If someone is not on the list, they don’t get in!
+
+**Why use ACLs?**
+We use them to keep certain computers from talking to others. For example, if Computer A is good and should talk to the server, we say "yes!". If Computer B is naughty and shouldn't talk to the server, we say "no!"
+
+**Where do ACLs go?**
+They go on doors (called interfaces) of the router. You can put the list at the entrance or exit. You should place it near the room you want to protect (destination).
+
+**How do rules work?**
+The router checks the list from top to bottom. Once it finds a rule that matches, it stops looking. If nothing matches, it blocks the person (this is the secret last rule called the *implicit deny*).
+
+**Types of ACLs:**
+
+- **Standard ACL**: Simple list. Only looks at where the packet came from (source IP).
+- **Extended ACL**: More detailed. Looks at where it's going and what kind of message it is.
+
+---
+
+### 💡 Technical Summary
+
+**Purpose of ACLs**
+ACLs (Access Control Lists) are used to filter network traffic and improve security. In this context, we use them to **permit or deny** packets based on **source IP addresses** (for standard ACLs).
+
+**ACL Structure**
+
+- ACLs are made of **Access Control Entries (ACEs)**.
+- ACEs are processed **top to bottom**.
+- The **first match wins**, and the rest are **ignored**.
+- An **implicit deny** exists at the end of all ACLs.
+
+**Where to Apply ACLs**
+
+- ACLs can be applied **inbound** or **outbound** on router interfaces.
+- **Rule of Thumb for Standard ACLs**: Apply as **close to the destination** as possible.
+
+**ACL Types**
+
+1. **Standard ACLs**
+    - Match **source IP** only.
+    - Two forms:
+        - **Numbered ACLs** (1-99 and 1300-1999)
+        - **Named ACLs**
+2. **Extended ACLs** (Covered in Day 35)
+    - Match **source & destination IP**, **ports**, **protocols**, etc.
+
+**Standard Numbered ACL Commands**
+
+```
+access-list 1 deny 192.168.1.0 0.0.0.255
+access-list 1 permit any
+```
+
+**Standard Named ACL Commands**
+
+```
+ip access-list standard BLOCK_BOB
+  10 deny 192.168.1.1
+  20 permit any
+```
+
+**Apply ACL to Interface**
+
+```
+interface g0/1
+ ip access-group 1 out
+```
+
+**Verifying ACLs**
+
+- `show access-lists`
+- `show ip access-lists`
+- `show running-config | include access-list`
+- `show running-config | section access-list`
+
+**Important Notes**
+
+- ACLs must be applied to take effect.
+- Only **one ACL per direction per interface** is allowed.
+- Use `remark` to document ACL purpose.
+
+**Wildcard Mask Recap**
+
+- `0.0.0.0` means **match exactly**.
+- `255.255.255.255` means **match any**.
+- So `permit any` = `permit 0.0.0.0 255.255.255.255`
+
+---
+
+### 🎨 Real-World Examples
+
+**Example 1: Block PC2, Allow PC1 to access PC3**
+
+```
+access-list 1 permit 192.168.1.1 0.0.0.0
+access-list 1 deny 192.168.1.0 0.0.0.255
+access-list 1 permit any
+interface g0/2
+ ip access-group 1 out
+```
+
+**Example 2: Named ACL to deny PC3 to SRV1 and others allowed**
+
+```
+ip access-list standard TO_10.0.1.0/24
+ 10 deny 192.168.2.1
+ 20 permit 192.168.2.0 0.0.0.255
+ 30 permit 192.168.1.1
+ 40 deny 192.168.1.0 0.0.0.255
+ 50 permit any
+interface g0/1
+ ip access-group TO_10.0.1.0/24 out
+```
+
+---
+
+### 🎓 Quiz Key Points
+
+1. ACLs are processed **top to bottom**.
+2. Only **first match** is applied.
+3. If **no match**, packet is **denied** (implicit deny).
+4. Only **one ACL per direction** per interface.
+5. Standard ACLs match **source IP** only.
+6. Apply standard ACLs **close to the destination**.
+
+---

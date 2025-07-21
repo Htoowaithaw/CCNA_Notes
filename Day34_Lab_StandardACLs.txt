@@ -1,0 +1,186 @@
+# Day 34 Lab | Standard ACLs | CCNA 200-301 Complete Course
+
+**Day 34 - Standard ACLs Lab (with OSPF) - Jeremy's IT Lab**
+
+---
+
+### Lab Objectives
+
+- Configure OSPF for full connectivity between R1 and R2.
+- Implement **Standard ACLs** (both numbered and named) to control traffic based on source IP.
+- Apply ACLs according to best practices (standard ACLs as close to the **destination** as possible).
+
+---
+
+### Step 1: Configure OSPF on R1 and R2
+
+**On R1:**
+
+```
+ENABLE
+CONF T
+ROUTER OSPF 1
+NETWORK 172.16.0.0 0.0.255.255 AREA 0
+NETWORK 203.0.113.0 0.0.0.3 AREA 0
+```
+
+**Verify:**
+
+```
+do show ip ospf interface
+do show ip ospf neighbor
+do show ip route
+```
+
+**On R2:**
+
+```
+ENABLE
+CONF T
+ROUTER OSPF 1
+NETWORK 192.168.0.0 0.0.255.255 AREA 0
+NETWORK 203.0.113.0 0.0.0.3 AREA 0
+```
+
+---
+
+### Step 2: Configure Standard Named ACLs on R2
+
+### Requirement 1:
+
+Only PC1 and PC3 can access 192.168.1.0/24
+
+```
+ip access-list standard TO_192.168.1.0/24
+ permit 172.16.1.1
+ permit 172.16.2.1
+ deny any
+interface g0/0
+ ip access-group TO_192.168.1.0/24 out
+```
+
+### Requirement 2:
+
+Hosts in 172.16.2.0/24 cannot access 192.168.2.0/24
+
+```
+ip access-list standard TO_192.168.2.0/24
+ deny 172.16.2.0 0.0.0.255
+ permit any
+interface g0/1
+ ip access-group TO_192.168.2.0/24 out
+```
+
+**Verification:**
+Use `ping` from PC1, PC2, PC3 to test connectivity. Expect:
+
+- PC1/PC3 can reach SRV1
+- PC2/PC4 cannot
+- PC3 cannot reach SRV2
+- PC1 can
+
+**Useful command:**
+
+```
+do show access-lists
+```
+
+---
+
+### Step 3: Configure Standard Numbered ACLs on R1
+
+### Requirement 3:
+
+Prevent 172.16.1.0/24 from accessing 172.16.2.0/24
+
+```
+access-list 1 deny 172.16.1.0 0.0.0.255
+access-list 1 permit any
+interface g0/1
+ ip access-group 1 out
+```
+
+### Requirement 4:
+
+Prevent 172.16.2.0/24 from accessing 172.16.1.0/24
+
+```
+access-list 2 deny 172.16.2.0 0.0.0.255
+access-list 2 permit any
+interface g0/0
+ ip access-group 2 out
+```
+
+**Verification:**
+
+```
+ping -t <destination IP>
+do show access-lists
+```
+
+Expect continuous `deny` matches to increment as ping is blocked.
+
+---
+
+### Boson NetSim Lab Summary
+
+**Lab Task:**
+
+- Practice configuring **standard ACLs** (numbered only).
+
+### ACL 1:
+
+Deny VLAN2 (10.10.2.0/24) and VLAN3 (10.10.3.0/24), allow others:
+
+```
+access-list 1 deny 10.10.2.0 0.0.1.255
+access-list 1 permit any
+interface f0/0
+ ip access-group 1 in
+```
+
+Test: PC1 can ping and Telnet to Router1. PC2 and PC3 cannot.
+
+### ACL 2:
+
+Deny VLAN1 (10.10.1.0/24), allow others:
+
+```
+access-list 2 deny 10.10.1.0 0.0.0.255
+access-list 2 permit any
+interface f1/0
+ ip access-group 2 out
+```
+
+Security use case: Prevent spoofed traffic pretending to be from VLAN1.
+
+### Reapplication of ACL1:
+
+Apply ACL1 outbound on f0/0 to prevent Router1 hosts from pretending to be in VLAN2/3:
+
+```
+interface f0/0
+ ip access-group 1 out
+```
+
+**Final Verification:**
+
+```
+do show access-lists
+```
+
+Check match counters.
+
+---
+
+### Key Takeaways
+
+- **Standard ACLs** only filter **source IPs**.
+- They should be placed **close to the destination**.
+- Remember the **implicit deny** and **correct wildcard masks**.
+- Use `show access-lists` to verify operation and monitor matches.
+- Combine `deny` and `permit` strategically and test every requirement.
+
+---
+
+This lab provides practical configuration and testing scenarios to reinforce how **standard ACLs** work and where to apply them effectively.

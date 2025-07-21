@@ -1,0 +1,145 @@
+# **Day 30 | TCP & UDP | CCNA 200-301 Complete Course**
+
+## ⚙️ Layer 4 Protocols: TCP vs UDP (CCNA Day 30)
+
+---
+
+### 🧒 **Explain Like I’m 5**
+
+### 📦 Sending Letters Between Friends
+
+- Imagine you’re sending letters to your friend.
+
+**TCP** is like sending your letter by registered mail:
+
+- You must knock on the door and say "Hey, can I send this?"
+- The friend replies, "Okay, send it."
+- You wait to hear back if the letter was delivered.
+- If it didn’t arrive, you send it again.
+- You number every letter so they can read them in the right order.
+- If your friend says, “I’m tired,” you slow down.
+
+**UDP** is like throwing paper airplanes over a fence:
+
+- No permission needed.
+- You don’t know if they catch it.
+- If they lose one, too bad!
+- You just keep throwing.
+- Great for quick games or live chatting.
+
+---
+
+### 👨‍💻 **Explain Like a Network Engineer**
+
+---
+
+## 🌐 Layer 4 Overview (Transport Layer)
+
+- Responsible for **reliable data transfer** between hosts.
+- Adds a **Layer 4 header** (TCP/UDP) on top of Layer 3 (IP).
+- Functions include:
+    - **Port numbers** for identifying applications (like HTTP, FTP).
+    - **Session multiplexing**: multiple apps talking at once.
+    - **(TCP only)**: Reliable delivery, sequencing, error recovery, flow control.
+
+---
+
+## 🧱 Port Numbers & Session Multiplexing
+
+| Type | Range | Usage |
+| --- | --- | --- |
+| Well-known ports | 0–1023 | Reserved (e.g., HTTP 80, FTP 21) |
+| Registered ports | 1024–49151 | Assigned by IANA |
+| Ephemeral ports | 49152–65535 | Dynamically used as source ports |
+
+> Port numbers help track sessions and identify app-layer protocols.
+> 
+
+---
+
+## 📡 TCP – Transmission Control Protocol
+
+| Feature | Description |
+| --- | --- |
+| Connection-oriented | Uses **3-way handshake** (SYN → SYN-ACK → ACK) before data transfer |
+| Reliable Delivery | Requires ACKs; resends lost segments |
+| Sequencing | Reorders out-of-order segments using **Sequence Numbers** |
+| Flow Control | Adjusts send rate via **Window Size** (sliding window mechanism) |
+| Termination | Uses **4-way handshake** with FIN and ACK |
+| Header Size | Larger (20+ bytes) due to extra features |
+
+📦 **TCP Header Key Fields**:
+
+- Source & Destination Port (16-bit)
+- Sequence & Acknowledgment Numbers
+- Flags (SYN, ACK, FIN)
+- Window Size (for flow control)
+
+---
+
+## 🚀 UDP – User Datagram Protocol
+
+| Feature | Description |
+| --- | --- |
+| Connectionless | No handshake, data sent immediately |
+| No Reliability | No ACKs, no retransmission if lost |
+| No Sequencing | Packets can arrive in any order, no mechanism to fix |
+| No Flow Control | Sender doesn’t slow down if receiver is overwhelmed |
+| Header Size | Small (8 bytes only) |
+
+📦 **UDP Header Fields**:
+
+- Source & Destination Port
+- Length
+- Checksum
+
+---
+
+## 🆚 TCP vs UDP – Comparison Table
+
+| Feature | TCP | UDP |
+| --- | --- | --- |
+| Reliability | Yes (ACKs, retransmissions) | No |
+| Sequencing | Yes | No |
+| Flow Control | Yes (Window size) | No |
+| Connection Setup | Yes (3-way handshake) | No |
+| Overhead | Higher | Lower |
+| Use Cases | File download, web browsing | Video/Voice calls, DNS, games |
+
+---
+
+## 🔌 Port Number Cheat Sheet
+
+| Protocol | Port | Transport |
+| --- | --- | --- |
+| **FTP** | 20, 21 | TCP |
+| **SSH** | 22 | TCP |
+| **Telnet** | 23 | TCP |
+| **SMTP** | 25 | TCP |
+| **HTTP** | 80 | TCP |
+| **POP3** | 110 | TCP |
+| **HTTPS** | 443 | TCP |
+| **DHCP** | 67/68 | UDP |
+| **TFTP** | 69 | UDP |
+| **SNMP** | 161/162 | UDP |
+| **Syslog** | 514 | UDP |
+| **DNS** | 53 | TCP & UDP |
+
+---
+
+## 🧠 Tips for the CCNA Exam
+
+- You must **compare TCP and UDP** (functionally and structurally).
+- Understand **how TCP ensures delivery**: sequence numbers, ACKs, retransmission.
+- Know the **well-known port numbers** and which protocol uses what transport.
+- Learn about **session multiplexing** and how source/destination ports are used.
+
+---
+
+## 📚 Quiz Review Highlights
+
+- TCP provides **error recovery, sequencing, flow control**.
+- UDP is **faster but unreliable**.
+- DNS uses **both TCP and UDP**.
+- Use **ephemeral ports** as source ports.
+- TCP uses **forward acknowledgment** (ack = next expected sequence number).

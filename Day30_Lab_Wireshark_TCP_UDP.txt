@@ -1,0 +1,110 @@
+## 🔍 CCNA Day 31 – Wireshark Basics & TCP/UDP Packet Analysis
+
+---
+
+### 📌 What is Wireshark?
+
+- **Wireshark** is a **packet capture and analysis tool**.
+- Captures **actual network traffic** (not simulated like Packet Tracer).
+- Used by **network engineers** to troubleshoot, inspect protocols, and study traffic behavior.
+- Displays packet-level data with detailed breakdown of:
+    - Ethernet (Layer 2)
+    - IP (Layer 3)
+    - TCP/UDP (Layer 4)
+    - Application protocols (HTTP, DNS, etc.)
+
+🔗 **Download**: [https://www.wireshark.org](https://www.wireshark.org/) (Free)
+
+---
+
+### 🧪 Demo Overview
+
+1. Captured live traffic from PC interface.
+2. Opened **YouTube** to generate HTTPS traffic.
+3. Captured TCP and SSL packets.
+4. Analyzed:
+    - TCP 3-way handshake (SYN, SYN-ACK, ACK)
+    - SSL application data
+    - TCP 4-way termination (FIN, ACK, FIN, ACK)
+    - DNS over UDP
+
+---
+
+### 🔎 Key Wireshark Features
+
+- **Packet List**: Summary of all packets (top pane).
+- **Packet Details**: Protocol headers broken down (middle pane).
+- **Packet Bytes**: Hexadecimal and ASCII view (bottom pane).
+- **Filters**: Narrow down traffic by protocol, port, IP, etc.
+
+Example filters:
+
+```bash
+bash
+CopyEdit
+tcp.port == 443
+udp.port == 53
+ip.addr == 8.8.8.8
+tcp
+udp
+
+```
+
+---
+
+### 🧵 TCP 3-Way Handshake (Captured)
+
+- Message 1: `SYN` → from PC to Server (source port = random ephemeral, dest port = 443)
+- Message 2: `SYN-ACK` → from Server to PC
+- Message 3: `ACK` → from PC to Server
+
+### TCP Header Observations:
+
+- **Relative sequence numbers**: Displayed as 0, 1, 2 for readability.
+- **Real sequence numbers**: Displayed below in expanded TCP segment.
+- **Window Size**: Controls flow of data.
+
+### Notes:
+
+- Wireshark shows relative numbers for ease of analysis.
+- TCP uses **forward acknowledgment**: ACK = next expected byte.
+
+---
+
+### 🔐 SSL Traffic (TCP Port 443)
+
+- After handshake, most traffic was labeled **SSL** (encrypted HTTPS).
+- TCP is still used underneath (Wireshark parses and labels upper-layer protocol).
+
+---
+
+### 🔚 TCP 4-Way Termination (Captured)
+
+- FIN from one side
+- ACK from the other
+- FIN from second side
+- Final ACK
+
+📝 Extra ACKs may appear (beyond simplified version taught), but the basic concept remains the same.
+
+---
+
+### 📦 UDP Segment (DNS)
+
+- Captured a **DNS query** (UDP-based).
+- PC used **ephemeral port** as source, destination port was `53`.
+- DNS message visible in decoded UDP payload.
+
+---
+
+### 🏠 Homework Task (Highly Recommended)
+
+1. Download Wireshark.
+2. Capture your own traffic.
+3. Visit websites during capture.
+4. Stop capture and:
+    - Find a **TCP 3-way handshake**.
+    - Find a **TCP 4-way termination**.
+    - Identify **UDP traffic** (e.g., DNS).
+
+🧠 Tip: Use filters like `tcp`, `udp`, `dns`, or `http` to simplify analysis.

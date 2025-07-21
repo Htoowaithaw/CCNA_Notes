@@ -1,0 +1,115 @@
+# **Day 55 | Wireless Fundamentals | CCNA 200-301 Complete Course**
+
+### 🛫 Simplified (Aviation Ground Handling Style)
+
+**Think of a wireless network like an airport terminal where passengers (data) move without physical walkways (cables).**
+
+### 🌀 What is RF (Radio Frequency)?
+
+- Wireless = Invisible waves, like radio towers.
+- Wi-Fi uses RF waves (like how planes use radio towers).
+- Frequencies = How fast the waves vibrate (like runway numbers = direction).
+
+### 📶 Wi-Fi Standards (Like Aircraft Models)
+
+- Defined by IEEE 802.11 (like Boeing 737 or Airbus A320 models).
+- Older models: 802.11a/b/g
+- Newer, faster ones: n (Wi-Fi 4), ac (Wi-Fi 5), ax (Wi-Fi 6)
+
+### 📡 How Wireless is Different from Wired
+
+- No cables = anyone nearby can "hear" the signal.
+- So we use encryption to keep data private (like ID checks at boarding gate).
+- Uses CSMA/CA: devices listen first, then talk, to avoid overlap (like ATC telling which plane goes next).
+
+### 📡 Frequencies and Channels
+
+- Two main runways: 2.4GHz and 5GHz bands.
+- 2.4GHz = longer range, more crowded (like budget airline terminal).
+- 5GHz = shorter range, faster, less crowded (like premium gates).
+- Only use channels 1, 6, 11 in 2.4GHz to avoid interference.
+
+### 🏷️ SSID (Service Set Identifier)
+
+- SSID = network name (like airline name: “Singapore Airlines Wi-Fi”).
+- BSSID = unique ID of each access point (like aircraft tail number).
+- You see SSIDs when connecting to Wi-Fi.
+
+### 🏢 Service Sets (Network Layouts)
+
+- IBSS = ad-hoc, direct device-to-device (like airport buses between terminals).
+- BSS = devices connect through one access point (like check-in counters).
+- ESS = many APs connected (like multiple terminals with same airline).
+- MBSS = mesh – APs talk to each other wirelessly (like cargo carts forming their own delivery route).
+
+### 🛰️ Access Point Modes
+
+- Repeater: extends Wi-Fi range (like baggage cart relaying luggage).
+- Workgroup Bridge: connects wired devices wirelessly (like a pushback tug connecting to Wi-Fi).
+- Outdoor Bridge: long-distance wireless link (like air-bridge between two distant terminals).
+
+---
+
+### 🧠 Technical (IT Style for CCNA)
+
+### 📡 Radio Frequency (RF) and Wi-Fi Basics
+
+- RF = electromagnetic waves used in wireless communication.
+- Wi-Fi standards: IEEE 802.11a/b/g/n/ac/ax.
+- Frequencies used: 2.4 GHz and 5 GHz bands.
+
+### ⚙️ CSMA/CA
+
+- Carrier Sense Multiple Access with Collision Avoidance.
+- Devices listen before transmitting to avoid collisions (unlike CSMA/CD in wired Ethernet).
+
+### 🧱 Signal Behavior
+
+- Wireless signal is affected by:
+    - **Absorption** (walls),
+    - **Reflection** (metal surfaces),
+    - **Refraction** (glass/water),
+    - **Diffraction** (bends around obstacles),
+    - **Scattering** (dust, uneven surfaces).
+
+### 📶 Wi-Fi Bands and Channels
+
+- 2.4 GHz band: 11-14 channels (only 1, 6, 11 non-overlapping).
+- 5 GHz band: more channels, all non-overlapping.
+- Channel overlap causes interference, degrading performance.
+
+### 📋 Wi-Fi Standards Summary
+
+| Standard | Band | Max Data Rate | AKA |
+| --- | --- | --- | --- |
+| 802.11b | 2.4 GHz | 11 Mbps |  |
+| 802.11g | 2.4 GHz | 54 Mbps |  |
+| 802.11n | 2.4/5 GHz | 600 Mbps | Wi-Fi 4 |
+| 802.11ac | 5 GHz | 6.9 Gbps | Wi-Fi 5 |
+| 802.11ax | 2.4/5/6 GHz | 9.6 Gbps | Wi-Fi 6 |
+
+### 📶 Service Sets
+
+- **IBSS**: Independent Basic Service Set (ad-hoc, no AP).
+- **BSS**: Basic Service Set (clients connect to a single AP).
+    - BSSID = AP’s MAC address.
+    - BSA = coverage area of AP.
+- **ESS**: Extended Service Set (multiple BSSs, same SSID, different BSSID).
+    - Enables roaming between APs with seamless connectivity.
+- **MBSS**: Mesh Basic Service Set (APs connect to each other wirelessly).
+    - RAP = Root AP (connected to wired DS).
+    - MAPs = Mesh APs.
+
+### 🏗️ Distribution System (DS)
+
+- The wired LAN the AP connects to.
+- SSIDs map to VLANs.
+    - Example: SSID "CorpWiFi" = VLAN 10, "GuestWiFi" = VLAN 20.
+
+### 📡 AP Modes
+
+- **Repeater Mode**: forwards traffic to extend range.
+- **Workgroup Bridge (WGB)**:
+    - Connects wired clients to wireless network.
+    - Universal WGB = 1 client, Cisco WGB = multiple.
+- **Outdoor Bridge**: connects distant networks wirelessly using directional antennas.

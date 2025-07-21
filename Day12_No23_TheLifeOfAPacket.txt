@@ -1,0 +1,94 @@
+# **No.23,Day 12 | The Life of a Packet | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - CCNA: Life of a Packet**
+
+**Overview:**
+This video summarizes the full journey of a packet as it travels from a host on one network to a host on another. The walkthrough integrates concepts like encapsulation, de-encapsulation, ARP, and MAC address learning.
+
+---
+
+**Topology Used:**
+
+- PC1 (192.168.1.1, MAC: 1111)
+- PC4 (192.168.4.1, MAC: 4444)
+- R1 (G0/2: MAC AAAA, G0/0: MAC BBBB)
+- R2 (G0/0: MAC CCCC, G0/1: MAC DDDD)
+- R4 (G0/1: MAC EEEE, G0/2: MAC FFFE)
+- Switches (MACs not shown, but they learn MAC addresses dynamically)
+
+Path: PC1 → R1 → R2 → R4 → PC4
+
+---
+
+**Process Walkthrough:**
+
+1. **PC1 to R1 (Default Gateway):**
+    - Packet destined to 192.168.4.1 is outside PC1's subnet.
+    - PC1 sends ARP broadcast to find MAC of default gateway (R1 G0/2).
+    - R1 replies with its MAC (AAAA).
+    - PC1 sends Ethernet frame to R1 with:
+        - Src IP: 192.168.1.1
+        - Dest IP: 192.168.4.1
+        - Src MAC: 1111
+        - Dest MAC: AAAA
+2. **R1 to R2:**
+    - R1 de-encapsulates the Ethernet frame, checks its routing table.
+    - Finds next-hop 192.168.12.2 (R2 G0/0).
+    - Performs ARP to find MAC of 192.168.12.2.
+    - R2 responds with MAC CCCC.
+    - R1 encapsulates packet with:
+        - Src MAC: BBBB
+        - Dest MAC: CCCC
+3. **R2 to R4:**
+    - R2 removes L2 header, checks destination IP.
+    - Uses next-hop 192.168.24.4 (R4 G0/1).
+    - Sends ARP request, R4 responds with MAC EEEE.
+    - R2 encapsulates with:
+        - Src MAC: DDDD
+        - Dest MAC: EEEE
+4. **R4 to PC4:**
+    - R4 checks destination IP, directly connected network.
+    - Sends ARP request for PC4.
+    - PC4 responds with MAC 4444.
+    - R4 sends frame with:
+        - Src MAC: FFFE
+        - Dest MAC: 4444
+
+**Important Points:**
+
+- IP header (Layer 3) remains unchanged end-to-end.
+- MAC header (Layer 2) changes hop-by-hop.
+- Switches learn MAC addresses but don’t modify the frame.
+
+---
+
+**Reply Process (PC4 to PC1):**
+
+- Follows the same path in reverse.
+- No ARP needed this time as all MACs are cached.
+- Each router re-encapsulates with appropriate MACs.
+
+---
+
+**Quiz Questions & Answers:**
+
+1. **Dest MAC from PC4?** FFFE (R4 G0/2)
+2. **Src MAC on R1 G0/0?** CCCC (R2 G0/0)
+3. **Src MAC from SW1 G0/1?** AAAA (R1 G0/2)
+4. **Dest IP from R4 G0/1?** 192.168.1.1 (PC1)
+5. **Src IP received on R1 G0/0?** 192.168.4.1 (PC4)
+
+---
+
+**Key Concepts Reinforced:**
+
+- ARP resolves IP to MAC before sending at Layer 2.
+- Encapsulation adds headers; de-encapsulation removes them.
+- MAC address learning by switches is passive.
+- Routers strip and rebuild Layer 2 headers.
+- End hosts only need to know their default gateway to reach remote networks.
+
+---
+
+**Next Steps:**
+Try the accompanying Packet Tracer lab to simulate and analyze this process step-by-step in simulation mode.

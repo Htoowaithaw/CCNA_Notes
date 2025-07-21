@@ -1,0 +1,116 @@
+# **Day 17 | VLANs (Part 2) | CCNA 200-301 Complete Course**
+
+Day 17 – VLANs (Part 2) of Jeremy’s IT Lab CCNA 200-301 course. This includes configurations for trunk ports, native VLANs, and Router-on-a-Stick (ROAS), specifying the device (Switch or Router) for each command.
+
+**🖧 Switch Configurations (SW1 & SW2)**
+
+**1.**
+
+**Configure Trunk Ports**
+
+On SW1 (Interface G0/0):
+
+SW1(config)# interface g0/0
+
+SW1(config-if)# switchport trunk encapsulation dot1q
+
+SW1(config-if)# switchport mode trunk
+
+SW1(config-if)# switchport trunk allowed vlan 10,30
+
+SW1(config-if)# switchport trunk native vlan 1001
+
+- Explanation:
+    - switchport trunk encapsulation dot1q: Sets the trunking protocol to IEEE 802.1Q.
+    - switchport mode trunk: Configures the interface as a trunk port.
+    - switchport trunk allowed vlan 10,30: Allows only VLANs 10 and 30 on the trunk.
+    - switchport trunk native vlan 1001: Sets VLAN 1001 as the native VLAN for untagged traffic.
+- 
+
+On SW2:
+
+- Interface G0/0 (Connected to SW1):
+
+SW2(config)# interface g0/0
+SW2(config-if)# switchport trunk encapsulation dot1q
+SW2(config-if)# switchport mode trunk
+SW2(config-if)# switchport trunk allowed vlan 10,30
+SW2(config-if)# switchport trunk native vlan 1001
+
+- Interface G0/1 (Connected to Router R1):
+
+SW2(config)# interface g0/1
+SW2(config-if)# switchport trunk encapsulation dot1q
+SW2(config-if)# switchport mode trunk
+SW2(config-if)# switchport trunk allowed vlan 10,20,30
+SW2(config-if)# switchport trunk native vlan 1001
+
+- Explanation:
+    - Similar to SW1, but G0/1 includes VLAN 20 to accommodate devices in that VLAN.
+
+**2.**
+
+**Verify Trunk Configuration**
+
+SWx# show interfaces trunk
+
+- Explanation:
+    - Displays trunking information, including allowed VLANs and native VLAN settings.
+
+**🖥️ Router Configuration (R1) – Router-on-a-Stick (ROAS)**
+
+Interface G0/0 Subinterfaces:
+
+R1(config)# interface g0/0
+R1(config-if)# no shutdown
+
+- Explanation:
+    - Ensures the physical interface is active.
+
+Subinterface for VLAN 10:
+
+R1(config)# interface g0/0.10
+R1(config-subif)# encapsulation dot1q 10
+R1(config-subif)# ip address 192.168.1.62 255.255.255.192
+
+Subinterface for VLAN 20:
+
+R1(config)# interface g0/0.20
+R1(config-subif)# encapsulation dot1q 20
+R1(config-subif)# ip address 192.168.1.126 255.255.255.192
+
+Subinterface for VLAN 30:
+
+R1(config)# interface g0/0.30
+R1(config-subif)# encapsulation dot1q 30
+R1(config-subif)# ip address 192.168.1.190 255.255.255.192
+
+- Explanation:
+    - interface g0/0.X: Creates a subinterface for VLAN X.
+    - encapsulation dot1q X: Associates the subinterface with VLAN X.
+    - ip address: Assigns an IP address to the subinterface, typically the last usable IP in the subnet.
+
+Verify Interface Configuration:
+
+R1# show ip interface brief
+
+- Explanation:
+    - Displays the status and IP addresses of all interfaces and subinterfaces.
+
+Verify Routing Table:
+
+R1# show ip route
+
+- Explanation:
+    - Shows the routing table, confirming that the router has routes to each VLAN’s subnet.
+
+**🔍 Additional Notes**
+
+- Native VLAN Consideration:
+    - Changing the native VLAN to an unused VLAN (e.g., VLAN 1001) enhances security by preventing VLAN hopping attacks.
+
+- Trunk Port Security:
+    - Limiting allowed VLANs on trunk ports reduces unnecessary traffic and potential security risks.
+
+- ROAS Efficiency:
+    - Utilizing subinterfaces on a single physical router interface allows inter-VLAN routing without needing multiple physical interfaces.

@@ -1,0 +1,66 @@
+# **Day 62 | Software-Defined Networking | CCNA 200-301 Complete Course**
+
+### 🔹 What is SDN (Software Defined Networking)?
+
+- Imagine if **instead of controlling each network device (switch/router) manually**, you just tell **one central brain (controller)** what you want — and it handles everything for you.
+- SDN **centralizes control**. You don’t log in to every device one by one.
+- **3 layers** in SDN:
+    - **Application Layer**: Where you (or your program) tell the network what you want (e.g. “keep guests away from staff network”).
+    - **Control Layer**: The SDN controller (like Cisco DNA Center) that understands your instructions and calculates what to do.
+    - **Infrastructure Layer**: The actual switches and routers that forward the traffic.
+
+---
+
+### 🔹 Cisco SD-Access = SDN for office LAN networks
+
+- Automates campus (office) networks — both wired and wireless.
+- Main brain: **DNA Center (DNAC)** — the SDN controller.
+- It replaces the old way of setting up switches one by one.
+- You can define rules and behaviors (like “staff can’t access payroll server”) — DNAC does the heavy lifting.
+
+---
+
+### 🔹 Fabric, Underlay, Overlay (3 key words)
+
+- **Underlay** = The **real physical network** — cables, switches, routers.
+- **Overlay** = The **virtual tunnels** (VXLAN) used to move data securely across the network.
+- **Fabric** = The combination of **underlay + overlay**. The full working SD-Access network.
+
+---
+
+### 🔹 Switch Roles in SD-Access
+
+- **Edge Node**: Connects to users (like access switch).
+- **Border Node**: Connects to external networks (like Internet or WAN).
+- **Control Node**: Uses **LISP** to help find which user is connected where.
+
+---
+
+### 🔹 DNA Center (DNAC)
+
+- A powerful **central software** (runs on Cisco UCS server) that:
+    - Manages all network devices at once.
+    - Shows alerts, software updates, and policy violations.
+    - Has a GUI and supports REST API.
+    - Understands your **intent** and applies it (e.g., block guest Wi-Fi from accessing flight database).
+
+---
+
+### 🔹 Benefits of DNA Center vs Traditional Network Management
+
+| Traditional Method | DNA Center (Modern Method) |
+| --- | --- |
+| Manual setup for each device | One central place to manage everything |
+| Higher risk of human error | More accurate, automated, and faster |
+| Hard to understand old ACL rules | Clean, visual policy grids with explanations |
+| Devices updated one-by-one | Updates pushed from one dashboard |
+
+---
+
+### 🔹 Example Use in Your dnata Project
+
+Imagine if your dnata system had a central control where:
+
+- You set a policy: **“MC Report can be seen only by Shift Supervisor”**.
+- The system enforces that on every device (laptop, phone, portal).
+- You don’t need to code ACLs — you just define **intent**, and the system handles the rest.    

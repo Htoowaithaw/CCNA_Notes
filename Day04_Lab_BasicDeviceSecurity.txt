@@ -1,0 +1,140 @@
+# 🧪 Packet Tracer Lab - Basic IOS CLI Configurations (CCNA Notes)
+
+---
+
+## 1. Lab Overview
+
+- Hands-on CLI practice in Cisco Packet Tracer.
+- Devices:
+    - **R1** (Router)
+    - **SW1** (Switch)
+- **Goal**: Practice basic CLI navigation and security configurations.
+
+---
+
+## 2. Lab Setup and Tips
+
+- In Packet Tracer, you can click the device directly to access the CLI (no console cable setup needed).
+- **Real life**: You must connect to the device via console cable from a laptop.
+
+---
+
+## 3. Step-by-Step Lab Tasks
+
+---
+
+### 🔹 Step 1: Set Hostnames
+
+| Command | Purpose |
+| --- | --- |
+| `enable` or `en` | Enter privileged exec mode |
+| `configure terminal` or `conf t` | Enter global configuration mode |
+| `hostname R1` (or SW1) | Set device hostname |
+
+✅ Change router's hostname to `R1`.
+
+✅ Change switch's hostname to `SW1`.
+
+---
+
+### 🔹 Step 2: Set an Unencrypted Enable Password
+
+| Command | Purpose |
+| --- | --- |
+| `enable password CCNA` | Set an unencrypted password for privileged EXEC mode |
+
+✅ Protect access to privileged EXEC mode.
+
+---
+
+### 🔹 Step 3: Test the Password
+
+- `exit` twice → Return to user EXEC mode.
+- `enable` → Prompted for password.
+- Correct password = access granted.
+- Three failed attempts = "bad secrets" error.
+
+---
+
+### 🔹 Step 4: View the Password in Running Config
+
+| Command | Purpose |
+| --- | --- |
+| `show running-config` or `sh run` | View current configuration |
+
+✅ Password visible in **clear text** initially.
+
+---
+
+### 🔹 Step 5: Enable Password Encryption
+
+| Command | Purpose |
+| --- | --- |
+| `service password-encryption` | Encrypt passwords in the config |
+
+✅ Now passwords are not in clear text (Type 7 encryption).
+
+---
+
+### 🔹 Step 6: Verify Password Encryption
+
+- `do show running-config` from global config mode.
+- **Type 7** encryption visible before the password.
+
+---
+
+### 🔹 Step 7: Configure a More Secure Enable Password
+
+| Command | Purpose |
+| --- | --- |
+| `enable secret Cisco` | Set a secure, MD5-encrypted password |
+
+✅ "Enable secret" uses **Type 5 encryption** (MD5).
+
+---
+
+### 🔹 Step 8: Test the Enable Secret Password
+
+- `exit` twice → Return to user EXEC mode.
+- `enable` → Enter password:
+    - `CCNA` → Fails.
+    - `Cisco` → Success.
+- **Note**: If both `enable password` and `enable secret` are set, **only `enable secret` is valid**.
+
+---
+
+### 🔹 Step 9: View Passwords Again
+
+- `show running-config`
+- Observations:
+    - `enable password` → Encrypted (Type 7).
+    - `enable secret` → Stronger encryption (Type 5).
+
+---
+
+### 🔹 Step 10: Save the Configuration
+
+| Command | Purpose |
+| --- | --- |
+| `write` | Save running-config to startup-config |
+| `write memory` | Same as above |
+| `copy running-config startup-config` | Same as above |
+
+✅ Saved successfully.
+✅ `show startup-config` confirms saved passwords and settings.
+
+---
+
+## 4. Key Command List Review
+
+| Command | Purpose |
+| --- | --- |
+| `enable` or `en` | Enter privileged exec mode |
+| `configure terminal` or `conf t` | Enter global configuration mode |
+| `hostname [name]` | Set hostname |
+| `enable password [password]` | Set unencrypted password |
+| `service password-encryption` | Encrypt passwords (weak encryption) |
+| `enable secret [password]` | Set secure encrypted password (MD5) |
+| `do show running-config` | View running config from any config mode |
+| `show startup-config` | View saved configuration |
+| `write`, `write memory`, or `copy running-config startup-config` | Save running config |

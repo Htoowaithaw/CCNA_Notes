@@ -1,0 +1,93 @@
+# **Day 23 | EtherChannel | CCNA 200-301 Complete Course**
+
+**CCNA Topic Summary: EtherChannel (Jeremy's IT Lab Day 23)**
+
+---
+
+---
+
+### What Is EtherChannel?
+
+- **EtherChannel** lets you group multiple physical links into **one logical link**.
+- Think of 4 cables between switches working together as *1 super cable*.
+- Benefit: Increases bandwidth, adds redundancy (if one link fails, the others still work).
+
+### Why Is EtherChannel Needed?
+
+- Without EtherChannel, **Spanning Tree Protocol (STP)** disables extra links to avoid loops.
+- This wastes bandwidth because only 1 link is active; the rest are on standby.
+- EtherChannel solves this: STP sees the bundle as a single interface, so **all links stay active**.
+
+### Key EtherChannel Terms
+
+- **Port Channel / EtherChannel / Link Aggregation Group (LAG)** = Same thing
+- **Flows** = Traffic between two devices (PC1 → Server1 is one flow)
+- EtherChannel load-balances flows across physical interfaces using:
+    - Source MAC
+    - Destination MAC
+    - Source + Destination MAC (or IP)
+
+### Load Balancing
+
+- Traffic in the same flow uses the **same physical link** to avoid packet misorder.
+- Load balancing method can be MAC- or IP-based, depending on the switch.
+
+### Configuration Methods
+
+There are 3 ways to configure EtherChannel:
+
+1. **PAgP (Cisco proprietary)**
+    - Modes: **auto** (passive), **desirable** (active)
+    - Only works between Cisco switches
+2. **LACP (IEEE standard, preferred)**
+    - Modes: **passive**, **active**
+    - Works between different vendors (Cisco, Juniper, etc)
+3. **Static (no negotiation)**
+    - Mode: **on**
+    - Risk: if not configured exactly the same, it won’t work
+
+### Mode Compatibility (MUST KNOW)
+
+- auto + auto = ❌ No EtherChannel
+- auto + desirable = ✅ Yes
+- desirable + desirable = ✅ Yes
+- passive + passive = ❌ No
+- active + passive = ✅ Yes
+- active + active = ✅ Yes
+- on + on = ✅ Yes
+- on + [any other mode] = ❌ No
+
+### Requirements for Member Interfaces
+
+- All interfaces in the channel must have:
+    - Same speed
+    - Same duplex
+    - Same switchport mode (trunk or access)
+    - Same allowed VLANs if trunking
+
+### Verification Commands
+
+- `show etherchannel summary`
+    - Flags: S = switchport (Layer 2), U = in use, P = bundled, D = down, s = suspended
+- `show etherchannel port-channel`
+    - Shows mode used (active/passive/etc)
+- `show interfaces trunk`
+    - EtherChannel interface (e.g. Po1) should show as trunk
+- `show etherchannel load-balance`
+    - Shows current load-balancing algorithm
+
+### Layer 3 EtherChannel
+
+- Convert interfaces to **routed ports** with `no switchport`
+- Then group into a port-channel and assign IP to the virtual interface
+- Great for **avoiding STP** completely in Layer 3 designs
+
+---
+
+### TL;DR (Too Long; Didn’t Read)
+
+- EtherChannel = Multiple links = 1 logical interface
+- Solves STP bandwidth issue
+- Use LACP unless Cisco-only setup (then PAgP OK)
+- Use compatible modes (active/active, active/passive, etc)
+- Same config needed on all member interfaces

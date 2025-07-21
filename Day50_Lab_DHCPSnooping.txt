@@ -1,0 +1,133 @@
+## 🔧 **CCNA Lab – DHCP Snooping Configuration**
+
+### 🖥️ **Lab Topology**
+
+- **R1**: DHCP Server
+- **SW1**: Connected to R1 (G0/2) and SW2
+- **SW2**: Connected to SW1 (G0/1) and PC1
+- **VLAN 1** used throughout
+
+---
+
+### ✅ **Step 1 – Configure R1 as DHCP Server**
+
+```bash
+bash
+CopyEdit
+enable
+conf t
+
+ip dhcp excluded-address 192.168.1.1 192.168.1.9
+
+ip dhcp pool POOL1
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+
+```
+
+---
+
+### ✅ **Step 2 – Enable DHCP Snooping on SW1**
+
+```bash
+bash
+CopyEdit
+enable
+conf t
+
+# Enable globally
+ip dhcp snooping
+
+# Enable for VLAN 1
+ip dhcp snooping vlan 1
+
+# Trust G0/2 (interface to DHCP server)
+interface g0/2
+ ip dhcp snooping trust
+exit
+
+```
+
+---
+
+### ✅ **Step 3 – Enable DHCP Snooping on SW2**
+
+```bash
+bash
+CopyEdit
+enable
+conf t
+
+ip dhcp snooping
+ip dhcp snooping vlan 1
+
+# Trust uplink to SW1
+interface g0/1
+ ip dhcp snooping trust
+exit
+
+```
+
+---
+
+### ⚠️ **Issue: PC1 Cannot Get IP Address**
+
+- DHCP Discover stops at SW1
+- Simulation shows **SW2 added Option 82**
+- **SW1 dropped the packet** on untrusted port due to Option 82
+
+Syslog Example:
+
+```
+vbnet
+CopyEdit
+DHCP_SNOOPING: DHCP packet with option82 received on untrusted port
+
+```
+
+---
+
+### ✅ **Step 4 – Disable Option 82 on Both Switches**
+
+**On SW1:**
+
+```bash
+bash
+CopyEdit
+no ip dhcp snooping information option
+
+```
+
+**On SW2:**
+
+```bash
+bash
+CopyEdit
+no ip dhcp snooping information option
+
+```
+
+---
+
+### 🔄 **Step 5 – Test DHCP on PC1**
+
+```bash
+bash
+CopyEdit
+ipconfig /renew
+
+```
+
+✅ Result: PC1 successfully receives IP address from R1
+
+---
+
+### 🧪 **Summary of Commands**
+
+| Device | Command | Purpose |
+| --- | --- | --- |
+| All | `ip dhcp snooping` | Enable DHCP Snooping globally |
+| All | `ip dhcp snooping vlan 1` | Enable on VLAN 1 |
+| SW1/2 | `no ip dhcp snooping information option` | Disable Option 82 |
+| SW1 | `int g0/2 \n ip dhcp snooping trust` | Trust port to R1 |
+| SW2 | `int g0/1 \n ip dhcp snooping trust` | Trust uplink to SW1 |

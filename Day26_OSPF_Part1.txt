@@ -1,0 +1,138 @@
+# **Day 26 | OSPF Part 1 | CCNA 200-301 Complete Course**
+
+## 🛰️ CCNA Day 26 – OSPF Basics (Open Shortest Path First)
+
+### 🧠 Key Focus:
+
+Topic 3.4 – *Configure and verify single-area OSPFv2*
+
+Subtopics: Neighbor adjacencies, point-to-point, broadcast, and router ID
+
+---
+
+### 📌 OSPF Overview
+
+- **OSPF = Open Shortest Path First**
+- Uses **Dijkstra’s SPF Algorithm** to find the shortest path
+- A **Link-State** protocol (unlike RIP/EIGRP which are distance vector)
+- **OSPFv2** for IPv4 (exam relevant), **OSPFv3** for IPv6
+
+---
+
+### 🔄 Link-State Routing Protocol Characteristics
+
+- Each router creates a **complete map (LSDB)** of the network
+- Routers send **LSAs (Link-State Advertisements)**
+- LSAs are **flooded** to all routers in the area
+- Routers calculate best paths independently using the SPF algorithm
+
+---
+
+### 🗂️ LSDB & LSA
+
+- **LSA**: Contains info like Router ID (RID), network, cost
+- **LSDB**: Database of all LSAs – **identical** in the same area
+- LSAs have an **aging timer** (30 mins) → refreshed periodically
+
+---
+
+### 🔁 OSPF Basic Operation (3-Step Process)
+
+1. **Form Neighbor Adjacencies**
+2. **Exchange LSAs**
+3. **Calculate Routes using SPF** and populate routing table
+
+---
+
+### 🧭 OSPF Areas
+
+- Breaks large networks into smaller sections
+- **Area 0 = Backbone Area** (mandatory in multi-area setups)
+- **Each area has its own LSDB**
+- **Small networks** can be single-area (typically Area 0)
+
+### 🏷️ Area Terminology
+
+- **Internal Router** – all interfaces in 1 area
+- **ABR (Area Border Router)** – connects multiple areas
+- **Backbone Router** – any router with interface in Area 0
+- **ASBR (Autonomous System Boundary Router)** – connects OSPF to external networks (e.g., Internet)
+- **Intra-area route** – destination in same area
+- **Interarea route** – destination in another area
+
+---
+
+### 📏 OSPF Area Design Rules
+
+1. Areas must be **contiguous**
+2. All non-backbone areas must connect to **Area 0 via an ABR**
+3. Interfaces in the **same subnet must be in the same area**
+
+---
+
+### ⚙️ OSPF Configuration (Single Area)
+
+```bash
+bash
+CopyEdit
+R1(config)# router ospf 1         # Start OSPF process (ID = locally significant)
+R1(config-router)# network 10.0.12.0 0.0.0.15 area 0  # Wildcard mask to match interfaces
+
+```
+
+### 🧪 Notes:
+
+- Process ID is **local**; does not need to match between routers
+- Area number is specified **per interface** in `network` command
+- OSPF uses **wildcard masks**
+
+---
+
+### 🛑 passive-interface Command
+
+- Prevents sending **Hello packets** on specified interface
+- Still advertises **subnet info** to neighbors
+
+---
+
+### 🌐 Default Route in OSPF
+
+```bash
+bash
+CopyEdit
+R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2
+R1(config-router)# default-information originate
+
+```
+
+- Makes R1 an **ASBR** by injecting default route into OSPF
+
+---
+
+### 🔍 Useful Commands
+
+- `show ip protocols`
+- `show ip ospf neighbor`
+- `clear ip ospf process` – resets OSPF (only for lab use!)
+- `router-id <ip>` – manually set Router ID
+
+### 📋 Router ID Priority:
+
+1. Manually configured
+2. Highest loopback IP
+3. Highest physical interface IP
+
+---
+
+### ⚖️ OSPF Load Balancing
+
+- Supports **Equal-Cost Multi-Path (ECMP)** by default (max 4 paths)
+- Use `maximum-paths <value>` to change
+
+---
+
+### 📚 Quiz Review
+
+- ❌ B: Single-area OSPF does **not** have to use Area 0
+- ❌ F: Process ID doesn’t have to match area number
+- ✅ A, C, D, E: All are valid facts about OSPF

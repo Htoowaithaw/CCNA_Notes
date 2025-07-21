@@ -1,0 +1,149 @@
+# **Day 46 | QoS (Part 1) | CCNA 200-301 Complete Course**
+
+**Day 46 – Voice VLAN, PoE, and Intro to QoS**
+
+---
+
+### 🧒 Kid-Style Explanation
+
+Imagine you're in a classroom where everyone is trying to talk at the same time. The teacher (network switch) decides to give special attention to the students who are calling their parents on the phone (voice traffic). That's what **QoS (Quality of Service)** does – it helps important conversations happen clearly.
+
+Also, imagine the phones don’t have batteries. Instead of plugging them into a wall, they get power from the classroom's desks through their wires – that's **PoE (Power over Ethernet)**.
+
+And, instead of each student needing a separate desk (switchport), a student and their phone can sit at the same desk. That's how **Voice VLANs** work – they let one cable do two jobs: data for the student (PC) and voice for the phone.
+
+---
+
+### 👨‍💻 Technical Breakdown
+
+### Topics Covered
+
+- IP Phones & Voice VLANs
+- Power over Ethernet (PoE)
+- QoS (Quality of Service)
+- Queuing, TCP Global Synchronization, RED/WRED
+
+---
+
+### 📞 IP Phones & Voice VLANs
+
+- IP phones use **VoIP** to send audio data in **IP packets** over the network.
+- Instead of connecting each device to its own switchport, IP phones have an internal 3-port switch:
+    - **Uplink** to the switch
+    - **Downlink** to the PC
+    - Internal port for the phone itself
+
+### Voice VLAN Configuration:
+
+```
+interface g0/0
+ switchport mode access
+ switchport access vlan 10       ! Data VLAN for PC
+ switchport voice vlan 11        ! Voice VLAN for IP Phone
+```
+
+- **PC traffic**: Untagged (VLAN 10)
+- **Phone traffic**: Tagged with VLAN 11 (learned via CDP)
+- Even though multiple VLANs pass through the port, it's still an **access port**, not a trunk port.
+
+Use these commands to verify:
+
+```
+show interfaces g0/0 switchport
+show interfaces trunk
+```
+
+---
+
+### 🔌 Power over Ethernet (PoE)
+
+- **PoE** lets switches (PSE – Power Sourcing Equipment) send power through Ethernet cables to devices (PD – Powered Devices) like IP phones.
+- No separate power cable needed.
+
+### Safety Features – Power Policing:
+
+- Default behavior:
+
+```
+power inline police                     ! Same as: power inline police action err-disable
+```
+
+- If PD draws too much power:
+    - Interface goes into **err-disabled** state
+    - Recovery:
+
+```
+shutdown
+no shutdown
+```
+
+- Alternate behavior:
+
+```
+power inline police action log         ! Logs the event and restarts interface, not err-disable
+```
+
+### PoE Standards:
+
+- Cisco ILP: 7W using unused wire pairs (4,5,7,8)
+- IEEE 802.3af (PoE): Up to 15.4W
+- IEEE 802.3at (PoE+): Up to 30W
+- IEEE 802.3bt:
+    - Type 3: Up to 60W
+    - Type 4: Up to 100W
+
+---
+
+### 🎯 Introduction to QoS
+
+QoS = Mechanism to prioritize critical traffic (like voice & video).
+
+### 4 Characteristics QoS Manages:
+
+1. **Bandwidth** – Reserve % of link for traffic type
+2. **Delay** – Time taken for traffic to go from source to destination
+3. **Jitter** – Variation in delay
+4. **Loss** – Packets dropped
+
+### Recommended Standards for Voice:
+
+- One-way delay: ≤ 150 ms
+- Jitter: ≤ 30 ms
+- Loss: ≤ 1%
+
+---
+
+### 🧮 Queuing
+
+If traffic arrives faster than it can be sent, it’s queued.
+
+- Default behavior: **FIFO (First In, First Out)**
+- If queue is full: packets get dropped (**Tail Drop**)
+
+### Problem: **TCP Global Synchronization**
+
+- All TCP hosts slow down → then all speed up → repeat
+- Causes inefficient, wavy traffic pattern
+
+---
+
+### 🛑 RED & WRED
+
+- **RED (Random Early Detection)**:
+    - Starts dropping packets randomly before queue is full to avoid tail drop
+- **WRED (Weighted RED)**:
+    - Prioritizes what gets dropped
+    - E.g., drop FTP before VoIP when queue fills
+
+---
+
+### ✅ Quiz Recap
+
+1. **Tagged voice VLAN** via CDP, data VLAN is untagged
+2. **Power policing** default action = err-disable
+3. **Voice QoS standards**:
+    - Delay ≤ 150ms
+    - Jitter ≤ 30ms
+    - Loss ≤ 1%
+4. **Tail drop leads to TCP global synchronization**
+5. **Default queuing method** = FIFO

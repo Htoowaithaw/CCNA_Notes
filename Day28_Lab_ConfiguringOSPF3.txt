@@ -1,0 +1,160 @@
+### 🔧 Lab Overview
+
+- Focus: OSPF configuration and troubleshooting in a multi-router topology.
+- Tools used: Packet Tracer & Boson NetSim.
+- Concepts covered:
+    - Serial and Ethernet OSPF configuration.
+    - Neighbor adjacency troubleshooting.
+    - Network type mismatches.
+    - Hello/Dead timer mismatches.
+    - Default route advertisement via OSPF.
+    - LSA verification.
+
+---
+
+### 🧱 Step-by-Step: Packet Tracer OSPF Lab
+
+### 🔹 Step 1 – Basic OSPF Configuration
+
+**Tasks:**
+
+- Configure the serial link between R1 and R2.
+- Set IP addresses, enable interfaces.
+- Configure OSPF (Process ID 1, Area 0).
+
+**Key Notes:**
+
+- R1 is the DCE – use `clock rate 128000`.
+- Use `ip ospf 1 area 0` directly on interfaces.
+- Serial link uses HDLC by default → network type: **point-to-point**.
+- Ethernet uses **broadcast** network type.
+
+---
+
+### 🔹 Step 2 – R4 not learning 10.0.2.0/24 from R3
+
+**Issue:**
+
+- R3 and R4 had mismatched OSPF network types:
+    - R3: `point-to-point`
+    - R4: `broadcast` (default on Ethernet)
+- Caused route learning failure even with full adjacency.
+
+**Fix:**
+
+- Removed point-to-point config on R3:
+    
+    ```bash
+    bash
+    CopyEdit
+    no ip ospf network point-to-point
+    
+    ```
+    
+
+---
+
+### 🔹 Step 3 – R5 not forming neighbor relationships
+
+**Issue:**
+
+- R2 and R4 can't form OSPF neighbors with R5.
+- R5's Hello/Dead timers:
+    - Hello = 5s, Dead = 20s (non-default)
+- R2/R4 use default (Hello = 10s, Dead = 40s)
+
+**Fix:**
+
+```bash
+bash
+CopyEdit
+no ip ospf hello-interval
+no ip ospf dead-interval
+
+```
+
+- Restored R5 timers to defaults → adjacency formed.
+
+---
+
+### 🔹 Step 4 – No default route to Internet
+
+**Issue:**
+
+- PC1 and PC2 can't reach 8.8.8.8.
+- R5 has `default-information originate` configured but no static default route.
+
+**Fix:**
+
+```bash
+bash
+CopyEdit
+ip route 0.0.0.0 0.0.0.0 203.0.113.2
+
+```
+
+- This allows R5 to advertise a Type 5 (AS-External) LSA.
+
+---
+
+### 🔹 Step 5 – Verify LSDB
+
+**Command:**
+
+```bash
+bash
+CopyEdit
+show ip ospf database
+
+```
+
+**Expected Output:**
+
+- Type 1: Router LSAs (one per router)
+- Type 2: Network LSAs (from DRs on multi-access segments)
+- Type 5: External LSA from R5 advertising default route
+
+---
+
+### 💡 Boson NetSim Lab Summary: OSPF Routes
+
+### 🧪 Objectives:
+
+- Practice basic OSPF configuration.
+- Verify adjacencies and routing tables.
+
+### 📋 Tasks:
+
+1. Configure hostnames and IPs for R1 & R2.
+2. Confirm DCE/DTE on serial interfaces.
+3. Configure OSPF using `router ospf 1` and `network` commands.
+4. Verify OSPF adjacency via `show ip ospf neighbor`.
+5. Check routing tables for learned routes.
+6. Verify full connectivity with ping between HostA and HostB.
+
+### 🧰 Commands Used:
+
+```bash
+bash
+CopyEdit
+show ip route
+show ip ospf neighbor
+show ip ospf interface
+show controllers s0/0
+router ospf 1
+network x.x.x.x x.x.x.x area 0
+
+```
+
+---
+
+### ✅ Key Takeaways
+
+| Concept | Notes |
+| --- | --- |
+| OSPF Network Types | Must match on both ends of link, else LSAs may not be exchanged. |
+| Hello/Dead Timers | Must match for neighbor adjacency. |
+| `default-information originate` | Requires a default route to advertise it. |
+| LSAs to Know | Type 1 (Router), Type 2 (Network), Type 5 (AS-External) |
+| DR/BDR Election | Only applies to broadcast and non-broadcast networks. |
+| Serial Interface Setup | DCE side requires `clock rate`; default encapsulation is HDLC. |

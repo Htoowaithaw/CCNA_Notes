@@ -1,0 +1,107 @@
+# **Day 40 | SNMP | CCNA 200-301 Complete Course**
+
+**Day 40 - SNMP (Simple Network Management Protocol) Notes**
+
+---
+
+### 👶 SNMP Explained Like a Kid
+
+Imagine you're a teacher (NMS) and you want to keep track of all your students (routers/switches). Some students raise their hand to tell you something is wrong, some just wait for you to ask how they're doing, and sometimes you tell them to fix their work.
+
+- Students = **Managed Devices** (routers/switches)
+- Teacher = **NMS (Network Management Station)**
+- Raise hand = **Trap or Inform** ("Hey, my interface went down!")
+- Teacher asking = **Get / GetNext / GetBulk** ("What's your hostname? What's your CPU load?")
+- Teacher telling = **Set** ("Change your hostname to SW10.")
+
+SNMP is the way the teacher and students communicate in a smart classroom network.
+
+---
+
+### 🧠 Technical Breakdown of SNMP (CCNA Level)
+
+### 📌 SNMP Purpose
+
+- Standard protocol for monitoring and managing network devices.
+- Helps collect info, alert admins to problems, and change device configurations remotely.
+
+### 🧱 SNMP Devices
+
+1. **Managed Devices**: Routers, switches, firewalls (run SNMP agent).
+2. **NMS (Network Management Station)**: Server or PC that runs SNMP manager software.
+
+### ⚙️ SNMP Components
+
+- **SNMP Agent**: Software on managed device that communicates with NMS.
+- **SNMP Manager**: Software on NMS that sends/receives SNMP messages.
+- **MIB (Management Information Base)**: Database of info (OIDs) on the managed device (e.g. hostname, interface status).
+- **OID (Object Identifier)**: Unique ID for each variable in MIB. Hierarchical structure.
+
+### 🔗 Common SNMP Operations
+
+1. **Get / GetNext / GetBulk** – Manager reads device data.
+2. **Set** – Manager changes a variable on the device.
+3. **Trap / Inform** – Device sends alert to manager.
+4. **Response** – Sent in reply to Get, Set, or Inform.
+
+### 🔐 SNMP Versions
+
+- **v1**: Basic, minimal security.
+- **v2c**: Commonly used, adds GetBulk. Uses community strings.
+- **v3**: Most secure, adds encryption + authentication.
+
+### 🔓 Community Strings (v1/v2c only)
+
+- Like passwords.
+- `public` = read-only (default)
+- `private` = read-write (default)
+- Recommended: define your own (e.g., `Jeremy1`, `Jeremy2`)
+
+### 📨 SNMP Message Classes & Types
+
+| Class | Message | Direction | Purpose |
+| --- | --- | --- | --- |
+| Read | Get | NMS → Agent | Request value of variable |
+|  | GetNext | NMS → Agent | Request next variable in MIB |
+|  | GetBulk | NMS → Agent | Efficient bulk-read (v2c+) |
+| Write | Set | NMS → Agent | Change value of a variable |
+| Notification | Trap | Agent → NMS | Unacknowledged alert |
+|  | Inform | Agent → NMS | Acknowledged alert |
+| Response | Response | Agent → NMS | Sent in response to Get/Set/Inform |
+- **Trap**: Fire-and-forget, no acknowledgment.
+- **Inform**: Like Trap, but includes a response.
+
+### 🔌 Ports to Remember
+
+- **UDP 161**: SNMP Agent listens here (managed devices)
+- **UDP 162**: SNMP Manager listens here (NMS)
+
+### 🛠️ SNMPv2c Config Example (Cisco Router)
+
+```
+Router(config)# snmp-server contact admin@jeremy.com
+Router(config)# snmp-server location ServerRoom
+Router(config)# snmp-server community Jeremy1 RO
+Router(config)# snmp-server community Jeremy2 RW
+Router(config)# snmp-server host 192.168.1.1 version 2c Jeremy1
+Router(config)# snmp-server enable traps config
+Router(config)# snmp-server enable traps linkup linkdown
+```
+
+- Jeremy1 = read-only (Get info only)
+- Jeremy2 = read-write (Set info too)
+
+### 🔍 Wireshark Example (Trap Packet)
+
+- Trap from R1 sent to NMS (PC1) with community string `Jeremy1`
+- OID shows `linkDown` event (e.g., G0/1 interface failure)
+- SNMPv2c uses **plaintext** = not secure
+
+### ✅ SNMP Quiz Highlights
+
+1. **Read messages**: Get, GetNext, GetBulk
+2. **Trap & Inform** sent to UDP 162
+3. **GetBulk** introduced in v2, allows mass retrieval
+4. **Manager software on NMS** = SNMP Manager
+5. **Trap** doesn’t get a response (unreliable)
+6. **Boson Practice**: C (GetNext) and E (Get) = correct for extracting data from agent

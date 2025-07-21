@@ -1,0 +1,89 @@
+# **Day 53 Lab | GRE Tunnels | CCNA 200-301 Complete Course**
+
+**Lab Topic:** GRE Tunnel + OSPF Configuration
+
+**Goal:** Create a virtual tunnel between R1 and R2 using GRE and enable routing with OSPF
+
+---
+
+**R1 Configuration:**
+
+1. Create GRE Tunnel
+
+```
+nginx
+CopyEdit
+interface tunnel 0
+tunnel source g0/0/0
+tunnel destination 200.0.0.2
+ip address 192.168.1.1 255.255.255.252
+
+```
+
+1. Add Default Route
+
+```
+nginx
+CopyEdit
+ip route 0.0.0.0 0.0.0.0 100.0.0.1
+
+```
+
+1. Configure OSPF
+
+```
+nginx
+CopyEdit
+router ospf 1
+network 192.168.1.1 0.0.0.0 area 0
+network 10.0.1.1 0.0.0.0 area 0
+passive-interface g0/0
+
+```
+
+---
+
+**R2 Configuration:**
+
+1. Create GRE Tunnel
+
+```
+nginx
+CopyEdit
+interface tunnel 0
+tunnel source g0/0/0
+tunnel destination 100.0.0.2
+ip address 192.168.1.2 255.255.255.252
+
+```
+
+1. Add Default Route
+
+```
+nginx
+CopyEdit
+ip route 0.0.0.0 0.0.0.0 200.0.0.1
+
+```
+
+1. Configure OSPF
+
+```
+nginx
+CopyEdit
+router ospf 1
+network 192.168.1.2 0.0.0.0 area 0
+network 10.0.2.1 0.0.0.0 area 0
+passive-interface g0/0
+
+```
+
+---
+
+**Verification Commands:**
+
+- `show ip interface brief`
+- `show ip route`
+- `ping 192.168.1.2`
+- `show ip ospf neighbor`
+- `ping 10.0.2.100` (PC1 → PC2)

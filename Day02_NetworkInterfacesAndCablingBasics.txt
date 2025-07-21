@@ -1,0 +1,83 @@
+# **Day 2 – Network Interfaces and Cabling Basics**
+
+**Overview**
+
+- Introduction to interfaces, cables, and Ethernet.
+- Covers types of cables, Ethernet standards, and physical network media (copper vs fiber).
+
+**Key Concepts**
+
+**Interfaces and Cables**
+
+- Devices use interfaces (ports) to connect to networks.
+- Cables are used to link interfaces physically.
+
+**RJ-45 Connector**
+
+- Standard connector for Ethernet cables.
+- Connects devices in LAN environments.
+
+**Ethernet**
+
+- A family of networking technologies used for LANs.
+- Ethernet frames carry data across the network.
+
+**Network Protocols**
+
+- Define rules for communication.
+- Ethernet is one example of a Layer 2 protocol.
+
+**Bits and Bytes**
+
+- Data travels as bits (0s and 1s) through cables.
+- 8 bits = 1 byte.
+
+**Ethernet Cabling Standards**
+
+| **Standard** | **Speed** | **Cable Type** | **Max Distance** |
+| --- | --- | --- | --- |
+| 10BASE-T | 10 Mbps | UTP | 100 meters |
+| 100BASE-T | 100 Mbps | UTP | 100 meters |
+| 1000BASE-T | 1 Gbps | UTP | 100 meters |
+| 10GBASE-T | 10 Gbps | UTP (Cat6/6a) | 55-100 meters |
+
+**Cable Types**
+
+| **Type** | **Purpose** |
+| --- | --- |
+| Straight-Through Cable | Connects different types of devices (e.g., PC to Switch). |
+| Crossover Cable | Connects similar devices (e.g., Switch to Switch, PC to PC). |
+| Auto MDI-X | Modern switches automatically detect cable type and adjust internally. |
+
+**Fiber-Optic Connections**
+
+| **Fiber Type** | **Details** |
+| --- | --- |
+| Multimode Fiber | Short distance, cheaper, LED light source. |
+| Single-Mode Fiber | Long distance, more expensive, laser light source. |
+
+**Fiber-Optic Standards**
+
+- Fiber can support very high speeds (10 Gbps and beyond) over long distances.
+
+**Comparison: UTP vs Fiber-Optic Cabling**
+
+| **Feature** | **UTP** | **Fiber** |
+| --- | --- | --- |
+| Cost | Cheaper | More expensive |
+| Distance | Up to 100 meters | Kilometers possible |
+| Speed | Up to 10 Gbps | 10 Gbps and higher |
+
+**Self-Quiz (Quick Review)**
+
+- What connector is used for Ethernet cables?
+- What is the difference between straight-through and crossover cables?
+- What is Auto MDI-X?
+- How is single-mode fiber different from multimode fiber?
+
+# **Quick Takeaways**
+
+- Ethernet standards define speed and cabling requirements.
+- Use straight-through cables for different devices, crossover for same devices.
+- Modern devices with Auto MDI-X remove the need to worry about cable types.
+- Fiber optics are for high-speed, long-distance connections.

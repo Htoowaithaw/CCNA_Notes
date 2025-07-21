@@ -1,0 +1,125 @@
+Day 4 | Intro to the CLI |  CCNA 200-301 Complete Course
+Cisco IOS CLI Basics (CCNA Notes)
+1. Introduction to Cisco IOS CLI
+Cisco IOS = Operating system for Cisco routers, switches, and firewalls.
+CLI (Command-Line Interface) = Primary interface for configuring Cisco devices.
+GUI (Graphical User Interface) exists (e.g., Cisco ASDM), but CLI is preferred by network engineers.
+Goal: Learn CLI basics and start configuring devices.
+2. How to Connect to a Cisco Device
+Via Console Port (first time setup):
+Connect laptop to device console port.
+Ports available:
+RJ45 Console Port
+USB Mini-B Console Port
+Cable Required:
+Rollover Cable: RJ45 to DB9 connector.
+USB-to-Serial adapter often needed for modern laptops.
+3. Accessing the CLI
+Terminal Emulator Software:
+Example: PuTTy (putty.org)
+Serial Settings (default Cisco settings):
+Speed (baud rate): 9600 bits per second
+8 data bits
+1 stop bit
+No parity
+No flow control
+Connection Process:
+Select Serial → Open terminal → CLI access
+4. CLI Modes
+Mode
+Prompt Example
+Description
+User EXEC Mode
+Router>
+Limited access; no configuration changes
+Privileged EXEC Mode
+Router#
+Full device access (but not config changes)
+Global Configuration Mode
+Router(config)#
+Change the device configuration
+Commands to navigate:
+enable → Enter Privileged EXEC mode
+configure terminal (or shortcut conf t) → Enter Global Configuration mode
+5. Useful CLI Features
+Tab Completion:
+Auto-complete commands by pressing Tab.
+Shortcuts:
+Type partial commands if unambiguous (e.g., en for enable).
+Question Mark (?) Help:
+View available commands or arguments.
+After a command (no space): View word completions.
+After a command + space: View next possible options.
+6. Securing Access to the CLI
+Protect Privileged EXEC Mode
+enable password [password]
+Adds password protection.
+Password shown in plain-text (not secure).
+service password-encryption
+Encrypts plain-text passwords in configuration.
+Weak encryption (Type 7, reversible).
+enable secret [password]
+Adds secure password protection.
+Stronger encryption (Type 5, MD5).
+Command
+Purpose
+enable password CCNA
+Set a basic password
+service password-encryption
+Encrypt passwords (weak encryption)
+enable secret Cisco
+Set a stronger, secure password (MD5)
+7. Working with Configurations
+File
+Description
+Running-Config
+Active config in RAM (current working configuration)
+Startup-Config
+Saved config in NVRAM (loaded after reboot)
+Commands:
+show running-config → View active config.
+show startup-config → View saved config.
+Saving running config to startup config:
+write
+write memory
+copy running-config startup-config
+8. Editing Configurations
+To remove a command, prefix it with no:
+Example: no service password-encryption
+Important:
+Removing service password-encryption does not decrypt existing passwords.
+Future passwords will be stored in clear text again.
+9. Important CLI Commands Review
+Command
+Purpose
+enable
+Enter Privileged EXEC mode
+configure terminal or conf t
+Enter Global Configuration mode
+enable password [password]
+Set basic enable password
+service password-encryption
+Encrypt all plain-text passwords
+enable secret [password]
+Set a secure (MD5) enable password
+no [command]
+Cancel/remove a configuration
+show running-config
+Display running config
+show startup-config
+Display startup config
+write, write memory, or copy running-config startup-config
+Save running config
+10. Quiz Key Points (Summary)
+Quiz Question
+Correct Answer
+Cable to connect via RJ45 console port
+Rollover cable
+Enter password not accepted (reason)?
+Caps Lock is on
+Most secure method to protect access?
+Enable secret command
+If both enable password and enable secret are set?
+Enable secret is used
+Full version of conf t command?
+Configure terminal

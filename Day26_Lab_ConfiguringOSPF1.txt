@@ -1,0 +1,82 @@
+# **Day 26 Lab | Configuring OSPF (1) | CCNA 200-301 Complete Course**
+
+## **Jeremy’s IT Lab – Day 26: OSPF Configuration Lab Summary**
+
+### 1. **Introduction**
+
+- Overview of lab setup, similar to EIGRP lab.
+- Using loopback interfaces and basic OSPF configuration.
+
+### 2. **Loopback & OSPF Setup**
+
+- Each router has a loopback interface with a /32 IP (e.g., 1.1.1.1/32).
+- OSPF process configured with a unique local process ID per router.
+
+### 3. **OSPF Configuration Styles**
+
+- R4: Enabled OSPF on all interfaces with `network 0.0.0.0 255.255.255.255 area 0`.
+- R3: Configured specific IPs with `0.0.0.0` wildcard (exact match).
+- R2: Used grouped subnets with broader wildcard.
+- R1: Used subnet-based addressing (e.g., `10.0.12.0 0.0.0.3 area 0`).
+
+### 4. **Passive Interfaces**
+
+- Interfaces not connecting to routers (e.g., Loopbacks, G0/0) made passive using:
+    - `passive-interface Loopback0`
+    - `passive-interface G0/0`
+
+### 5. **Default Route Advertisement**
+
+- R1 configured as ASBR with:
+    
+    ```bash
+    bash
+    CopyEdit
+    router ospf 1
+    default-information originate
+    
+    ```
+    
+- Static route added:
+    
+    `ip route 0.0.0.0 0.0.0.0 203.0.113.2`
+    
+
+### 6. **OSPF Show Commands**
+
+- `show ip protocols` – confirms Router ID and ASBR status.
+- `show ip ospf neighbor` – lists OSPF neighbors.
+- `show ip ospf database` – displays LSAs.
+- `show ip ospf interface` – shows timers, interface states.
+
+### 7. **Routing Table Verification**
+
+- `show ip route` used on R2, R3, R4:
+    - All learned default route via R1.
+    - R4 displayed **ECMP (load balancing)** via both R2 and R3 despite different link speeds.
+
+### 8. **Boson NetSim Lab Overview**
+
+- Single-area OSPF topology with 4 routers.
+- Uses FastEthernet and Serial (Frame Relay) links.
+- Task-based steps: verify interfaces, plan, configure, and verify OSPF.
+
+### 9. **Frame Relay Mention**
+
+- Frame Relay = Layer 2 encapsulation (for serial).
+- Compared with Ethernet, PPP, and HDLC.
+- Not heavily tested in CCNA anymore.
+
+### 10. **Specific Network Configuration**
+
+- Example subnets used: 10.0.0.0/24, 10.1.0.0/24, etc.
+- Avoided `network 0.0.0.0` trick – precise `network` statements used for OSPF.
+
+### 11. **Wildcard Mask Explanation**
+
+- Subnet mask `/24 = 255.255.255.0` → Wildcard = `0.0.0.255`
+- Used in OSPF config:
+bash
+CopyEdit
+network 10.0.0.0 0.0.0.255 area 0
+

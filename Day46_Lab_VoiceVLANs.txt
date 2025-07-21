@@ -1,0 +1,58 @@
+# **Day 46 Lab | Voice VLANs | CCNA 200-301 Complete Course**
+
+### ✅ **Lab Goals**
+
+- Configure **Voice VLANs** on access ports.
+- Observe **802.1Q tagging** behavior for **IP phones** and **PCs**.
+- Verify **PoE** support.
+- Use **Router-on-a-Stick** to connect VLANs.
+
+---
+
+### 🛠️ **Config Steps**
+
+**On SW1:**
+
+```bash
+bash
+CopyEdit
+interface range g1/0/2 - 3
+ switchport mode access
+ switchport access vlan 10
+ switchport voice vlan 20
+
+```
+
+```bash
+bash
+CopyEdit
+interface g1/0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+
+```
+
+**On R1:**
+
+```bash
+bash
+CopyEdit
+interface f0/0
+ no shutdown
+interface f0/0.10
+ encapsulation dot1q 10
+ ip address 192.168.10.1 255.255.255.0
+interface f0/0.20
+ encapsulation dot1q 20
+ ip address 192.168.20.1 255.255.255.0
+
+```
+
+---
+
+### 🔍 **Simulation Results**
+
+- PC to PC pings use **untagged traffic** (data VLAN 10).
+- Phone to phone call uses **tagged traffic** (voice VLAN 20, confirmed via **Dot1q TPID = 8100** and VLAN ID = 20).
+- **PoE** works: phones receive power via Ethernet.

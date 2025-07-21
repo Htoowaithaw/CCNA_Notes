@@ -1,0 +1,133 @@
+# **Day 8 | IPv4 Addressing (Part 2) |  CCNA 200-301 Complete Course**
+
+**CCNA Lecture 8 – IPv4 Addresses Part 2 – Jeremy's IT Lab Notion Summary**
+
+---
+
+**🎯 Topics Covered**
+
+- IPv4 address classes (review and clarifications)
+- How to find:
+    - Maximum number of hosts per network
+    - Network address
+    - Broadcast address
+    - First usable address
+    - Last usable address
+- Configuring IP addresses on Cisco routers
+- Using basic 'show' commands on Cisco CLI
+
+---
+
+**📚 IPv4 Classes Recap**
+
+- **Class A:** 0.0.0.0 – 127.255.255.255 → Usable: 1–126 (0 & 127 are reserved)
+- **Class B:** 128.0.0.0 – 191.255.255.255
+- **Class C:** 192.0.0.0 – 223.255.255.255
+
+| Class | Prefix | Host Bits | Max Hosts (2^n - 2) |
+| --- | --- | --- | --- |
+| A | /8 | 24 | 16,777,214 |
+| B | /16 | 16 | 65,534 |
+| C | /24 | 8 | 254 |
+
+---
+
+**📌 Address Types**
+
+- **Network Address:** All host bits = 0 (e.g., 192.168.1.0)
+- **Broadcast Address:** All host bits = 1 (e.g., 192.168.1.255)
+- **First Usable Address:** Network + 1 (e.g., 192.168.1.1)
+- **Last Usable Address:** Broadcast - 1 (e.g., 192.168.1.254)
+
+---
+
+**🧠 Formula to Calculate Usable Hosts**
+
+```
+Usable Hosts = 2^N - 2
+Where N = number of host bits
+```
+
+**Examples:**
+
+- /24 → 2^8 - 2 = 254 hosts
+- /16 → 2^16 - 2 = 65,534 hosts
+- /8 → 2^24 - 2 = 16,777,214 hosts
+
+---
+
+**🛠 Cisco Router IP Configuration (CLI)**
+
+1. Enter privileged exec mode:
+
+```
+en
+```
+
+1. Enter global config mode:
+
+```
+conf t
+```
+
+1. Enter interface configuration:
+
+```
+interface g0/0
+```
+
+1. Set IP and subnet mask:
+
+```
+ip address 10.255.255.254 255.0.0.0
+```
+
+1. Enable the interface:
+
+```
+no shutdown
+```
+
+---
+
+**🔍 Useful CLI Show Commands**
+
+- `show ip interface brief` → Summary of IPs, interface status, and protocol
+- `show interfaces` → Detailed L1/L2 info (MAC, status, errors)
+- `show interfaces description` → Adds description field
+
+**Descriptions Tip:**
+
+```
+interface g0/0
+description # Connected to PC1 #
+```
+
+---
+
+**📝 Quiz Format Practice**
+Given: IP address and subnet (e.g., 43.109.23.12/8)
+Find:
+
+- Network address: 43.0.0.0
+- Broadcast address: 43.255.255.255
+- First usable: 43.0.0.1
+- Last usable: 43.255.255.254
+- Max hosts: 2^24 - 2 = 16,777,214
+
+---
+
+**📥 Anki & Packet Tracer**
+
+- Use Anki flashcards (linked in description)
+- Practice lab with IP addressing + interface config in next video
+
+---
+
+**✅ Summary**
+
+- You now know how to analyze any given IPv4 address & prefix length
+- You’ve learned to configure router interfaces with proper IPs
+- You’ve practiced vital show/debug commands in Cisco CLI
+
+> Tip: Keep reviewing and practicing the calculation of usable IP ranges and basic CLI setup — it’s a must for CCNA success.

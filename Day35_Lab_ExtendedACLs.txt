@@ -1,0 +1,107 @@
+# **Day 35 Lab | Extended ACLs | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 35: Extended ACLs Lab (with Boson NetSim)**
+
+---
+
+### Lab Overview
+
+- Use extended ACLs to fulfill the following policies:
+    1. Block 172.16.2.0/24 from communicating with PC1.
+    2. Block 172.16.1.0/24 from accessing DNS on SRV1 (192.168.1.100).
+    3. Block 172.16.2.0/24 from accessing HTTP/HTTPS on SRV2 (192.168.2.100).
+
+### Step 1: Block DNS from 172.16.1.0/24 to SRV1
+
+```
+ENABLE
+CONF T
+ip access-list extended 100
+ deny udp 172.16.1.0 0.0.0.255 host 192.168.1.100 eq 53
+ deny tcp 172.16.1.0 0.0.0.255 host 192.168.1.100 eq 53
+ permit ip any any
+interface G0/0
+ ip access-group 100 in
+```
+
+**Verification:**
+
+- PC1 cannot ping SRV2 by name.
+- PC1 can ping SRV2 using IP.
+
+### Step 2: Block 172.16.2.0/24 from accessing PC1 and SRV2 HTTP/HTTPS
+
+```
+ip access-list extended 101
+ deny ip 172.16.2.0 0.0.0.255 host 172.16.1.1
+ deny tcp 172.16.2.0 0.0.0.255 host 192.168.2.100 eq 80
+ deny tcp 172.16.2.0 0.0.0.255 host 192.168.2.100 eq 443
+ permit ip any any
+interface G0/1
+ ip access-group 101 in
+```
+
+**Verification:**
+
+- PC3 cannot access web page (cisco.com hosted on SRV2).
+- PC3 cannot ping PC1 (even by DNS name).
+- PC3 can ping PC2.
+
+### Final ACL Check
+
+```
+do show access-lists
+```
+
+- Match counters reflect traffic hits on ACL entries.
+
+---
+
+### Boson NetSim Extended ACL Lab Summary
+
+**Scenario:**
+
+- PCs in different VLANs.
+- Router2 using Router-on-a-Stick with sub-interfaces.
+- Task: Permit Telnet from PC2 & PC3 to Router1's loopback (1.1.1.1).
+
+**Step 6: Create ACL on Router2**
+
+```
+access-list 101 permit tcp 10.10.2.0 0.0.1.255 host 1.1.1.1 eq telnet
+```
+
+**Step 7: Apply ACL to correct interface/direction**
+
+- Applied outbound on Fa0/0 (toward Router1)
+
+```
+interface f0/0
+ ip access-group 101 out
+```
+
+**Result:**
+
+- Telnet from PC2 & PC3 to 1.1.1.1 works.
+- Ping fails due to implicit deny.
+- Later task likely adds:
+
+```
+permit icmp any any
+```
+
+**Verification:**
+
+- Telnet from PC2/PC3 to Router1 succeeds.
+- Ping fails due to lack of permit ICMP.
+- `show run | section access-list` confirms correct configuration.
+
+---
+
+### Key Takeaways
+
+- Extended ACLs can filter by protocol, IP, and port.
+- Use `host` for /32 IPs, `eq` for ports.
+- Apply extended ACLs close to source.
+- Remember the implicit deny at the end.
+- Boson NetSim is excellent for hands-on ACL scenarios.

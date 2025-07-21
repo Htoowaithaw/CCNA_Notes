@@ -1,0 +1,302 @@
+# **Day 19 Lab | DTP/VTP | CCNA 200-301 Complete Course**
+
+## 🧪 CCNA Lab 19 – DTP & VTP Configurations (Jeremy’s IT Lab)
+
+### 🎯 Objective
+
+Learn how to configure and verify:
+
+- **DTP (Dynamic Trunking Protocol)** settings
+- **VTP (VLAN Trunking Protocol)** in server, client, and transparent modes
+- Proper VLAN assignments on access ports
+- Use of **VTP password** for advertisement authentication
+
+---
+
+## 🛠️ Lab Topology Summary
+
+- **VLANs**: 10, 20, 30, 40
+- **Switches**:
+    - SW1: VTP Server
+    - SW2: VTP Transparent
+    - SW3: VTP Client
+- **Hosts** connected to switches with respective VLAN assignments
+
+---
+
+## 🔹 Step 1: Trunk Port Configuration & DTP Disable
+
+### SW1
+
+```bash
+bash
+CopyEdit
+interface g0/1
+switchport mode trunk
+switchport nonegotiate
+
+```
+
+### SW2 (Range G0/1–2)
+
+```bash
+bash
+CopyEdit
+interface range g0/1 - 2
+switchport mode trunk
+switchport nonegotiate
+
+```
+
+### SW3
+
+```bash
+bash
+CopyEdit
+interface g0/1
+switchport mode trunk
+switchport nonegotiate
+
+```
+
+✅ Verify with:
+
+```bash
+bash
+CopyEdit
+do show interface g0/x switchport
+
+```
+
+Look for:
+
+- **Admin/Oper Mode** = Trunk
+- **Negotiation of trunking** = Off
+
+---
+
+## 🔹 Step 2: Configure VTP Server on SW1
+
+### SW1
+
+```bash
+bash
+CopyEdit
+vtp domain CCNA
+vlan 10
+vlan 20
+vlan 30
+
+```
+
+✅ Verify:
+
+```bash
+bash
+CopyEdit
+do show vtp status
+
+```
+
+- **Mode**: Server
+- **Domain**: CCNA
+- **Revision Number**: 3
+- **VLAN Count**: 8
+
+✅ SW2 and SW3 should **automatically sync** VLANs via VTP advertisements from SW1.
+
+---
+
+## 🔹 Step 3: Configure SW2 as VTP Transparent & Add VLAN
+
+### SW2
+
+```bash
+bash
+CopyEdit
+vtp mode transparent
+vlan 40
+
+```
+
+✅ Notes:
+
+- Revision resets to 0
+- SW2 maintains local VLAN40 but **does not advertise it**
+- SW1 and SW3 will **not receive VLAN40**
+
+---
+
+## 🔹 Step 4: Configure SW3 as VTP Client
+
+### SW3
+
+```bash
+bash
+CopyEdit
+vtp mode client
+
+```
+
+Try creating a VLAN:
+
+```bash
+bash
+CopyEdit
+vlan 50
+
+```
+
+❌ Rejected: VTP clients **cannot create VLANs**.
+
+🛠️ VLANs must be created on **SW1**, the VTP server.
+
+---
+
+## 🔹 Step 5: Configure Access Ports and Disable DTP
+
+### SW3
+
+```bash
+bash
+CopyEdit
+interface f0/1
+switchport mode access
+switchport access vlan 10
+
+```
+
+✅ DTP disabled automatically.
+
+Other ports:
+
+```bash
+bash
+CopyEdit
+interface range f0/2 - 3
+switchport mode access
+switchport access vlan 30
+
+interface f0/4
+switchport mode access
+switchport access vlan 20
+
+```
+
+### SW2
+
+```bash
+bash
+CopyEdit
+interface range f0/1 - 2
+switchport mode access
+switchport access vlan 40
+
+```
+
+### SW1
+
+```bash
+bash
+CopyEdit
+interface range f0/1 - 2
+switchport mode access
+switchport access vlan 10
+
+interface f0/3
+switchport mode access
+switchport access vlan 20
+
+```
+
+---
+
+## 🛡️ Bonus: VTP Password Feature
+
+### SW1
+
+```bash
+bash
+CopyEdit
+vtp password cisco
+vlan 50
+
+```
+
+### SW3
+
+```bash
+bash
+CopyEdit
+vtp password cisco
+
+```
+
+❗ Switches **must share the same password** to sync VLANs. If not:
+
+- VTP advertisements are **rejected**
+- VLAN DB **won’t update**
+
+✅ After matching passwords, SW3 synced VLAN50 with SW1.
+
+---
+
+## 🔁 Boson NetSim Lab Preview – VTP Client Configuration
+
+### Lab Objective
+
+- Configure **trunks** on Switch1 and Switch2
+- Set **VTP domain** to `cisco`
+- Configure **Switch1 as VTP server**
+- Configure **Switch2 as VTP client**
+
+### Summary
+
+```bash
+bash
+CopyEdit
+hostname Switch1
+interface range f0/11 - 12
+switchport mode trunk
+
+vtp domain cisco
+vtp mode server
+
+# On Switch2:
+hostname Switch2
+interface range f0/11 - 12
+switchport mode trunk
+vtp domain cisco
+vtp mode client
+
+```
+
+✅ Use `show vtp status` to confirm roles and domain sync.
+
+---
+
+## 📌 Key Commands Reference
+
+```bash
+bash
+CopyEdit
+switchport mode trunk
+switchport nonegotiate
+vtp domain [name]
+vtp mode [server | client | transparent]
+vtp password [password]
+show vtp status
+show vlan brief
+show interface [int] switchport
+
+```
+
+---
+
+## 📦 Key Takeaways
+
+- DTP should be **disabled** unless trunking is required
+- Use **manual trunk configuration** with `nonegotiate`
+- VTP **simplifies VLAN management** but must be handled carefully (revision number danger!)
+- **Passwords** add security to VTP but must be consistent
+- Access ports automatically **disable DTP**

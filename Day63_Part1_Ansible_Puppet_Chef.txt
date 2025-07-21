@@ -1,0 +1,72 @@
+### 🛠️ What are Configuration Management Tools?
+
+Think of these as **"automated IT chefs"** that:
+
+- Help set up and update many network devices at once.
+- Make sure device settings are always correct and consistent.
+- Fix problems caused by engineers changing things manually.
+
+---
+
+### ⚠️ Why We Need These Tools
+
+- **Configuration Drift**: When devices slowly become different from the official company settings.
+- **Manual work is slow**: You can't SSH into 1,000 routers manually.
+- These tools help **automate**, **standardize**, and **track** changes.
+
+---
+
+### 🔧 Common Tools to Know (for CCNA)
+
+You only need to know the **basics** — not how to use them yet.
+
+---
+
+### 1. **Ansible** (Most popular for networks)
+
+- 🧠 *Agentless* → No software needed on the devices.
+- 🔌 *Uses SSH* to connect.
+- 📤 *Push model* → Ansible server pushes config to devices.
+- 🧾 Uses **YAML** files (simple text format).
+- 🛠️ Main files:
+    - **Inventory** (list of devices)
+    - **Playbooks** (what to do)
+    - **Templates** (config format, uses Jinja2)
+    - **Variables** (device-specific values like hostname, IP)
+
+---
+
+### 2. **Puppet**
+
+- 💻 *Agent-based* → Devices must install Puppet software.
+- 🔄 *Pull model* → Devices connect to Puppet Master to get config.
+- 🌐 *Port 8140* used for communication.
+- 📄 Uses its own custom language (not YAML).
+- 🔧 Main file: **Manifest** (config rules for devices).
+- ❗ Can also work agentless using a proxy agent.
+
+---
+
+### 3. **Chef**
+
+- 🍽️ *Also Agent-based* → Needs Chef software on devices.
+- 🔄 *Pull model* like Puppet.
+- 🌐 *Port 10002* for config transfers.
+- 📄 Uses a Ruby-based DSL (Domain-Specific Language).
+- 🧾 Main parts:
+    - **Resources** = ingredients (settings)
+    - **Recipes** = how to set up device
+    - **Cookbooks** = group of recipes
+    - **Run-list** = steps to apply config
+
+---
+
+### 💡 Quiz Tips Summary
+
+| Question | Correct Answer(s) |
+| --- | --- |
+| Uses SSH | Ansible |
+| Uses Pull Model | Puppet, Chef |
+| Client-Server Model | All (Ansible, Puppet, Chef) |
+| Written in Ruby | Puppet, Chef |
+| Uses Playbooks | Ansible |

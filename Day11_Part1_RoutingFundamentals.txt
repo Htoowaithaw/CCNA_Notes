@@ -1,0 +1,76 @@
+### **Jeremy’s IT Lab – Routing Fundamentals (CCNA)**
+
+**Video Summary**
+
+---
+
+### ✅ **Topics Covered**
+
+1. **What is Routing?**
+    - Process routers use to determine the path for forwarding IP packets.
+    - Uses a **routing table** (like switches use MAC address tables).
+    - Two main routing types:
+        - **Dynamic Routing** – Uses protocols like OSPF.
+        - **Static Routing** – Manually configured routes.
+    - This lesson focuses on **connected** and **local** routes, which are added automatically.
+
+---
+
+### 🧠 **Key Concepts**
+
+**Routing Table (show ip route)**
+
+- **C = Connected** – To the network that is directly connected.
+- **L = Local** – To the exact IP configured on the interface (always /32 mask).
+- Both are added when an IP is configured on an interface and it's enabled (`no shutdown`).
+
+**Route Matching**
+
+- A route **matches** if the destination IP falls within the route’s network.
+- **Most specific route** (longest prefix) is chosen if multiple match.
+    - Ex: 192.168.1.1/32 is more specific than 192.168.1.0/24.
+
+**Packet Forwarding Example**
+
+- Destination IP: 192.168.1.1
+    - Matches both 1.0/24 and 1.1/32
+    - Router chooses 1.1/32 → Packet is for the router itself
+
+**What if no route matches?**
+
+- Routers **drop** packets (they do **not flood** like switches).
+
+---
+
+### 🔍 **Route Selection Summary**
+
+- A router chooses the route with:
+    1. A **match**
+    2. The **longest prefix length** (most specific)
+- If no match exists → **Packet is dropped**
+
+---
+
+### 🧪 **Quiz Review (5 Questions)**
+
+1. **IP on router interface appears as what route type?**
+    
+    → **C (Connected)** and **L (Local)**
+    
+2. **Packet destined for a Local route?**
+    
+    → Router **receives** the packet.
+    
+3. **Switch vs Router behavior with unknown destinations?**
+    
+    → Switches **flood**, routers **drop**.
+    
+4. **What types of routes are auto-added on IP config?**
+    
+    → **Connected (C)** and **Local (L)**
+    
+5. **Packet to 10.0.1.23 — matched routes?**
+    
+    → **Two routes match**: 10.0.1.0/24 & 10.0.1.23/32
+    
+    → Router picks **10.0.1.23/32** → receives packet itself.

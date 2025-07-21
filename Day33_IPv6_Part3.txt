@@ -1,0 +1,106 @@
+# **Day 33 | IPv6 Part 3 | CCNA 200-301 Complete Course**
+
+### 🤪 Kid-Friendly Summary
+
+**What's IPv6 and why is it important?**
+
+- IPv6 is like the new version of IP addresses on the Internet. IPv4 was running out of room, so IPv6 gives us way more space.
+
+**What did we learn today?**
+
+- How IPv6 addresses are written properly.
+- IPv6 has a simpler header than IPv4 (easier for routers to handle).
+- IPv6 doesn’t use ARP to learn MAC addresses; it uses something new called NDP.
+- Devices can automatically find routers and give themselves addresses using SLAAC.
+- We learned how to tell routers where to send IPv6 traffic using static routes.
+
+---
+
+### 💡 Technical Summary
+
+### ✉️ IPv6 Address Representation (RFC 5952)
+
+- Leading zeros MUST be removed.
+- Use lowercase for hex (a-f).
+- Use double colon (::) for longest string of all-zero quartets.
+- If tie, shorten the one on the **left**.
+
+### 🔢 IPv6 Header
+
+- Fixed 40-byte header (simpler than IPv4's variable header).
+- Key fields:
+    - **Version**: Always 6.
+    - **Traffic Class**: QoS handling.
+    - **Flow Label**: Identifies a specific traffic flow.
+    - **Payload Length**: Length of Layer 4 data.
+    - **Next Header**: Like IPv4's protocol field (e.g., TCP, UDP).
+    - **Hop Limit**: Like TTL in IPv4.
+    - **Source/Destination Address**: 128-bit addresses.
+
+### 👥 Neighbor Discovery Protocol (NDP)
+
+- Replaces ARP in IPv6.
+- Uses ICMPv6 messages:
+    - **NS (Type 135)**: Neighbor Solicitation ("What's your MAC?")
+    - **NA (Type 136)**: Neighbor Advertisement ("Here's my MAC.")
+    - **RS (Type 133)**: Router Solicitation (Host asks for routers).
+    - **RA (Type 134)**: Router Advertisement (Router replies with info).
+
+### Solicited-Node Multicast
+
+- Calculated as: `ff02::1:ff` + last 6 hex digits of a unicast address.
+- Helps target specific devices instead of broadcasting.
+
+### Duplicate Address Detection (DAD)
+
+- Device checks if its IPv6 address is already in use by sending NS to itself.
+
+### 🏠 SLAAC (Stateless Address Auto-Configuration)
+
+- Uses RS/RA messages to learn network prefix (e.g., `2001:db8::/64`).
+- Then auto-generates an address using EUI-64 or random bits.
+- Configured with `ipv6 address autoconfig`.
+
+### 🚧 IPv6 Static Routing
+
+- Enable IPv6 routing: `ipv6 unicast-routing`
+
+### Types of Static Routes
+
+1. **Directly Attached**: `ipv6 route <network> <interface>` ❌ *Doesn't work on Ethernet in IPv6!*
+2. **Recursive**: `ipv6 route <network> <next-hop>` (router checks routing table to find interface).
+3. **Fully Specified**: `ipv6 route <network> <next-hop> <interface>`
+
+### Types of Route Destinations
+
+- **Network Route**: `ipv6 route 2001:db8::/64`
+- **Host Route**: `/128` prefix
+- **Default Route**: `::/0`
+- **Floating Static Route**: Higher AD to act as a backup (e.g., AD > 110 for OSPF)
+
+### Link-Local Next Hop
+
+- Must specify both next-hop **and** interface: `ipv6 route <dest> <link-local next hop> <interface>`
+
+---
+
+### 🎮 Quiz Highlights
+
+1. **NA** = Neighbor Advertisement (R2 tells R1 its MAC address).
+2. **NS** = Used for Duplicate Address Detection (DAD).
+3. **RA** = Sent to `FF02::1` (all nodes).
+4. Fully specified + Network route = Specifies both interface and next hop, and targets a network.
+5. Recursive Host Route = Next-hop only, /128 prefix.
+
+---
+
+### 📃 Study Tips
+
+- Memorize ICMPv6 message types (NS - 135, NA - 136, RS - 133, RA - 134).
+- Understand the three static route types.
+- Practice with Packet Tracer!
+- Use Anki flashcards tagged `ipv6` to review.
+
+---
+
+End of IPv6 section! Up next: more labs and real-world practice.

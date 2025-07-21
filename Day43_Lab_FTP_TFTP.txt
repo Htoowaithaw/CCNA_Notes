@@ -1,0 +1,151 @@
+# **Day 43 Lab | FTP & TFTP | CCNA 200-301 Complete Course**
+
+**Day 33 – IOS Upgrade Lab: TFTP & FTP + Config Backup**
+
+---
+
+### 👨‍💻 Packet Tracer – IOS Upgrade via TFTP (R1)
+
+### 📌 Verify Current IOS Version
+
+```
+show version
+show flash
+```
+
+- Current version: 15.1
+
+### 📁 Copy New IOS via TFTP
+
+```
+copy tftp: flash:
+# TFTP Server IP: 10.0.0.1
+# File: c1900-universalk9-mz.SPA.155-3.M4a.bin
+```
+
+- Confirm filename when prompted
+- Verify with: `show flash`
+
+### 🔧 Configure Boot
+
+```
+conf t
+boot system flash:c1900-universalk9-mz.SPA.155-3.M4a.bin
+exit
+write
+reload
+```
+
+- Ensure config is saved before reload
+- Check version after reboot: `show version`
+
+### 🧹 Cleanup
+
+```
+show flash
+# Copy old filename
+delete flash:<old-file>
+```
+
+---
+
+### 📦 Packet Tracer – IOS Upgrade via FTP (R2)
+
+### 📌 Set FTP Credentials
+
+```
+conf t
+ip ftp username jeremy
+ip ftp password ccna
+exit
+```
+
+### 📁 Copy New IOS via FTP
+
+```
+copy ftp: flash:
+# FTP Server IP: 10.0.0.1
+# File: c1900-universalk9-mz.SPA.155-3.M4a.bin
+```
+
+- Takes longer than TFTP in Packet Tracer
+
+### 🔧 Configure Boot & Reboot
+
+```
+conf t
+boot system flash:c1900-universalk9-mz.SPA.155-3.M4a.bin
+exit
+write
+reload
+```
+
+- Verify with: `show version`
+
+### 🧹 Cleanup
+
+```
+show flash
+delete flash:<old-file>
+```
+
+---
+
+### 🧪 Boson NetSim – TFTP Backup/Restore Lab (Router4)
+
+### 💾 Backup Config to TFTP
+
+```
+copy running-config tftp:
+# Server IP: 192.168.1.2
+# Filename: r4config
+```
+
+- Use `show tftp-configs` in NetSim to verify
+
+### 🖊️ Modify Running Config
+
+```
+hostname MainRouter
+```
+
+### 🔁 Restore from TFTP to NVRAM
+
+```
+copy tftp: startup-config
+# Server IP: 192.168.1.2
+# File: r4config
+```
+
+- Check with: `show startup-config`
+- Hostname inside file is `Router4`
+
+### 🔁 Copy NVRAM to Running Config
+
+```
+copy startup-config running-config
+```
+
+- Hostname changes back to `Router4`
+
+### ❓ Why Not Clear NVRAM First?
+
+- Not necessary. Copying overwrites the file.
+- But copying to RAM merges configs.
+
+---
+
+### 📝 Commands Reference
+show version
+show flash
+copy tftp: flash:
+copy ftp: flash:
+boot system flash:<filename>
+delete flash:<filename>
+write
+reload
+ip ftp username <user>
+ip ftp password <pass>
+copy running-config tftp:
+copy tftp: startup-config
+copy startup-config running-config

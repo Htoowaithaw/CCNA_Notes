@@ -1,0 +1,105 @@
+# **Day 41 | Syslog | CCNA 200-301 Complete Course**
+
+**Day 41 – Syslog**
+
+---
+
+### 🧒 Explain Like I'm 5 (Kid Version)
+
+**What is Syslog?**
+
+- Imagine your network devices are like kids in school.
+- Every time something happens (like someone falls, or a bell rings), they write it down in a diary.
+- This diary is called **Syslog**. It helps adults (network admins) understand what happened, when it happened, and how serious it was.
+
+**Why is this important?**
+
+- Just like a teacher needs to know if a student is okay, network engineers need to know if a router or switch has a problem.
+
+**What kind of stuff do they write?**
+
+- "My leg hurts!" (serious problem)
+- "I finished my homework!" (just information)
+- "The bell rang!" (something happened, not too big)
+
+**Who reads the diary?**
+
+- A special server can collect these diaries from many students and help the teacher see what’s happening across the school. That's the **Syslog server**.
+
+---
+
+### 👨‍💻 Technical Summary
+
+### What is Syslog?
+
+- Syslog is an industry-standard protocol for **logging events** on network devices (routers, switches, etc).
+- Logs can show interface up/down status, OSPF neighbor changes, reboots, etc.
+- Messages can appear in the CLI, be stored in RAM, or sent to a **Syslog server** (UDP port 514).
+
+### Syslog Message Format
+
+Each Syslog message can contain:
+
+- **Sequence Number** (optional)
+- **Timestamp**: When the message was generated.
+- **Facility**: Which process generated it (e.g., OSPF, LINK).
+- **Severity Level** (0–7): How serious the event is.
+- **Mnemonic**: Short code for the message.
+- **Description**: Human-readable message.
+
+### Severity Levels (0 = Most Severe)
+
+| Level | Keyword | Description |
+| --- | --- | --- |
+| 0 | Emergency | System is unusable |
+| 1 | Alert | Action must be taken immediately |
+| 2 | Critical | Critical conditions |
+| 3 | Error | Error conditions |
+| 4 | Warning | Warning conditions |
+| 5 | Notification | Normal but significant condition |
+| 6 | Informational | Informational messages |
+| 7 | Debugging | Debug-level messages |
+
+📝 Mnemonic to remember: **Every Awesome Cisco Engineer Will Need Ice cream Daily**
+
+### Logging Destinations
+
+| Destination | Description |
+| --- | --- |
+| Console | Messages shown in CLI when using console cable (default) |
+| VTY lines | Telnet/SSH (must enable with `logging monitor`) |
+| Buffer | Stored in RAM (view with `show logging`) |
+| Syslog Server | Sent over network (UDP port 514, needs config) |
+
+### Basic Configuration Commands
+
+```
+logging console informational          # Console logging
+logging monitor informational          # Telnet/SSH logging (requires `terminal monitor`)
+logging buffered 10000 informational   # Logging to buffer, optional size
+logging 192.168.1.100                  # Send to syslog server
+logging trap debugging                 # Set severity level for messages sent to server
+service timestamps log datetime        # Add timestamps
+service sequence-numbers               # Add sequence numbers
+```
+
+### Extra Commands
+
+```
+terminal monitor         # Required per SSH/Telnet session
+logging synchronous      # Prevent CLI disruptions by log messages
+```
+
+---
+
+### ✅ Quiz Recap
+
+1. **Severity 5** = Notification (or Notice)
+2. **Severity 3** = Error
+3. By default, messages go to **console line** and **buffer**
+4. `logging buffered 6` = logs levels **0 to 6**
+5. Fields that may not appear: **Sequence** and **Timestamp**
+
+---
+
+### 🔍 Syslog vs SNMP

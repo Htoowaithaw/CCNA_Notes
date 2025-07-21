@@ -1,0 +1,106 @@
+# **Day 44 | NAT (Part 1) | CCNA 200-301 Complete Course**
+
+**Day 44 – NAT Part 1: Static NAT**
+
+---
+
+### 🧒 Explain Like I’m 10
+
+- Your computer at home uses a private IP address like 192.168.0.10.
+- These private addresses **can’t go directly to the Internet**.
+- NAT (Network Address Translation) lets your computer **borrow a public IP** to talk to websites.
+- **Static NAT** is a special rule that says: "Computer A always uses Public IP A."
+- It’s like giving your friend a fake phone number that always routes back to you, so strangers can call you without knowing your real number.
+
+---
+
+### 👨‍💻 Technical Summary – NAT Basics
+
+### 🔐 Why NAT?
+
+- IPv4 has **too few public IPs**, so private IPs are used inside networks.
+- NAT translates between **private (inside)** and **public (outside)** IPs.
+- Most common usage: allow **multiple private devices** to share **one public IP**.
+
+### 📘 NAT Terminology
+
+| Term | Meaning |
+| --- | --- |
+| **Inside local** | The private IP of a device (e.g., PC1: 192.168.0.10) |
+| **Inside global** | The public IP seen by outside devices (e.g., 100.0.0.1) |
+| **Outside local** | How the inside sees the outside IP (usually same as global) |
+| **Outside global** | The actual public IP of the server outside (e.g., 8.8.8.8) |
+
+### 💡 Static NAT
+
+- One **fixed mapping** from one private IP to one public IP.
+- Example:
+
+```
+Inside local: 192.168.0.10  →  Inside global: 203.0.113.10
+```
+
+- Every time this device accesses the Internet, NAT always uses that same public IP.
+- Not scalable for many devices (1:1 mapping).
+
+---
+
+### 🔧 Static NAT Configuration (on R1)
+
+```
+interface g0/1
+ ip nat inside
+exit
+interface g0/0
+ ip nat outside
+exit
+ip nat inside source static 192.168.0.167 100.0.0.1
+ip nat inside source static 192.168.0.168 100.0.0.2
+```
+
+- G0/1 = inside (LAN), G0/0 = outside (Internet)
+- Static NAT entries link internal IPs to external IPs
+
+---
+
+### 🔍 Verification Commands
+
+```
+show ip nat translations
+```
+
+- Shows NAT table with protocol, inside/outside local/global IPs, and ports
+- Static entries are permanent
+
+```
+clear ip nat translation *
+```
+
+- Removes dynamic entries only
+
+```
+show ip nat statistics
+```
+
+- Shows number of active NAT translations, inside/outside interfaces, and peak entries
+
+---
+
+### ✅ Quiz Recap
+
+1. **Correct static NAT command**:
+
+```
+ip nat inside source static 192.168.10.10 203.0.113.10
+```
+
+1. **Duplicate public IP not allowed**: You can’t map two private IPs to the same public IP using static NAT.
+2. **Clearing NAT table**: Only dynamic entries are removed, static entries stay.
+3. **Private IP ranges (RFC 1918)**:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+4. **NAT table translation match**: Know the 4 key terms:
+    - Inside Local: Real IP of PC inside
+    - Inside Global: Public IP seen by server
+    - Outside Local/Global: IP of external server (same unless destination NAT)

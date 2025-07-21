@@ -1,0 +1,118 @@
+**LAN Architectures Summary**
+
+1. **LAN Architectures Overview**
+    - How routers, switches, PCs, and servers connect in a network.
+2. **2-tier Architecture**
+    - Two layers: Access (for end devices) and Distribution (aggregates access switches and connects to Internet).
+3. **Access Layer**
+    - Connects end devices (PCs, cameras, phones). Handles QoS, port security, DHCP snooping, and PoE.
+4. **Distribution Layer**
+    - Connects access switches, runs routing protocols like OSPF, and separates Layer 2 and Layer 3.
+5. **3-tier Architecture**
+    - Adds a Core Layer above Distribution for large networks.
+6. **Core Layer**
+    - Fast, Layer 3-only. No security features. Just fast routing between Distribution layers.
+7. **Spine-Leaf Architecture**
+    - Used in data centers. Every Leaf switch connects to all Spine switches. No Leaf-to-Leaf or Spine-to-Spine.
+8. **SOHO (Small Office/Home Office)**
+    - One device does everything: router, switch, firewall, Wi-Fi. Used in small networks like homes.
+    
+    ### **1. Aviation Ground Handling CSA Explanation**
+    
+    **LAN Architecture = Like an Airport Layout**
+    
+    1. **Access Layer** = Check-in Counters
+        - This is where passengers (PCs, phones) enter the system.
+        - You tag their bags (QoS), verify passports (security checks), and send them forward.
+    2. **Distribution Layer** = Boarding Gates Area
+        - Gathers passengers from all check-in counters.
+        - Directs them to the correct gates (Internet or internal services).
+        - Ensures rules are followed before boarding (routing, switching).
+    3. **Core Layer** = Control Tower
+        - Connects all terminals (distribution layers) quickly.
+        - No need for additional checks here—just fast movement between parts of the airport.
+        - Keeps operations running even if part of the airport goes down.
+    4. **Spine-Leaf Architecture** = Efficient Terminal Layout
+        - Every gate (Leaf) is connected to all control centers (Spines).
+        - Equal walking time for all flights (servers).
+        - Avoids bottlenecks; great for busy data centers (like a big airport).
+    5. **SOHO** = A small private jet terminal
+        - One person does it all: check-in, boarding, clearance, and even coffee.
+        - Simple, compact, and handles just a few passengers (devices).
+    
+    ---
+    
+    ### **2. IT Tech Explanation (CCNA Level)**
+    
+    1. **Access Layer**
+        - Connects end devices (PCs, phones).
+        - Handles PoE, DHCP snooping, port security, traffic marking (QoS).
+        - Layer 2.
+    2. **Distribution Layer**
+        - Aggregates Access layer.
+        - Inter-VLAN routing, SVIs, FHRPs like HSRP/VRRP.
+        - Layer 3 boundary.
+    3. **Core Layer**
+        - Connects multiple Distribution layers.
+        - High-speed Layer 3 links.
+        - No STP, security, or QoS marking—just fast packet switching.
+    4. **Spine-Leaf Architecture**
+        - Leaf = access-level switches for servers.
+        - Spine = aggregation layer.
+        - Every Leaf connects to all Spines (ECMP paths, consistent low latency).
+        - No Leaf-to-Leaf or Spine-to-Spine links.
+    5. **SOHO**
+        - Single device = router + switch + WAP + firewall.
+        - Common for small home/office setups.
+        - Usually provided by ISP (like a wireless router).
+    
+    ---
+    
+    ---
+    
+    ### ✅ **CCNA 200-301 Exam LAN Architectures (Section 1.2)**
+    
+    There are **6 LAN-related architectures mentioned** in the CCNA blueprint:
+    
+    1. **2-tier**
+    2. **3-tier**
+    3. **Spine-Leaf**
+    4. **SOHO (Small Office/Home Office)**
+    5. **WAN (covered separately)**
+    6. **On-premises & Cloud (also separate topics)**
+    
+    ---
+    
+    ### 🌐 **Common Network Topologies (General IT Knowledge)**
+    
+    Outside the CCNA scope, **network design or topology types** (sometimes up to 11 or more) include:
+    
+    1. **Star** – All devices connect to a central point (like switches).
+    2. **Bus** – Devices connected along a single cable (rare now).
+    3. **Ring** – Each device connects to two others, forming a ring.
+    4. **Mesh (Full)** – Every device connects to every other.
+    5. **Mesh (Partial)** – Only some devices are connected to others.
+    6. **Hybrid** – Combination of two or more topologies (most real-world networks).
+    7. **Point-to-Point** – One connection between two nodes.
+    8. **Point-to-Multipoint** – One device connects to multiple.
+    9. **Tree (Hierarchical)** – A star topology extended with branches.
+    10. **Spine-Leaf** – Modern, scalable, used in data centers.
+    11. **Client-Server / Peer-to-Peer** – Logical topologies, often included too.
+    
+    ---
+    
+    ### 🧠 Summary Table
+    
+    | Type | Where It's Used | Example |
+    | --- | --- | --- |
+    | Star | Office LANs | Switch in the middle |
+    | Bus | Legacy | Coax networks |
+    | Ring | Legacy | FDDI or Token Ring |
+    | Full Mesh | Backbone or WAN | Core routers |
+    | Partial Mesh | Distribution networks | Hybrid campus LAN |
+    | Hybrid | Most real networks | Mix of Star + Mesh |
+    | P2P | Simple links | VPN or Serial links |
+    | P2MP | Wireless or ISP | AP to clients |
+    | Tree | Campus networks | Switch hierarchy |
+    | Spine-Leaf | Data centers | East-West traffic |
+    | SOHO | Home/Small biz | Wireless routers |

@@ -1,0 +1,104 @@
+# **Day 44 Lab | Static NAT | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 44: NAT Part 1 - Static NAT (Lab Walkthrough)**
+
+**Lab Overview:**
+
+- Task: Configure Static NAT on Router R1.
+- Goal: Enable internal PCs (PC1, PC2, PC3 with private IPs) to access the Internet (e.g., ping 8.8.8.8 / google.com).
+
+---
+
+**Step-by-step Summary:**
+
+**Step 1: Baseline Test**
+
+- From PC1: `ping 8.8.8.8` fails — expected, due to use of private IP addresses not routable on the Internet.
+
+**Step 2: Static NAT Configuration on R1**
+
+1. Define inside/outside NAT interfaces:
+    
+    ```
+    interface g0/0
+     ip nat outside
+    interface g0/1
+     ip nat inside
+    ```
+    
+2. Static NAT mappings:
+    
+    ```
+    ip nat inside source static 172.16.0.1 100.0.0.1
+    ip nat inside source static 172.16.0.2 100.0.0.2
+    ip nat inside source static 172.16.0.3 100.0.0.3
+    ```
+    
+
+**Verification Commands:**
+
+- `show ip nat translations` → Confirms static mappings.
+- `show ip nat statistics` → Shows # of translations and configured interfaces.
+
+**Step 3: Test Connectivity**
+
+- PC1: `ping 8.8.8.8` → Successful.
+
+**Step 4: DNS Resolution Test**
+
+- Each PC pings `google.com`:
+    - DNS queries go to 8.8.8.8.
+    - `show ip nat translations` → Shows static entries, dynamic UDP (DNS) and ICMP mappings.
+    - Outside local/global IP = same since this is Source NAT only.
+
+**Step 5: Clear Translation Table**
+
+- `clear ip nat translation *` → Clears dynamic entries.
+- `show ip nat translations` → Static entries remain, dynamics gone.
+
+---
+
+**Boson NetSim Bonus Lab**
+
+**Lab: Static NAT 1**
+
+- Router4 is the NAT device.
+
+**Tasks Completed:**
+
+1. PC1 fails to ping Router3 before NAT.
+2. Static NAT mapping:
+    
+    ```
+    ip nat inside source static 192.168.1.2 180.10.1.15
+    ```
+    
+3. Interface setup:
+    
+    ```
+    int fa0/1
+     ip nat inside
+    int s0/0
+     ip nat outside
+    ```
+    
+4. PC1 now successfully pings Router3.
+5. `show ip nat translation` shows correct mapping.
+6. Inside global IP is a public IP (used on Internet).
+7. Added PC3 static mapping:
+    
+    ```
+    ip nat inside source static 192.168.1.3 180.10.1.16
+    ```
+    
+8. Router3 cannot ping PC1 using private IP → expected.
+9. Switch2 cannot reach Router3 — no NAT config for Switch2.
+10. Graded lab: all steps correct.
+
+**Conclusion:**
+
+- Practiced Static NAT using both Packet Tracer and Boson NetSim.
+- Reviewed NAT translation types, interface roles, and IP mapping logic.
+- Reinforced concepts like inside local vs inside global and public vs private addressing.
+
+Next up: Dynamic NAT and PAT.

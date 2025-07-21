@@ -1,0 +1,162 @@
+# **Day 50 | DHCP Snooping | CCNA 200-301 Complete Course**
+
+## 🛡️ **DHCP Snooping – L2 Security Feature (Exam Topic 5.7)**
+
+---
+
+### 🔍 **What is DHCP Snooping?**
+
+| Concept | 🧑‍🏫 Tech Guy-style | ✈️ Easy Way |
+| --- | --- | --- |
+| DHCP Snooping | L2 switch feature that filters DHCP messages on **untrusted ports** | Like a checkpoint gate that inspects passengers from outside before letting them through |
+| Trusted Port | Messages are **not inspected** | Known staff entrance — no ID checks needed |
+| Untrusted Port | Messages are **inspected and filtered** | Guest or unknown entrance — all bags & IDs are checked |
+| Default Status | **All ports are untrusted by default** | Every gate starts off as suspicious until you explicitly allow it |
+
+---
+
+### 🔒 **What Attacks Can DHCP Snooping Prevent?**
+
+| Attack | 🧑‍🏫 Tech Guy-style | ✈️ Easy Way |
+| --- | --- | --- |
+| DHCP Starvation | Attacker floods DISCOVERs with fake MACs, exhausting IP pool | Someone keeps fake booking all available plane seats, so others can’t board |
+| DHCP Spoofing/Poisoning | Rogue DHCP server sends fake gateway info → MITM | Fake staff hands out wrong boarding passes with attacker’s gate printed |
+
+---
+
+### 🔁 **DHCP Message Types (Important for Filtering)**
+
+| Type | Sent By | Purpose | Trusted Port | Untrusted Port |
+| --- | --- | --- | --- | --- |
+| DISCOVER | Client | Looking for a DHCP server | ✅ Forward | ✅ Inspect/Forward or Drop |
+| REQUEST | Client | Asks for offered IP | ✅ Forward | ✅ Inspect/Forward or Drop |
+| RELEASE | Client | Tells server it no longer needs IP | ✅ Forward | ✅ Verify against binding table |
+| DECLINE | Client | Says offered IP is already in use | ✅ Forward | ✅ Verify against binding table |
+| OFFER | Server | Offers an IP to the client | ✅ Forward | ❌ Always Drop |
+| ACK | Server | Confirms the IP assignment | ✅ Forward | ❌ Always Drop |
+| NAK | Server | Rejects client’s request | ✅ Forward | ❌ Always Drop |
+
+---
+
+### 🧠 **DHCP Snooping Binding Table**
+
+| Field Logged | Description |
+| --- | --- |
+| MAC Address | Client’s hardware address |
+| IP Address | Leased IP address |
+| Lease Time | Lease duration |
+| VLAN | VLAN ID the client belongs to |
+| Interface | Port the client is connected to |
+
+Use command:
+
+```bash
+bash
+CopyEdit
+show ip dhcp snooping binding
+
+```
+
+---
+
+### ⚙️ **Basic DHCP Snooping Configuration**
+
+```bash
+bash
+CopyEdit
+# Global config
+ip dhcp snooping
+
+# Enable per VLAN
+ip dhcp snooping vlan 1
+
+# Disable Option 82 (Optional but often needed)
+no ip dhcp snooping information option
+
+# Mark trusted interfaces (uplinks to DHCP server or other switches)
+interface g0/0
+ip dhcp snooping trust
+
+```
+
+---
+
+### ⛔ **Filtering Behavior on Untrusted Ports**
+
+| DHCP Message Type | Check Applied | Action |
+| --- | --- | --- |
+| OFFER, ACK, NAK | Always dropped | ❌ Discard |
+| DISCOVER, REQUEST | Compare **Ethernet src MAC** with **CHADDR** in message | ✅ Forward if match, ❌ Drop if mismatch |
+| RELEASE, DECLINE | Check against **binding table** | ✅ Forward if valid, ❌ Drop if mismatch |
+
+---
+
+### 📉 **Rate Limiting**
+
+```bash
+bash
+CopyEdit
+# Set DHCP rate limit (e.g., 5 per second)
+interface g0/1
+ip dhcp snooping limit rate 5
+
+```
+
+| Action | Outcome |
+| --- | --- |
+| Exceed rate limit | Interface enters `err-disabled` |
+| Manual Recovery | `shutdown` + `no shutdown` |
+| Auto Recovery (optional) | Enable with: |
+
+```bash
+bash
+CopyEdit
+errdisable recovery cause dhcp-rate-limit
+errdisable recovery interval 30
+
+```
+
+---
+
+### 💡 **DHCP Option 82 (Relay Agent Info)**
+
+- Switch **adds Option 82** even if it's not a DHCP relay.
+- Upstream switches **drop messages with Option 82** on untrusted ports.
+- Some DHCP servers **reject Option 82** if not from real relay agents.
+
+**Fix:**
+
+```bash
+bash
+CopyEdit
+no ip dhcp snooping information option
+
+```
+
+📌 Use this command on all switches if not using relay agents to avoid message drops.
+
+---
+
+### ✅ **Quiz Review (Correct Answers)**
+
+**Q1:** Which messages are always dropped on untrusted ports?
+
+✅ ACK, OFFER, NAK
+
+**Q2:** What is NOT stored in the snooping table?
+
+✅ Default Gateway
+
+**Q3:** What are DHCP snooping functions?
+
+✅ Rate limit DHCP messages
+
+✅ Filter messages on untrusted ports
+
+**Q4:** When inspecting DISCOVER, what does it check?
+
+✅ Source MAC and CHADDR field
+
+**Q5:** What happens if rate is exceeded?
+
+✅ Interface is disabled

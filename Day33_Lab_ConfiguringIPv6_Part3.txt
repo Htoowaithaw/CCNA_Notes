@@ -1,0 +1,143 @@
+# **Day 33 Lab | Configuring IPv6 (Part 3) | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - IPv6 Static Routing Lab Notes**
+
+---
+
+### Lab Overview
+
+- Goal: Configure IPv6 static routes to allow PC1 and PC2 to ping each other.
+- Main path: R1 → R3
+- Backup path: R1 → R2 → R3
+- IPv6 addresses already configured on routers.
+- PCs will use SLAAC to get IPv6 addresses.
+
+---
+
+### Step 1: Enable IPv6 Routing
+
+- Required for NDP router advertisements and routing to work.
+- On all routers:
+
+```
+ENABLE
+CONF T
+IPV6 UNICAST-ROUTING
+```
+
+---
+
+### Step 2: Configure SLAAC on PCs
+
+**PC1:**
+
+- Config tab > Set gateway to ‘Automatic’ → Receives R1’s link-local address.
+- Interface: Learns global unicast address using EUI-64 from R1’s RA.
+
+**PC2:**
+
+- Config tab > Set gateway to ‘Automatic’ → Receives R3’s link-local address.
+- Interface: Also learns global unicast via EUI-64 from R3.
+
+To verify address: Use `IPCONFIG` in CLI.
+
+---
+
+### Step 3: Configure IPv6 Static Routes
+
+### R1
+
+- **Main route to R3 LAN (fully specified):**
+
+```
+ipv6 route 2001:db8:0:3::/64 g0/1 2001:db8:0:13::2
+```
+
+- **Backup route via R2 (floating static, using link-local):**
+    - Get R2's link-local with: `DO SHOW IPV6 INTERFACE BRIEF`
+
+```
+ipv6 route 2001:db8:0:3::/64 s0/0/0 FE80::X (R2 LL) 5
+```
+
+### R2
+
+- Get R1 and R3’s link-local addresses.
+- **Route to R1 LAN:**
+
+```
+ipv6 route 2001:db8:0:1::/64 s0/0/0 FE80::X (R1 LL)
+```
+
+- **Route to R3 LAN:**
+
+```
+ipv6 route 2001:db8:0:3::/64 s0/0/1 FE80::X (R3 LL)
+```
+
+### R3
+
+- **Main route to R1 LAN:**
+
+```
+ipv6 route 2001:db8:0:1::/64 g0/1 2001:db8:0:13::1
+```
+
+- **Backup route via R2 (floating static):**
+    - Get R2’s LL and use it with S0/0/0:
+
+```
+ipv6 route 2001:db8:0:1::/64 s0/0/0 FE80::X 5
+```
+
+---
+
+### Testing
+
+- **Ping test:** From PC1 to PC2 using the IPv6 address from `ipconfig` on PC2.
+- **Traceroute:**
+
+```
+tracert <PC2_IP>
+```
+
+- Shows path via R3.
+- **Failure test:** Disconnect cable between R1 and R3.
+- Re-run ping and tracert:
+    - Ping works via R2.
+    - Traceroute shows missing name at R2 (only link-local), then continues to R3 and PC2.
+
+---
+
+### Boson NetSim IPv6 Lab (RIPng)
+
+### Objective:
+
+- Configure IPv6 addresses and RIPng to allow routers to reach each other’s loopback interfaces.
+
+### Task Summary:
+
+1. Configure IPv6 addresses on Router3 and Router4.
+2. Globally enable RIPng with `ipv6 router rip boson`
+3. Enable RIPng on interfaces with `ipv6 rip boson enable`
+
+### Key Steps:
+
+- Use loopback6 interfaces with global unicast addresses.
+- Verify routing table with `DO SHOW IPV6 ROUTE`
+- Verify RIPng config with `DO SHOW IPV6 PROTOCOLS`
+
+### Troubleshooting:
+
+- RIP must be enabled per-interface, not just globally.
+- Wait for RIP to converge (slow).
+- Once configured correctly, routers should be able to ping each other’s loopback IPv6 addresses.
+
+---
+
+### Final Notes
+
+- Remember: SLAAC uses RA messages to derive prefix and generate interface ID.
+- Link-local addresses must be used with the exit interface.
+- Floating static routes use higher AD than normal static (default AD is 1).
+- RIPng is not on the CCNA exam but is simple to configure and useful for lab practice.

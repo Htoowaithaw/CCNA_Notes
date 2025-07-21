@@ -1,0 +1,194 @@
+# **Day 31 | IPv6 Part 1 | CCNA 200-301 Complete Course**
+
+## 🌍 CCNA Day 31 – IPv6 Introduction & Addressing
+
+---
+
+### 🧒🏽 IPv6 Overview – Explain Like I’m 5
+
+- We used **IPv4** to give addresses to computers, but we ran out!
+- So, we invented **IPv6**, which has way more addresses.
+- IPv6 uses **letters and numbers** in a special format called **hexadecimal**.
+- IPv6 addresses are **really long**, but we have **shortcuts** to make them easier to read.
+- You can **give IPv6 addresses to routers** just like you did with IPv4.
+- Each router also gets a **secret local address** (link-local) that it makes automatically.
+- We still use **subnets** and **network prefixes**, just like in IPv4.
+
+---
+
+### 🧑‍💻 Technical Summary
+
+---
+
+### 🔢 Hexadecimal Review
+
+- IPv6 addresses use **base-16 (hexadecimal)** format:
+    - 0–9 and A–F
+    - A = 10, B = 11, ..., F = 15
+- Each **hex digit = 4 bits**, making conversions between binary and hex easy.
+- IPv6 addresses are **128 bits**, so they’re **32 hex digits long**.
+
+🧠 **Memorize**:
+
+- 10 = A
+- 11 = B
+- 12 = C
+- 13 = D
+- 14 = E
+- 15 = F
+
+---
+
+### 🚨 Why IPv6?
+
+- **IPv4 = 32 bits → ~4.3 billion addresses** (not enough!)
+- **IPv6 = 128 bits → 340 undecillion addresses**
+- Techniques like **NAT**, **private IPs**, and **VLSM** helped stretch IPv4, but they are **temporary fixes**.
+- IPv6 is the **long-term solution** to address exhaustion.
+
+---
+
+### 🧬 IPv6 Address Structure
+
+- **128 bits long = 32 hex characters**
+- Written as **8 groups of 4 hex digits**, separated by colons (`:`):
+    
+    ```
+    makefile
+    CopyEdit
+    2001:0db8:0000:0000:0000:ff00:0042:8329
+    
+    ```
+    
+
+---
+
+### ✂️ IPv6 Address Shortening
+
+1. **Remove leading zeros**:
+    
+    ```
+    yaml
+    CopyEdit
+    2001:0db8:0001 → 2001:db8:1
+    
+    ```
+    
+2. **Double colon for consecutive zero quartets**:
+    
+    ```
+    ruby
+    CopyEdit
+    2001:db8:0:0:0:0:0:1 → 2001:db8::1
+    
+    ```
+    
+
+📌 **Rule**: Only one `::` can be used in an address.
+
+---
+
+### 🔁 Expand Shortened Addresses
+
+- Fill in missing zeros to reach 8 quartets.
+- Replace `::` with the right number of `0000` groups.
+
+---
+
+### 🧠 IPv6 Prefixes & Subnetting
+
+- Common IPv6 subnet = **/64**
+- ISPs often assign **/48 blocks**
+- Prefix = **Network part**, the rest = **Host part**
+
+📌 Convert prefix like this:
+
+- Identify how many bits belong to the **network portion**
+- Set the **rest of the bits to 0**
+- Watch out for prefixes that **don’t end cleanly at a hex digit** (e.g., /93)
+
+Example:
+
+```
+ruby
+CopyEdit
+Address: 2001:db8:abcd:7::1/93
+-> B = 1011 (binary), keep first bit (1), zero the rest = 1000 → hex = 8
+→ Prefix = 2001:db8:abcd:7:8::/93
+
+```
+
+---
+
+### 🔧 IPv6 Configuration on Cisco Routers
+
+1. Enable IPv6 routing:
+    
+    ```bash
+    bash
+    CopyEdit
+    ipv6 unicast-routing
+    
+    ```
+    
+2. Assign IPv6 addresses to interfaces:
+    
+    ```bash
+    bash
+    CopyEdit
+    interface g0/0
+    ipv6 address 2001:db8:0:0::1/64
+    no shutdown
+    
+    ```
+    
+3. Use:
+    
+    ```bash
+    bash
+    CopyEdit
+    show ipv6 interface brief
+    
+    ```
+    
+    to verify addresses.
+    
+
+📌 Interfaces get:
+
+- One **configured address**
+- One **link-local address** (auto-generated)
+
+---
+
+### 🧪 IPv6 Static Route
+
+Same syntax as IPv4, just add `ipv6`:
+
+```bash
+bash
+CopyEdit
+ipv6 route 2001:db8:2::/64 2001:db8:1::2
+
+```
+
+---
+
+### 📋 Quiz Recap
+
+✅ Valid IPv6 addresses:
+
+- Use only hex characters (0–9, A–F)
+- Have 8 quartets
+- Use `::` only once
+
+✅ Abbreviation Rules:
+
+- Only **leading 0s** can be removed
+- Never remove 0s in the **middle or end** unless part of `::`
+
+✅ IPv6 Routing Command:
+bash
+CopyEdit
+ipv6 unicast-routing
+

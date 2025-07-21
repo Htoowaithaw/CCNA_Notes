@@ -1,0 +1,235 @@
+# **Day 31 Lab | Configuring IPv6 (Part 1) | CCNA 200-301 Complete Course**
+
+## 🧪 CCNA Day 31 – IPv6 Configuration Lab (Dual Stack)
+
+---
+
+### 🧰 Lab Objectives
+
+- Configure **IPv6 addresses** on routers and PCs while retaining existing IPv4.
+- Practice using **dual-stack** (IPv4 + IPv6 simultaneously).
+- Validate connectivity via **ping**.
+- Understand the need for `ipv6 unicast-routing`.
+- Explore Boson NetSim IPv6 configuration tasks.
+
+---
+
+### 🔄 Dual-Stack Transition
+
+- IPv4 is already running on the network.
+- IPv6 is added without removing IPv4 = **dual-stack**.
+- Allows **gradual migration** from IPv4 to IPv6.
+
+---
+
+### ⚙️ Step-by-Step Configurations
+
+### 🧩 Step 1 – (Skipped at first)
+
+- Required command to enable IPv6 routing:
+    
+    ```bash
+    bash
+    CopyEdit
+    ipv6 unicast-routing
+    
+    ```
+    
+
+> IPv6 routing is not enabled by default, unlike IPv4.
+> 
+
+---
+
+### 🔧 Step 2 – IPv6 Addressing on Router (R1)
+
+```bash
+bash
+CopyEdit
+interface g0/0
+ ipv6 address 2001:db8:0:1::1/64
+
+interface g0/1
+ ipv6 address 2001:db8:0:2::1/64
+
+interface g0/2
+ ipv6 address 2001:db8:0:3::1/64
+
+```
+
+- No `no shutdown` needed since interfaces are already active (IPv4 in use).
+
+---
+
+### 🔍 Step 3 – Verify Router Configs
+
+```bash
+bash
+CopyEdit
+do show ipv6 interface brief
+
+```
+
+- Shows:
+    - Configured **global unicast** addresses
+    - Auto-generated **link-local** addresses (next lesson topic)
+
+---
+
+### 🖥️ Step 4 – PC IPv6 Configuration
+
+**PC1**
+
+- IPv6 Address: `2001:db8:0:1::2`
+- Gateway: `2001:db8:0:1::1`
+- Prefix: `/64`
+
+**PC2**
+
+- IPv6 Address: `2001:db8:0:2::2`
+- Gateway: `2001:db8:0:2::1`
+
+**PC3**
+
+- IPv6 Address: `2001:db8:0:3::2`
+- Gateway: `2001:db8:0:3::1`
+
+---
+
+### 📶 Step 5 – Ping Tests (Before Enabling IPv6 Routing)
+
+- ✅ PC1 to R1 G0/0: Success
+- ✅ PC1 to R1 G0/1: Success
+- ❌ PC1 to PC2: Fails
+- ✅ PC2 to R1 G0/1: Success
+- ✅ PC2 to R1 G0/0: Success
+- ❌ PC2 to PC1: Fails
+
+**Reason**: `ipv6 unicast-routing` not enabled yet.
+
+---
+
+### 🔁 Step 1 (Revisited) – Enable IPv6 Routing
+
+```bash
+bash
+CopyEdit
+ipv6 unicast-routing
+
+```
+
+- After enabling, **PC-to-PC pings work**.
+
+---
+
+### 🌐 IPv4 Connectivity Check
+
+```bash
+bash
+CopyEdit
+ping 192.168.2.2
+
+```
+
+- Confirms IPv4 still works in dual-stack setup.
+
+---
+
+## 💻 Boson NetSim Lab Preview – IPv6 Configuration
+
+---
+
+### 🔗 Overview
+
+- Part of Boson’s **CCNA courseware**, not standard NetSim labs.
+- Offers guided IPv6 configuration tasks.
+
+---
+
+### 🔍 Task 1: Verify IPv4 Config
+
+- Checked IP addresses on all routers.
+- All use **public IPv4** addresses.
+- Theoretical max IPv4 addresses: ~4.3 billion
+
+---
+
+### 🔧 Task 2: IPv6 Config
+
+**Benefits of IPv6**:
+
+- Vastly more address space: `3.4 × 10³⁸`
+- Designed for modern networks with billions of devices
+
+**Differences from IPv4**:
+
+- 128-bit addresses
+- Uses hexadecimal
+- Different header and functionality
+
+**Transition Technique**:
+
+- **Dual-Stack**: Run IPv4 and IPv6 in parallel (as in earlier lab)
+
+---
+
+### ⚙️ Router Configs (IPv6)
+
+1. Enable IPv6 routing:
+    
+    ```bash
+    bash
+    CopyEdit
+    ipv6 unicast-routing
+    
+    ```
+    
+2. Configure IPv6 on serial links:
+
+**Router3 (S0/1):**
+
+```bash
+bash
+CopyEdit
+interface s0/1
+ ipv6 address 2001:1:3:1::1/64
+
+```
+
+**Router4 (S0/0):**
+
+```bash
+bash
+CopyEdit
+interface s0/0
+ ipv6 address 2001:1:3:1::2/64
+
+```
+
+1. Test connectivity:
+
+```bash
+bash
+CopyEdit
+ping ipv6 2001:1:3:1::1
+
+```
+
+✅ Ping successful
+
+---
+
+### ✅ Summary of Key Commands
+
+```bash
+bash
+CopyEdit
+ipv6 unicast-routing                  # Enables IPv6 routing
+interface Gx/x
+ ipv6 address <address>/<prefix>     # Assigns IPv6 address to interface
+show ipv6 interface brief            # Verifies IPv6 config
+ping <IPv6 address>                  # Tests connectivity
+
+```
+
+---

@@ -1,0 +1,102 @@
+# **Day 29 | First Hop Redundancy Protocols | CCNA 200-301 Complete Course**
+
+## 🧠 FHRP — First Hop Redundancy Protocols (CCNA Day 29)
+
+---
+
+### 🧒 **Explain Like I’m 5**
+
+### 🚪 What’s a Default Gateway?
+
+Imagine your computer wants to talk to someone outside the house (like on the Internet). It needs to go out through one specific door — that door is called the **default gateway**.
+
+### ❗ What If the Door Breaks?
+
+If that door is broken, you’re stuck. So smart networks have a **backup door** that opens if the first one stops working. That’s what **FHRPs** do — they make sure you always have a working way out.
+
+### 🔀 What is FHRP?
+
+FHRP is a helper system that gives you a backup router in case the main one stops working.
+
+- Your computer thinks it's always talking to the same router.
+- But behind the scenes, another router can jump in if the first one disappears.
+- It’s like wearing a superhero mask — one hero goes down, another one puts on the same mask.
+
+---
+
+### 👨‍💻 **Explain Like a Network Technician**
+
+### 🧩 Purpose of FHRP
+
+FHRP (First Hop Redundancy Protocol) ensures **gateway redundancy** — when a PC sends traffic outside its subnet, it relies on the default gateway. If that gateway fails, the PC is stuck.
+
+FHRPs create a **virtual IP and virtual MAC** address, shared by multiple routers, so if one router fails, another can take over **seamlessly**.
+
+---
+
+## 🧱 Components of FHRP
+
+- **VIP (Virtual IP Address)** – Shared by multiple routers.
+- **Virtual MAC Address** – Tied to the VIP, used by the host’s ARP cache.
+- **Roles** – Routers negotiate who’s “active” (or “master”) and who’s on standby.
+
+---
+
+## 🔁 How FHRP Works (Summary)
+
+1. **PCs use the VIP as default gateway**.
+2. **Active router replies to ARP** and forwards traffic.
+3. If **active router fails**, standby takes over.
+4. **Gratuitous ARP** is sent to update switches’ MAC tables.
+5. End hosts keep sending to the same VIP/MAC.
+
+---
+
+## 🚦 FHRP Types for CCNA
+
+| Protocol | Open or Cisco? | Roles | Multicast Address | Virtual MAC Format |
+| --- | --- | --- | --- | --- |
+| HSRP | Cisco only | Active / Standby | v1: 224.0.0.2v2: 224.0.0.102 | v1: `0000.0c07.acXX`v2: `0000.0c9f.fXXX` |
+| VRRP | Open Standard | Master / Backup | `224.0.0.18` | `0000.5e00.01XX` |
+| GLBP | Cisco only | AVG / AVF | `224.0.0.102` | `0007.b400.GGFF` |
+
+> 🧠 Note: XX is the group number in hexadecimal, GG is group number, FF is AVF number.
+> 
+
+---
+
+## ⚙️ Basic HSRP Configuration (Version 2)
+
+```bash
+bash
+CopyEdit
+interface g0/0
+ standby version 2
+ standby 1 ip 172.16.0.254
+ standby 1 priority 200
+ standby 1 preempt
+
+```
+
+- **`standby version 2`** – Use HSRP v2
+- **`standby 1 ip`** – Set the virtual IP
+- **`standby 1 priority`** – Higher wins active
+- **`standby 1 preempt`** – Take back active role after recovery
+
+---
+
+## 🧪 Quiz Tips
+
+- HSRP: Active / Standby – Cisco-only
+- VRRP: Master / Backup – Open Standard
+- GLBP: AVG / AVF – Load-balances in same subnet
+- Virtual MACs are **protocol-specific** — memorize their format.
+- Only **GLBP** allows multiple routers to **load-balance traffic within a single subnet**.
+
+---
+
+## 🏁 Key Takeaways
+
+- Use **FHRPs** to prevent downtime from router failure.
+- Host only knows the VIP — does not care which router is active.
+- Always remember: FHRPs are **non-preemptive** by default, but **preemption can be enabled**.

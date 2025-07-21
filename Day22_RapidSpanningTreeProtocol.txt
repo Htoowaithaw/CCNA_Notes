@@ -1,0 +1,127 @@
+## 🧠 Rapid Spanning Tree Protocol (RSTP) - CCNA Summary
+
+📺 *Jeremy’s IT Lab - Day 22*
+
+---
+
+### 🧩 1. STP Versions Comparison
+
+| IEEE Standard | Cisco Proprietary | Description |
+| --- | --- | --- |
+| **802.1D** | PVST+ | Classic STP. One instance for all VLANs. |
+| **802.1w** | Rapid PVST+ | RSTP. Faster convergence than 802.1D. Cisco version supports one STP instance per VLAN. |
+| **802.1s** | (Cisco uses standard MSTP) | MSTP - Groups multiple VLANs into instances for scalable load balancing. |
+
+✅ **Rapid PVST+** = Cisco’s faster version of STP **+** per-VLAN capability.
+
+---
+
+### ⚡ 2. Why RSTP?
+
+- **802.1D**: 50 sec convergence (Max Age 20s + Listening 15s + Learning 15s)
+- **802.1w (RSTP)**: ~6 sec convergence using handshakes, not timers.
+- Rapid PVST+ is default on Cisco switches and in CCNA exam.
+
+---
+
+### 🔁 3. STP vs RSTP Comparison
+
+| Feature | Classic STP (802.1D) | RSTP (802.1w) |
+| --- | --- | --- |
+| **Port States** | Blocking, Listening, Learning, Forwarding, Disabled | Discarding, Learning, Forwarding |
+| **Port Roles** | Root, Designated, Non-Designated | Root, Designated, **Alternate**, **Backup** |
+| **Convergence** | Timer-based | Handshake-based |
+| **BPDU Origin** | Only Root Bridge | All switches |
+| **PortFast** | Optional feature | Built-in (Edge ports) |
+| **UplinkFast/BackboneFast** | Optional features | Built-in |
+
+---
+
+### 🔀 4. RSTP Port Roles
+
+| Role | Description |
+| --- | --- |
+| **Root** | Best path to the Root Bridge |
+| **Designated** | Best BPDU on the segment |
+| **Alternate** | Backup to root port, receives superior BPDU from another switch |
+| **Backup** | Receives superior BPDU from same switch (usually with a hub) |
+
+---
+
+### ⏱️ 5. Updated Port Costs in RSTP
+
+| Speed | Cost |
+| --- | --- |
+| 10 Mbps | 2,000,000 |
+| 100 Mbps | 200,000 |
+| 1 Gbps | 20,000 |
+| 10 Gbps | 2,000 |
+| 100 Gbps | 200 |
+| 1 Tbps | 20 |
+
+---
+
+### 🔌 6. RSTP Link Types
+
+| Type | Description | Command |
+| --- | --- | --- |
+| **Edge** | Connected to end device | `spanning-tree portfast` |
+| **Point-to-Point** | Full-duplex to another switch | `spanning-tree link-type point-to-point` |
+| **Shared** | Half-duplex to hub | `spanning-tree link-type shared` |
+
+---
+
+### 💬 7. BPDU Differences
+
+| Feature | Classic STP | RSTP |
+| --- | --- | --- |
+| Protocol Version | 0 | 2 |
+| BPDU Type | 0 | 2 |
+| Originates BPDUs | Only Root | All switches |
+| Uses BPDU Flags | Only 2 bits | All 8 bits |
+
+---
+
+### 🔧 8. CLI Commands
+
+```bash
+bash
+CopyEdit
+spanning-tree mode rapid-pvst   # Enable Rapid PVST+
+show spanning-tree              # Verify mode (shows 'rstp')
+spanning-tree portfast          # Enable edge port
+
+```
+
+---
+
+### 🧠 9. Optional Features Built Into RSTP
+
+| Feature | Purpose |
+| --- | --- |
+| **PortFast** | Edge port → Forwarding immediately |
+| **UplinkFast** | Rapid switch to backup root port |
+| **BackboneFast** | Faster convergence through indirect links |
+
+---
+
+### 🧪 10. Key Exam Facts
+
+- **RSTP protocol version** = `2`
+- **Classic STP protocol version** = `0`
+- Port states in RSTP: `Discarding`, `Learning`, `Forwarding`
+- To configure **edge port**: `spanning-tree portfast`
+- Cisco Rapid PVST+ ≈ IEEE 802.1w + per-VLAN STP
+
+---
+
+### 📚 Boson ExSim Practice Summary
+
+- **Q**: What 802.1D features are built into 802.1w?
+    - ✅ **B** PortFast
+    - ✅ **D** UplinkFast
+    - ✅ **E** BackboneFast
+
+---
+
+> ✨ Tip: Use Anki flashcards and Packet Tracer labs from Jeremy’s links to reinforce learning.

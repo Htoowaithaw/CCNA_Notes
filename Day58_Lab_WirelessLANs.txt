@@ -1,0 +1,54 @@
+# **Day 58 Lab | Wireless LANs | CCNA 200-301 Complete Course**
+
+**Wireless LAN Configuration Lab – Key Steps (No Explanation)**
+
+1. **Pre-Setup Details**
+    - Switch is pre-configured.
+    - WLC initial CLI setup completed (to access GUI).
+    - WLC model: 3504.
+2. **Switch Configuration**
+    - VLANs: 10 (Management), 100 (Internal), 200 (Guest).
+    - DHCP pools:
+        - VLAN10: For APs & PC1, includes `option 43`.
+        - VLAN100: For Internal WLAN clients.
+        - VLAN200: For Guest WLAN clients.
+    - Native VLAN10 on trunk to WLC.
+    - Access ports: G1/0/2, 3, 4 (for APs, PC1).
+3. **Access WLC GUI**
+    - Use PC1 Web Browser → `https://172.16.1.10`
+    - Username: `admin`
+    - Password: `Cisco123`
+4. **Familiarize with GUI**
+    - Monitor tab → Statistics → AP Join
+    - View AP join status and troubleshooting info.
+5. **Configure Dynamic Interfaces (Controller Tab → Interfaces)**
+    - **Internal Interface**
+        - VLAN: 100
+        - Port: 1
+        - IP: 10.0.0.10/24
+        - Gateway/DHCP: 10.0.0.1
+    - **Guest Interface**
+        - VLAN: 200
+        - Port: 1
+        - IP: 10.1.0.10/24
+        - Gateway/DHCP: 10.1.0.1
+6. **Create WLANs (WLANs Tab)**
+    - **Internal WLAN**
+        - Profile Name / SSID: Internal
+        - Interface: Internal
+        - Security: WPA2-PSK, AES, Passphrase: Cisco123
+        - Max Clients: 100
+    - **Guest WLAN**
+        - Profile Name / SSID: Guest
+        - Interface: Guest
+        - Security: WPA2-PSK, AES, Passphrase: Cisco123
+7. **Test with Wireless Client**
+    - Add smartphone.
+    - SSID: Internal
+    - Auth: WPA2-PSK, Passphrase: Cisco123
+    - Wait for DHCP assignment and connection.
+8. **Packet Tracer Limitation**
+    - Phone received IP from VLAN10 pool instead of VLAN100 (bug in Packet Tracer).
+9. **Final Outcome**
+    - WLC GUI WLAN config practiced successfully.
+    - Internal and Guest WLANs operational.

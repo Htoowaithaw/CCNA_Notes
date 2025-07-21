@@ -1,0 +1,76 @@
+# **Day 11 Lab 1 | Configuring Static Routes |  CCNA 200-301 Complete Course**
+
+**Static Routing Lab Summary - Jeremy's IT Lab (Day 11 Part 1)**
+
+**Objective:**
+Configure a Cisco router network with static routes to allow two PCs (PC1 and PC2) to communicate across three routers (R1, R2, R3).
+
+---
+
+**Step 1: Basic Device Configuration**
+
+1. **PC1 Configuration:**
+    - IP Address: `192.168.1.1`
+    - Subnet Mask: `255.255.255.0`
+    - Default Gateway: `192.168.1.254`
+2. **R1 Configuration:**
+    - Hostname: R1
+    - Interface G0/1: `192.168.1.254/24` (to SW1)
+    - Interface G0/0: `192.168.12.1/24` (to R2)
+3. **R2 Configuration:**
+    - Hostname: R2
+    - Interface G0/0: `192.168.12.2/24` (to R1)
+    - Interface G0/1: `192.168.13.2/24` (to R3)
+4. **R3 Configuration:**
+    - Hostname: R3
+    - Interface G0/0: `192.168.13.3/24` (to R2)
+    - Interface G0/1: `192.168.3.254/24` (to SW2)
+5. **PC2 Configuration:**
+    - IP Address: `192.168.3.1`
+    - Subnet Mask: `255.255.255.0`
+    - Default Gateway: `192.168.3.254`
+
+---
+
+**Step 2: Static Route Configuration**
+
+- **R1:**
+    
+    ```
+    ip route 192.168.3.0 255.255.255.0 192.168.12.2
+    ```
+    
+- **R2:**
+    
+    ```
+    ip route 192.168.1.0 255.255.255.0 g0/0
+    ip route 192.168.3.0 255.255.255.0 192.168.13.3
+    ```
+    
+- **R3:**
+    
+    ```
+    ip route 192.168.1.0 255.255.255.0 192.168.13.2
+    ```
+    
+
+---
+
+**Verification:**
+
+- Command used on PC1: `ping 192.168.3.1`
+- Expected Output: Initial ping may time out (due to ARP), followed by successful replies.
+
+---
+
+**Conclusion:**
+The network was successfully configured to enable PC1 and PC2 to communicate across three routers using static routing. The routing tables included local, connected, and static routes, and each route was verified post-configuration.
+
+---
+
+**Key Takeaways:**
+
+- Static routes require manual configuration.
+- Two-way communication requires routes on all routers in the path.
+- Either the next-hop IP or exit interface can be used in the `ip route` command.
+- Always verify interface status (`show ip interface brief`) and routing tables (`show ip route`).

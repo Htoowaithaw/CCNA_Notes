@@ -1,0 +1,124 @@
+# **Day 37 Lab | NTP | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 38: NTP Lab Notes (Technical Summary Only)**
+
+**Lab Goal:**
+Configure NTP in a small network where:
+
+- R1 synchronizes to an external NTP server (SRV1 at 1.1.1.1).
+- R2 and R3 synchronize to R1 using authentication.
+- Backup master configuration, time zones, and hardware clock updates are practiced.
+
+---
+
+**Step 1: Set the Time on All Routers**
+
+- Goal: Set initial time to "12:00:00 Dec 30 2020" in UTC.
+- R1, R2, R3:
+    
+    ```
+    enable
+    clock set 12:00:00 Dec 30 2020
+    conf t
+    clock timezone JST 9
+    do show clock detail
+    ```
+    
+
+**Step 2: Configure R1 to Sync with NTP Server (SRV1)**
+
+- Command:
+    
+    ```
+    ntp server 1.1.1.1
+    do show ntp associations
+    do show ntp status
+    do show clock detail
+    ```
+    
+- Wait for  to appear next to the server in the NTP associations.
+- Confirm stratum of SRV1 = 1, R1 = 2, and source becomes "NTP".
+
+**Step 3: Configure R1 as a Backup NTP Master**
+
+- In case R1 can’t reach 1.1.1.1:
+    
+    ```
+    conf t
+    ntp master
+    ```
+    
+    (Defaults to stratum 8.)
+    
+
+**Step 4: Configure NTP Authentication on R1, R2, R3**
+
+- On **R1**:
+    
+    ```
+    conf t
+    ntp authenticate
+    ntp authentication-key 1 md5 jeremysitlab
+    ntp trusted-key 1
+    ntp update-calendar
+    ```
+    
+- On **R2**:
+    
+    ```
+    conf t
+    ntp authenticate
+    ntp authentication-key 1 md5 jeremysitlab
+    ntp trusted-key 1
+    ntp server 192.168.12.1 key 1
+    ntp update-calendar
+    ```
+    
+- On **R3**:
+    
+    ```
+    conf t
+    ntp authenticate
+    ntp authentication-key 1 md5 jeremysitlab
+    ntp trusted-key 1
+    ntp server 192.168.13.1 key 1
+    ntp update-calendar
+    ```
+    
+
+**Note:** Packet Tracer does not support:
+
+- `show calendar` (even though `ntp update-calendar` is accepted)
+- `ntp source` command
+- Symmetric active peering commands
+
+**Verification Commands:**
+
+```
+show ntp associations
+show ntp status
+show clock detail
+```
+
+---
+
+**Boson NetSim Bonus Lab (Configuring NTP 1):**
+
+- Topology: 3 routers
+- Commands used: `clock set`, `ntp master`, `ntp server`, `show ntp status`, `show ntp associations`
+- Example flow:
+    - R1: `ntp master 3`
+    - R2: `ntp server <R1 IP>`
+    - R3: `ntp server <R2 IP>`
+- Confirm synchronization and stratum levels increase by 1 for each hop.
+
+---
+
+**Key NTP Concepts Practiced:**
+
+- Manual clock setting
+- Timezone configuration
+- NTP client/server configuration
+- NTP authentication
+- NTP master fallback (stratum 8)
+- Calendar sync (with limitations in Packet Tracer)

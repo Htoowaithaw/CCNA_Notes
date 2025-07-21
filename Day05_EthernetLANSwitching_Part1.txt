@@ -1,0 +1,129 @@
+**Jeremy's IT Lab - CCNA Lesson 5: Ethernet LAN Switching (Notion Notes)**
+
+---
+
+### 📚 Overview
+
+- Topic: How data travels within a LAN
+- Focus: Ethernet Layer 2 switching, Ethernet frame structure, MAC addresses
+- OSI Layers: Layer 1 (Physical) and Layer 2 (Data Link)
+
+---
+
+### 🔬 OSI Model Refresher
+
+**Layer 1: Physical Layer**
+
+- Defines transmission medium characteristics (voltage, distances, connectors)
+- Converts bits into signals (electrical or radio)
+
+**Layer 2: Data Link Layer**
+
+- Node-to-node data transfer
+- Uses MAC addresses for addressing
+- Handles error detection via Frame Check Sequence (FCS)
+- Switches operate at Layer 2
+
+---
+
+### 🌐 LANs (Local Area Networks)
+
+- Small, localized networks (e.g., office, home)
+- Multiple switches = same LAN
+- Routers separate LANs
+
+**Examples:**
+
+- Green area = 1 LAN
+- Red area = 1 LAN (2 switches)
+- Blue area = 2 LANs (separate router interfaces)
+
+---
+
+### 🏙️ Ethernet Frame Structure
+
+**Header Fields:**
+
+1. **Preamble**: 7 bytes (10101010...) - Clock synchronization
+2. **SFD (Start Frame Delimiter)**: 1 byte (10101011) - Start of frame indicator
+3. **Destination MAC Address**: 6 bytes
+4. **Source MAC Address**: 6 bytes
+5. **Type/Length**: 2 bytes
+    - ≤ 1500 = Length
+    - ≥ 1536 = Type (0x0800 = IPv4, 0x86DD = IPv6)
+
+**Trailer:**
+
+- **FCS (Frame Check Sequence)**: 4 bytes - CRC for error checking
+
+**Total Frame Overhead = 26 bytes**
+
+---
+
+### 🔹 MAC Addresses
+
+- 6 bytes / 48 bits
+- Burned-in at manufacturing (BIA)
+- Globally unique (usually)
+- Format: 12 hex characters (e.g., E8BA.7011.2874)
+- OUI (first 3 bytes) = Vendor identifier
+- Device ID (last 3 bytes) = Unique to device
+
+---
+
+### ✨ MAC Learning and Forwarding Behavior
+
+1. **Unicast Frame**:
+    - Sent to a specific MAC address
+2. **Unknown Unicast**:
+    - Destination MAC not in MAC address table
+    - Frame is **flooded** to all interfaces except ingress
+3. **MAC Address Learning**:
+    - Switch reads **Source MAC** of received frame
+    - Adds MAC + ingress port to MAC address table
+4. **Known Unicast**:
+    - Destination MAC is known
+    - Frame is **forwarded** only to specific interface
+5. **MAC Address Aging**:
+    - Dynamic MAC entries expire after 5 mins of inactivity
+
+---
+
+### ⚔️ Hexadecimal Overview
+
+- Base-16 system: 0-9 and A-F (A=10, B=11, ..., F=15)
+- Used to represent MAC addresses
+- E.g., Hex 0x10 = Decimal 16
+
+---
+
+### 🎯 Quiz Review (Summary)
+
+**Q1: Which field provides clock sync?**
+
+- A: Preamble
+
+**Q2: MAC address length?**
+
+- A: 48 bits
+
+**Q3: OUI of E8BA.7011.2874?**
+
+- A: E8BA.70
+
+**Q4: Which field is used for MAC learning?**
+
+- A: Source MAC address
+
+**Q5: Frame flooded to all but ingress?**
+
+- A: Unknown unicast
+
+---
+
+### 🎓 Tips
+
+- Focus on MAC learning and flooding behavior
+- Understand the Ethernet frame structure (memorize field sizes)
+- Use Packet Tracer for hands-on practice
+- Review MAC table updates and aging process

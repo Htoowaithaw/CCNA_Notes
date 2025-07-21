@@ -1,0 +1,104 @@
+# **Day 17 | VLANs (Part 2) | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Day 17 Summary: VLANs Part 2 (Trunking, 802.1Q, ROAS)**
+
+---
+
+### 1. **Trunk Ports vs. Access Ports**
+
+- **Access Port**: Carries traffic for a single VLAN.
+- **Trunk Port**: Carries traffic for multiple VLANs.
+- Used to connect switches and to routers for inter-VLAN routing.
+
+### 2. **Why Use Trunk Ports?**
+
+- Reduces the number of physical interfaces required between switches or routers and switches.
+- Enables traffic for multiple VLANs over a single link.
+
+---
+
+### 3. **802.1Q (Dot1Q) VLAN Tagging**
+
+- Adds a **4-byte tag** into Ethernet frames to indicate VLAN membership.
+- **Inserted between Source MAC and EtherType** fields.
+- **Fields in the 802.1Q Tag**:
+    - **TPID (Tag Protocol Identifier)**: Always `0x8100` (16 bits).
+    - **TCI (Tag Control Information)**:
+        - **PCP**: Priority Code Point (3 bits) – CoS/QoS.
+        - **DEI**: Drop Eligible Indicator (1 bit).
+        - **VID**: VLAN ID (12 bits) – Range: 1–4094.
+
+---
+
+### 4. **Native VLAN**
+
+- VLAN that is **not tagged** on trunk links.
+- **Default is VLAN 1**.
+- **MUST match on both ends** of a trunk link to avoid misinterpretation.
+- Best practice: **change to an unused VLAN** for security.
+
+---
+
+### 5. **Trunk Configuration on Cisco Switches**
+
+```
+interface G0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,30
+ switchport trunk native vlan 1001
+```
+
+- **Encapsulation must be set before `mode trunk`** if the switch supports both ISL and dot1q.
+
+### Modifying Allowed VLANs:
+
+- Add: `switchport trunk allowed vlan add 20`
+- Remove: `switchport trunk allowed vlan remove 20`
+- All: `switchport trunk allowed vlan all`
+- None: `switchport trunk allowed vlan none`
+- Except: `switchport trunk allowed vlan except 1-5,10`
+
+Use `show interfaces trunk` to verify.
+
+---
+
+### 6. **Router on a Stick (ROAS)**
+
+- Use **one physical interface** on the router to route between multiple VLANs via **subinterfaces**.
+
+```
+interface G0/0.10
+ encapsulation dot1q 10
+ ip address 192.168.1.1 255.255.255.192
+
+interface G0/0.20
+ encapsulation dot1q 20
+ ip address 192.168.1.65 255.255.255.192
+
+interface G0/0.30
+ encapsulation dot1q 30
+ ip address 192.168.1.129 255.255.255.192
+```
+
+- Traffic is tagged and routed based on VLAN IDs.
+- Use `show ip interface brief` and `show ip route` to verify.
+
+---
+
+### 7. **Quiz Review Highlights**
+
+- **Native VLAN config**: `switchport trunk native vlan <vlan>`
+- **Default allowed VLANs**: All (1–4094)
+- **If a VLAN doesn’t appear in allowed & active list**: It hasn’t been created on the switch
+- **802.1Q VLAN ID field**: `VID` (12-bit field)
+- **Fix trunk command rejection**: Use `switchport trunk encapsulation dot1q` first
+
+---
+
+### Summary
+
+- Trunk ports allow efficient VLAN traffic forwarding across devices.
+- Dot1Q tagging identifies VLANs over trunks.
+- Native VLANs are untagged and must match.
+- ROAS enables inter-VLAN routing using subinterfaces on a router.

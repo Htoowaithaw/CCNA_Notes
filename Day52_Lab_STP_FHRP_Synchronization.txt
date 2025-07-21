@@ -1,0 +1,68 @@
+# **Day 52 Lab | STP & FHRP Synchronization | CCNA 200-301 Complete Course**
+
+**Lab Topic:** HSRP and STP Synchronization
+
+**Goal:** Align HSRP active/standby with STP root/secondary for efficient traffic flow
+
+---
+
+**DSW1 Configuration:**
+
+- **STP:**
+    - VLAN 10 → Root Primary
+    - VLAN 20 → Root Secondary
+- **HSRP:**
+    - VLAN 10:
+        - Group 10
+        - IP: 10.0.10.254
+        - Priority: 105
+        - Preempt: Enabled
+        - Version: 2
+    - VLAN 20:
+        - Group 20
+        - IP: 10.0.20.254
+        - Priority: 95
+        - Preempt: Enabled
+        - Version: 2
+
+---
+
+**DSW2 Configuration:**
+
+- **STP:**
+    - VLAN 10 → Root Secondary
+    - VLAN 20 → Root Primary
+- **HSRP:**
+    - VLAN 10:
+        - Group 10
+        - IP: 10.0.10.254
+        - Priority: 95
+        - Preempt: Enabled
+        - Version: 2
+    - VLAN 20:
+        - Group 20
+        - IP: 10.0.20.254
+        - Priority: 105
+        - Preempt: Enabled
+        - Version: 2
+
+---
+
+**Verification Commands:**
+
+- `show spanning-tree vlan 10`
+- `show spanning-tree vlan 20`
+- `show standby brief`
+
+---
+
+**Result:**
+
+- **DSW1**: Active for VLAN 10, Standby for VLAN 20
+- **DSW2**: Active for VLAN 20, Standby for VLAN 10
+
+---
+
+**Design Tip:**
+
+Always sync HSRP active router with the STP root bridge per VLAN to avoid suboptimal paths.

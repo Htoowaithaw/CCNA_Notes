@@ -1,0 +1,141 @@
+# **Day 53 | WAN Architectures | CCNA 200-301 Complete Course**
+
+## 🛫 Simple Explanation (for Aviation Ground Handling CSA)
+
+### What is a WAN?
+
+- Think of your **airport's internal network (LAN)** – it's for just one airport.
+- A **WAN (Wide Area Network)** is like the **airline’s network** that connects **multiple airports around the world**, letting them share flight data and passenger info.
+
+---
+
+### 1. **Leased Line**
+
+- Like a **private shuttle** between two airports – no one else can use it.
+- Very secure but **expensive and slow** to install.
+
+---
+
+### 2. **MPLS (Multi-Protocol Label Switching)**
+
+- Like a **first-class cargo lane** that uses **labels** instead of reading full addresses.
+- The airline shares the lane with others, but everyone’s cargo is kept separate.
+- Your **airport router (CE)** connects to the **airline’s edge router (PE)**.
+- Inside the airline, **P routers** move the cargo but never talk to you.
+
+---
+
+### 3. **Internet VPNs**
+
+- Like sending **secure messages through public postal services**.
+- You use **encryption** to protect the message.
+
+### Two types:
+
+- **Site-to-Site VPN** (IPsec): Two airports (sites) send data securely via their routers.
+- **Remote-Access VPN** (TLS): Employees connect from **home**, like a **staff logging into the airline system from outside**.
+
+---
+
+### 4. **GRE over IPsec**
+
+- Like sending **all types of messages (emails, announcements)** inside a locked box.
+- GRE allows **broadcast/multicast** (like announcements to everyone), IPsec locks it up.
+
+---
+
+### 5. **DMVPN**
+
+- Like all airports setting up **temporary, secure routes** automatically to each other without manually planning each one.
+
+---
+
+### 6. **Internet Access Types**
+
+- **DSL**: Like using **existing phone lines** to get Internet – cheap and easy.
+- **Cable (CATV)**: Uses **TV cables** to access the Internet.
+
+---
+
+### 7. **Redundancy (Backup Internet Paths)**
+
+- **Single-homed**: 1 line, 1 ISP (like one runway – risky).
+- **Dual-homed**: 2 lines, 1 ISP.
+- **Multihomed**: 1 line each to 2 ISPs.
+- **Dual-multihomed**: 2 lines to each of 2 ISPs – safest.
+
+---
+
+## 🧠 Technical IT Explanation
+
+### WAN (Wide Area Network)
+
+- A WAN connects different LANs over large geographical distances.
+- Used by enterprises to link branches, data centers, and remote sites.
+
+---
+
+### Leased Line
+
+- Dedicated point-to-point physical connection between two sites.
+- Uses serial connections (HDLC or PPP).
+- Offers high security but expensive and slow to install.
+
+---
+
+### MPLS
+
+- WAN service from a provider using label switching instead of IP routing.
+- Provides **Layer 3 or Layer 2 VPNs**.
+
+Key terms:
+
+- **CE** (Customer Edge): Router at customer site.
+- **PE** (Provider Edge): Router at ISP edge.
+- **P** (Provider): ISP core routers.
+- MPLS adds labels between L2 and L3 – sometimes called Layer 2.5.
+
+---
+
+### VPN over Internet
+
+### Site-to-Site VPN (IPsec)
+
+- Connects two sites over the public Internet.
+- Encrypts IP packets and adds a VPN/IPsec header and new IP header.
+
+### Remote-Access VPN (TLS)
+
+- Uses TLS (formerly SSL) to let individual devices securely connect to a corporate network.
+- E.g., Cisco AnyConnect client on laptops.
+
+---
+
+### GRE over IPsec
+
+- GRE encapsulates various Layer 3 protocols, supports multicast/broadcast.
+- IPsec encrypts GRE packet for secure transfer.
+
+---
+
+### DMVPN
+
+- Cisco technology for dynamic full mesh IPsec tunnels.
+- Combines hub-and-spoke ease with direct spoke-to-spoke communication efficiency.
+
+---
+
+### Internet Access Technologies
+
+- **DSL**: Internet via telephone lines.
+- **Cable (CATV)**: Internet via TV cable lines.
+- **Ethernet over fiber**: Modern, fast option for enterprises.
+
+---
+
+### Redundancy Terms
+
+- **Single-homed**: 1 connection to 1 ISP.
+- **Dual-homed**: 2 connections to 1 ISP.
+- **Multihomed**: 1 connection to each of 2 ISPs.
+- **Dual-multihomed**: 2 connections to each of 2 ISPs.

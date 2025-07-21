@@ -1,0 +1,127 @@
+# **Day 38 Lab | DNS | CCNA 200-301 Complete Course**
+
+**Day 38 – DNS (Domain Name System) Configuration Lab Notes**
+
+---
+
+### ☁️ Purpose
+
+Learn how to configure DNS server settings on routers and PCs to allow name resolution (e.g., youtube.com → IP address).
+
+---
+
+### 🔧 Step-by-Step Configurations
+
+### Step 1: Configure Default Route on R1
+
+```
+R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2
+R1# do ping 1.1.1.1
+```
+
+- Default route sends unknown traffic (e.g., to DNS server 1.1.1.1) via Internet router (renamed icon).
+- Verifies reachability of public DNS server.
+
+### Step 2: Configure DNS Server on PCs
+
+- On **PC1**, **PC2**, and **PC3**:
+    - Navigate to `Config > DNS Server`: Set to `1.1.1.1` (Cloudflare DNS)
+
+---
+
+### 🧠 Side Note
+
+- In real-world configs, DHCP assigns DNS server automatically.
+- Packet Tracer lacks DNS server emulation (e.g., `ip dns server` not supported)
+
+---
+
+### Step 3: Configure DNS Client Settings on R1 + Local Host Table
+
+```
+R1(config)# ip name-server 1.1.1.1
+R1(config)# ip host R1 192.168.0.254
+R1(config)# ip host PC1 192.168.0.1
+R1(config)# ip host PC2 192.168.0.2
+R1(config)# ip host PC3 192.168.0.3
+R1# do show hosts
+R1# do ping PC1
+```
+
+- `ip name-server`: Sets R1's external DNS
+- `ip host`: Local static DNS entries (like a manual `/etc/hosts` file)
+- `ip domain-lookup` is enabled by default
+
+---
+
+### Step 4: DNS Simulation Mode in Packet Tracer
+
+- Use Simulation Mode to observe how a ping to `youtube.com` triggers:
+    - **DNS Query** from PC1 to R1 to 1.1.1.1
+    - **ARP Requests** as needed
+    - **ICMP Echo Requests** once DNS reply is received
+- Observe the resolved IP for `youtube.com`: `172.217.6.78`
+- First ping often fails due to slow ARP, subsequent pings succeed
+
+---
+
+### 🧪 Boson NetSim Lab Summary – Configuring DNS 1
+
+### Task 1: Basic Setup
+
+- Configure IP addresses and default gateways on Router1, Switch1, and PCs
+
+```
+Router1(config)# interface f0/0
+Router1(config-if)# ip address 10.0.0.1 255.255.255.0
+Switch1(config)# interface vlan1
+Switch1(config-if)# ip address 10.0.0.2 255.255.255.0
+```
+
+- On PC1 & PC2:
+
+```
+ipconfig /ip 10.0.0.100 255.255.255.0
+ipconfig /dg 10.0.0.1
+```
+
+- Test connectivity: `ping` from Router1 to all devices
+
+### Task 2: Configure DNS
+
+- Initial DNS name resolution fails (no config)
+- Enable DNS server on Router1:
+
+```
+Router1(config)# ip dns server
+Router1(config)# ip host Router1 10.0.0.1
+Router1(config)# ip host Switch1 10.0.0.2
+```
+
+- On Switch1:
+
+```
+Switch1(config)# ip name-server 10.0.0.1
+Switch1(config)# ip domain-lookup
+```
+
+- Ping by name: `ping Router1` succeeds via DNS lookup
+
+---
+
+### ✅ Key Commands
+
+```
+ip name-server <ip>       # Set DNS server for router
+ip dns server             # Enable DNS server (not supported in PT)
+ip host <name> <ip>       # Static host table entry
+ip domain-lookup          # Enable hostname-to-IP translation
+```
+
+---
+
+### 📌 Takeaways
+
+- DNS isn’t heavily tested in config questions but is essential for real-world networking
+- Understand how name-to-IP resolution works
+- Observe DNS traffic and ARP dependencies using Packet Tracer Simulation Mode

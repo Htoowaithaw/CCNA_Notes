@@ -1,0 +1,109 @@
+# **Day 45 Lab | Dynamic NAT | CCNA 200-301 Complete Course**
+
+**Day 45 – Dynamic NAT & PAT Lab (Packet Tracer)**
+
+**Lab Objective:**
+
+- Configure dynamic NAT with a pool of public IPs.
+- Change the configuration to use PAT (NAT overload) with R1's interface IP.
+
+---
+
+### Step 1: Configure Dynamic NAT on R1
+
+**Interface Configuration:**
+
+```
+enable
+conf t
+interface g0/0
+ ip nat outside
+exit
+interface g0/1
+ ip nat inside
+exit
+```
+
+**ACL to match source traffic:**
+
+```
+access-list 1 permit 172.16.0.0 0.0.0.255
+```
+
+**Create NAT Pool:**
+
+```
+ip nat pool POOL1 100.0.0.1 100.0.0.2 netmask 255.255.255.0
+```
+
+**NAT Mapping Statement:**
+
+```
+ip nat inside source list 1 pool POOL1
+```
+
+---
+
+### Step 2: Verify Dynamic NAT
+
+1. **Ping 8.8.8.8** from PC1 and PC2 to initiate translation.
+2. PC3 will fail due to NAT pool exhaustion (only 2 public IPs).
+3. Check NAT translations:
+
+```
+do show ip nat translations
+```
+
+- Packet Tracer may not show inside local → inside global static mappings but shows ICMP/UDP entries.
+- Behavior may differ slightly from real IOS.
+
+---
+
+### Step 3: Change to PAT Using R1's Interface IP
+
+**Clear previous NAT translations:**
+
+```
+do clear ip nat translation *
+```
+
+**Configure PAT (interface overload):**
+
+```
+ip nat inside source list 1 interface g0/0 overload
+```
+
+> Note: This replaces the previous dynamic NAT config automatically.
+> 
+
+---
+
+### Step 4: Verify PAT
+
+1. **Ping google.com** from PC1, PC2, and PC3.
+2. All pings should work this time because PAT allows many-to-one translations.
+
+**Check Translations Again:**
+
+```
+do show ip nat translations
+```
+
+- All internal hosts are translated to R1’s g0/0 IP (203.0.113.1).
+- Unique port numbers are used to differentiate traffic.
+
+---
+
+### Summary:
+
+- **Dynamic NAT**: One-to-one mapping using a pool; limited by number of public IPs.
+- **PAT (NAT Overload)**: Many-to-one mapping using interface IP and port numbers.
+- Useful commands:
+
+```
+show ip nat translations
+show ip nat statistics
+```
+
+> Next: Practice the same steps in Boson NetSim to reinforce the concepts.
+>

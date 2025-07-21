@@ -1,0 +1,102 @@
+# **Day 16 | VLANs (Part 1) | CCNA 200-301 Complete Course**
+
+## **CCNA Day 16 – VLANs Part 1 Summary**
+
+### **Key Topics Covered**
+
+- What is a LAN?
+- Broadcast domains
+- Introduction to VLANs
+- VLANs vs Subnets
+- VLAN configuration basics on Cisco switches
+- Quiz (5 questions)
+
+---
+
+### **What is a LAN?**
+
+- **LAN (Local Area Network)**: A group of devices in the same **broadcast domain**.
+- **Broadcast domain**: All devices that receive a frame with destination MAC `FF:FF:FF:FF:FF:FF`.
+- Switches forward broadcast frames to all ports (except incoming).
+- Routers stop broadcast frames — used to segment broadcast domains.
+
+---
+
+### **Broadcast Domains Example**
+
+- Each router interface is a boundary for a broadcast domain.
+- Without VLANs, one switch = one broadcast domain.
+- **4 LANs** = **4 broadcast domains**, even if physically connected.
+
+---
+
+### **What is a VLAN?**
+
+- **VLAN (Virtual LAN)**: Logically separates Layer 2 domains on a single switch.
+- Segments networks **at Layer 2**, even if physically on the same switch.
+- Prevents unnecessary broadcast flooding, improves performance & security.
+
+---
+
+### **Subnetting ≠ VLANs**
+
+- **Subnetting** = Layer 3 separation (IP-level).
+- VLANs = Layer 2 separation (broadcast-level).
+- Switches operate at Layer 2 → need VLANs to truly separate devices.
+- Without VLANs, broadcast traffic floods entire switch regardless of IP subnet.
+
+---
+
+### **VLAN Implementation**
+
+- Assign VLANs **per interface** on a switch:
+    - `switchport mode access`
+    - `switchport access vlan <ID>`
+- Devices in the same VLAN form their own broadcast domain.
+- **Switches do not route between VLANs** → must use a **router** or Layer 3 switch for inter-VLAN routing.
+
+---
+
+### **Default VLANs**
+
+- VLAN 1: Default for all interfaces.
+- VLANs 1002–1005: Reserved for legacy use (FDDI/Token Ring).
+- These cannot be deleted.
+
+---
+
+### **Access vs Trunk Ports**
+
+- **Access Port**: Assigned to a single VLAN, used for end hosts.
+- **Trunk Port**: Carries multiple VLANs (used between switches/routers) – covered in next video.
+
+---
+
+### **Config Summary (Example)**
+
+```
+plaintext
+CopyEdit
+interface range g1/0 - g1/3
+ switchport mode access
+ switchport access vlan 10
+
+vlan 10
+ name ENGINEERING
+
+```
+
+---
+
+### **Quiz Questions Recap**
+
+1. How many broadcast domains in a network with no VLANs?
+    - **Answer**: 6
+2. How many broadcast domains with VLANs 10, 20, 30?
+    - **Answer**: 5 (3 VLANs + 2 router links)
+3. Assigning to non-existent VLAN:
+    - **Answer**: B. Switch will create the VLAN
+4. PC3 in VLAN20 sends broadcast – how many devices receive?
+    - **Answer**: 3
+5. You create VLANs 10, 20, 30. Total VLANs in `show vlan brief`?
+    - **Answer**: 8 (3 new + 1 + 1002–1005)

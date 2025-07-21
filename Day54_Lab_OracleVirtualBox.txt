@@ -1,0 +1,77 @@
+# **Day 54 Lab | Oracle VirtualBox | CCNA 200-301 Complete Course**
+
+### **Jeremy’s IT Lab – VirtualBox + Ubuntu VM Lab Notes**
+
+**⚠️ Not required for CCNA exam**
+
+– Hands-on lab to understand virtualization
+
+– Shows how a **Type 2 Hypervisor** (VirtualBox) runs on Windows
+
+– Guest OS: Ubuntu Linux
+
+---
+
+### **Reasons for the Lab**
+
+1. Get hands-on experience with Type 2 hypervisors
+2. Show how easy it is to set up a VM
+3. Useful for future studies (e.g., GNS3, CML labs)
+
+---
+
+### **Steps to Complete the Lab**
+
+### ✅ Step 1: Install VirtualBox
+
+- Visit: [https://www.virtualbox.org](https://www.virtualbox.org/)
+- Click **Download VirtualBox**
+- Choose **Windows Hosts**
+- Use default install settings
+- Finish installation
+
+### ✅ Step 2: Download Ubuntu Linux
+
+- Visit: [https://ubuntu.com](https://ubuntu.com/)
+- Go to **Download** > Choose **LTS version**
+- Download `.iso` file
+
+### ✅ Step 3: Create New VM in VirtualBox
+
+- Click **New**
+- Name: Ubuntu 20.04
+- Memory: 1 GB (can increase later)
+- Create virtual hard disk:
+    - Type: VDI
+    - Storage: Dynamically allocated
+    - Size: 10 GB
+
+### ✅ Step 4: Insert Ubuntu ISO
+
+- Go to **Settings > Storage**
+- Click empty CD icon > Choose a disk file
+- Select downloaded Ubuntu `.iso`
+- Click OK
+
+### ✅ Step 5: Boot & Install Ubuntu
+
+- Click **Start**
+- Follow Ubuntu setup:
+    - Install Ubuntu
+    - US Keyboard
+    - Minimal install
+    - Don’t download updates
+    - Erase disk and install Ubuntu
+    - Enter user info (e.g., username: cisco)
+- Install > Restart > Press **Enter** to complete
+- VM is ready to use
+
+---
+
+### **Setup Result**
+
+- Windows (Host OS)
+    
+    → VirtualBox (Type 2 Hypervisor)
+    
+    → Ubuntu (Guest OS)

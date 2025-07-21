@@ -1,0 +1,77 @@
+# **Day 14 | Subnetting (Part 2) | CCNA 200-301 Complete Course**
+
+**Jeremy's IT Lab - Subnetting Part 2 Summary**
+
+---
+
+**Overview:**
+This video continues the subnetting series and focuses on solving subnetting problems with step-by-step explanations. It covers Class C and Class B subnetting, includes quiz answers from the previous video, provides new practice problems, and explains key subnetting tricks and techniques.
+
+---
+
+**Key Topics Covered:**
+
+1. **Quiz Review from Last Video:**
+    - Given: 192.168.1.0/24 to create four subnets for 45 hosts each.
+    - Solution: Use /26 prefix (62 usable hosts per subnet).
+        - Subnet 1: 192.168.1.0 - 192.168.1.63
+        - Subnet 2: 192.168.1.64 - 192.168.1.127
+        - Subnet 3: 192.168.1.128 - 192.168.1.191
+        - Subnet 4: 192.168.1.192 - 192.168.1.255
+2. **Subnetting Trick (Finding Next Subnet):**
+    - Use the value of the least significant bit in the network portion.
+    - In /26, that value is 64, so add 64 each time to get the next subnet.
+3. **Subnetting Practice - 5 Equal Subnets:**
+    - Given: 192.168.255.0/24
+    - Required: 5 equal-sized subnets
+    - Solution: Borrow 3 bits -> /27 (8 subnets total)
+        - Subnets:
+            - .0/27
+            - .32/27
+            - .64/27
+            - .96/27
+            - .128/27
+4. **Identifying Subnet from Host Address:**
+    - Example 1: 192.168.5.57/27 ➔ Subnet = 192.168.5.32/27
+    - Example 2: 192.168.29.219/29 ➔ Subnet = 192.168.29.216/29
+5. **Class C Subnet Chart:**
+    - Table with prefix lengths (/25 to /32) showing subnets and hosts per subnet.
+    - Recommended to memorize for speed.
+6. **Subnetting Class B Networks:**
+    - Example 1:
+        - Given: 172.16.0.0/16
+        - Required: 80 subnets
+        - Solution: Borrow 7 bits ➔ /23 (128 subnets)
+    - Example 2:
+        - Given: 172.22.0.0/16
+        - Required: 500 subnets
+        - Solution: Borrow 9 bits ➔ /25 (512 subnets)
+    - Example 3:
+        - Given: 172.18.0.0/16
+        - Required: 250 subnets and 250 hosts/subnet
+        - Solution: /24 (256 subnets, 254 hosts/subnet)
+7. **Identifying Subnet (Class B):**
+    - Host: 172.25.217.192/21
+    - Subnet: 172.25.216.0/21
+8. **Class B Subnet Chart:**
+    - Patterns only (do not memorize):
+        - Borrowed bits double the number of subnets
+        - Host bits double host addresses (minus 2)
+
+---
+
+**Quiz Questions:**
+
+1. 172.30.0.0/16, need 100 subnets and 500 hosts per subnet ➔ What prefix?
+2. Subnet of 172.21.111.201/20?
+3. Broadcast address of subnet containing 192.168.91.78/26?
+4. 172.16.0.0/16 divided into 4 equal subnets ➔ 2nd subnet's network & broadcast addresses?
+5. 172.30.0.0/16 divided into subnets with 1000 hosts each ➔ How many subnets possible?
+
+---
+
+**Closing Notes:**
+
+- No flashcards or lab for this video.
+- Next video: final part of subnetting series + practice lab.
+- Support options and channel shoutouts included.

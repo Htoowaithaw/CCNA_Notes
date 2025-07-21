@@ -1,0 +1,120 @@
+# **Day 24 | Dynamic Routing | CCNA 200-301 Complete Course**
+
+**1. Introduction**
+
+- Transition back to Layer 3 topics after Layer 2 (VLANs, STP, EtherChannel).
+- Dynamic routing introduced (vs. static routing).
+- Covered CCNA exam section 3.0 - IP Connectivity (25% weight).
+
+**2. Static Routing Recap**
+
+- Manual route configuration using `ip route` command.
+- Fixed paths, no automatic updates.
+
+**3. Dynamic Routing Overview**
+
+- Routers automatically exchange route info.
+- Adapts to topology changes.
+- Benefits: scalability, fault tolerance, automation.
+
+**4. Route Types**
+
+- **Network route**: to a subnet (e.g., 10.0.12.0/30).
+- **Host route**: to a single IP (/32 mask).
+
+**5. Dynamic Routing Example**
+
+- Routers learn and advertise networks hop-by-hop.
+- Route withdrawn if a link fails.
+- If alternative path exists, it is used (e.g., via another router).
+
+**6. Why Use Dynamic Routing**
+
+- Prevents routing to dead ends.
+- Automatically re-routes via backup paths.
+- Example shown with R1 learning 192.168.4.0/24 via R2 and R3.
+
+**7. Route Preference**
+
+- Chosen based on **metric** (lower is better).
+- Metrics reflect path 'cost'.
+- ECMP (Equal Cost Multi-Path) used if two paths have equal metric.
+
+**8. IGP vs. EGP**
+
+- **IGP** (Interior Gateway Protocol): within an AS.
+    - Examples: RIP, EIGRP, OSPF, IS-IS.
+- **EGP** (Exterior Gateway Protocol): between ASes.
+    - Only modern EGP: BGP.
+
+**9. Routing Algorithms**
+
+- **Distance Vector**:
+    - Protocols: RIP, EIGRP.
+    - "Routing by rumor" (neighbor tells what it knows).
+    - Shares: destination + metric.
+- **Link State**:
+    - Protocols: OSPF, IS-IS.
+    - Each router builds a complete network map.
+    - Shares: interface and link data.
+    - More CPU/RAM usage but faster convergence.
+
+**10. Metrics by Protocol**
+
+| Protocol | Metric Used |
+| --- | --- |
+| RIP | Hop count |
+| EIGRP | Bandwidth + Delay |
+| OSPF | Cost (based on bandwidth) |
+| IS-IS | Cost (default = 10 per link) |
+
+**11. Administrative Distance (AD)**
+
+- Determines preferred route when multiple protocols provide same destination.
+- Lower AD = more preferred.
+
+| Protocol/Type | AD Value |
+| --- | --- |
+| Connected | 0 |
+| Static | 1 |
+| eBGP | 20 |
+| EIGRP | 90 |
+| IGRP | 100 |
+| OSPF | 110 |
+| IS-IS | 115 |
+| RIP | 120 |
+| External EIGRP | 170 |
+| iBGP | 200 |
+| Unusable (ignored) | 255 |
+
+**12. Prefix Matching**
+
+- Longest prefix match is used when multiple routes fit.
+- Metric and AD are considered only after matching prefixes.
+
+**13. Floating Static Routes**
+
+- Static route with higher AD than dynamic route.
+- Used as backup when dynamic route fails.
+
+**14. Summary**
+
+- Dynamic routing simplifies management in large networks.
+- Key topics: types of protocols, metric vs. AD, ECMP, route selection logic.
+- Next videos: deeper into RIP, EIGRP, OSPF.
+
+---
+
+**15. Quiz Questions Recap**
+
+1. Route with lowest AD (EIGRP) is selected.
+2. "Routing by rumor" = Distance Vector.
+3. RIP with equal metrics = both routes added.
+4. Longest prefix match (not AD or metric) used if destinations differ.
+
+---
+
+**Recommendations**
+
+- Use Anki flashcards to memorize AD values.
+- Practice with Packet Tracer labs and Boson ExSim for real exam readiness.

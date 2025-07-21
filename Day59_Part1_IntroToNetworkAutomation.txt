@@ -1,0 +1,49 @@
+# **Day 59 (part 1) | Intro to Network Automation | CCNA 200-301**
+
+**Network Automation & SDN – Key Points**
+
+1. **Exam Scope**
+    - Section 6.0 of CCNA (10% of the exam)
+    - Required to understand/explain, not configure automation
+2. **Drawbacks of Traditional Networking**
+    - Manual CLI per device
+    - Typos, config drift, inefficient, hard to scale
+    - No standard enforcement
+3. **Benefits of Automation**
+    - Fewer human errors
+    - Faster provisioning & changes
+    - Ensures config compliance
+    - Reduces OpEx
+    - Supports scalable operations
+4. **Tools Used**
+    - Python
+    - SDN
+    - Ansible
+    - Puppet
+5. **Network Function Planes**
+    - **Data Plane**: Forwards traffic (NAT, ACLs, VLAN tags)
+    - **Control Plane**: Builds tables (OSPF, ARP, STP)
+    - **Management Plane**: Admin tools (SSH, SNMP, Syslog, NTP)
+6. **Data Plane Hardware**
+    - Handled by ASIC (Application-Specific Integrated Circuit)
+    - TCAM used for fast MAC lookups
+    - CPU used for control/management tasks
+7. **SDN (Software Defined Networking)**
+    - Centralized control plane via a controller
+    - Uses APIs to program network devices
+    - WLC is an example of SDN-like approach
+8. **SDN Interfaces**
+    - **SBI (Southbound Interface)**: Controller ↔ Devices
+        - Examples: OpenFlow, Cisco OpFlex, onePK, NETCONF
+    - **NBI (Northbound Interface)**: Apps ↔ Controller
+        - Uses REST APIs, exchanges data in JSON/XML
+9. **Traditional Automation vs SDN**
+    - Traditional uses scripts (e.g. Python with regex)
+    - SDN offers centralized visibility, APIs, structured data
+    - Easier for beginners, allows app integration
+10. **Quiz Answers**
+- Q1: A (reduced human error), B (reduced OpEx)
+- Q2: C (OpenFlow), D (OpFlex)
+- Q3: A (calculating routes)
+- Q4: C (controller ↔ device exchange)
+- Q5: B (management plane – NTP)

@@ -1,0 +1,112 @@
+# **Day 45 | NAT (part 2) | CCNA 200-301 Complete Course**
+
+**Day 45 – NAT Part 2: Dynamic NAT & PAT**
+
+---
+
+### 🧒 Explain Like I’m 10
+
+- Think of NAT like a school giving fake names to students when they write to people outside so strangers don’t know their real names.
+- **Static NAT** means one student always gets the same fake name.
+- **Dynamic NAT** means the school gives out a random fake name from a list and takes it back after use.
+- **PAT (Port Address Translation)** is super cool—it lets lots of students share one fake name by also giving each one a unique ID number. This way, they all look like one person to outsiders but the school knows who is who.
+
+---
+
+### 👨‍💻 Technical Summary
+
+### 🔁 Static NAT Recap
+
+- Maps private IP (inside local) to public IP (inside global) permanently.
+- Works both **inbound and outbound**.
+
+### 🔄 Dynamic NAT
+
+- Uses a **pool of public IPs** to temporarily assign to inside devices.
+- **One-to-one mapping** like static NAT, but assignments are automatic.
+- Uses **ACL** to define which traffic gets NAT.
+- Example:
+    
+    ```
+    ip nat inside source list 1 pool POOL1
+    ```
+    
+- Mappings expire after inactivity or can be manually cleared.
+
+### 🔥 NAT Pool Exhaustion
+
+- Happens when there are **more internal hosts** than available public IPs.
+- New connections are **dropped** until others time out.
+
+### 📦 PAT (NAT Overload)
+
+- Translates **IP and Port**.
+- Allows **many-to-one** NAT using one public IP with different port numbers.
+- Example:
+    
+    ```
+    ip nat inside source list 1 interface g0/0 overload
+    ```
+    
+- Keeps track of sessions using source port numbers.
+
+---
+
+### 🔧 Dynamic NAT Configuration
+
+```
+ip access-list standard 1
+ permit 192.168.0.0 0.0.0.255
+exit
+ip nat pool POOL1 100.0.0.1 100.0.0.10 netmask 255.255.255.0
+ip nat inside source list 1 pool POOL1
+interface g0/0
+ ip nat outside
+interface g0/1
+ ip nat inside
+```
+
+### 🔧 PAT Configuration (using interface IP)
+
+```
+ip access-list standard 1
+ permit 192.168.0.0 0.0.0.255
+ip nat inside source list 1 interface g0/0 overload
+```
+
+### 🔍 Show Commands
+
+```
+show ip nat translations
+show ip nat statistics
+clear ip nat translation *
+```
+
+---
+
+### ✅ Key Differences
+
+| Type | Mapping | Public IPs Needed | Simultaneous Hosts | Notes |
+| --- | --- | --- | --- | --- |
+| Static NAT | 1-to-1 (manual) | Many | 1:1 | Permanent mapping |
+| Dynamic NAT | 1-to-1 (auto) | Pool of IPs | Limited by pool | Entries expire |
+| PAT | Many-to-1 | 1 (interface IP) | Many (port-based) | Most common, very scalable |
+
+---
+
+### 📝 Quiz Highlights
+
+1. **Best for conserving IPv4?** → PAT
+2. **Invalid NAT pool config?** → IPs must match subnet of netmask
+3. **NAT pool full?** → New packets dropped
+4. **Correct config with interface IP?** → Use `overload` with interface IP
+5. **ACL denies traffic?** → Traffic isn’t translated but still forwarded
+
+---
+
+### 🎁 Bonus (Boson ExSim)
+
+- NAT table entries:
+    - **Inside Local**: real IP of HostA (e.g. 10.1.7.7)
+    - **Inside Global**: router’s public IP (e.g. 203.0.113.62)
+    - **Outside Local/Global**: destination IP (e.g. HostB: 192.0.2.28)

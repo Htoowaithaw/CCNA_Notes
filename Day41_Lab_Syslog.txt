@@ -1,0 +1,146 @@
+# **Day 41 Lab | Syslog | Day 41 Lab | CCNA 200-301 Complete Course**
+
+**Day 41 – Syslog Lab**
+
+---
+
+### 👨‍💻 Syslog Configuration Lab (Packet Tracer + NetSim)
+
+### 🧪 Objective
+
+Practice configuring Syslog on a Cisco router in Packet Tracer and Boson NetSim. Configure:
+
+- Console logging
+- VTY (Telnet) logging
+- Buffered logging
+- External Syslog server
+- Severity level filtering
+
+---
+
+### 🛠️ Packet Tracer – Step-by-Step
+
+### ✅ Step 1 – Console Logging
+
+```
+R1(config)# interface g0/0
+R1(config-if)# shutdown
+```
+
+- Two log messages appear: interface status (admin down) and protocol (down)
+- Console logging is **enabled by default**
+- All log messages are **severity level 5** (notification)
+
+✅ Enable timestamps:
+
+```
+R1(config)# service timestamps log datetime msec
+```
+
+- Packet Tracer **requires `msec`**, unlike real IOS
+
+### ✅ Step 2 – Telnet (VTY) Logging
+
+- Telnet into R1 from PC1:
+
+```
+PC1> telnet 192.168.1.1
+```
+
+- Logs don’t appear by default over Telnet
+
+✅ Enable logging for current session:
+
+```
+R1# terminal monitor
+```
+
+- Can also use `do terminal monitor` in config mode
+- Only applies to current session (in real IOS)
+
+### ✅ Step 3 – Buffered Logging
+
+```
+R1(config)# logging buffered 8192
+R1# show logging
+```
+
+- Packet Tracer defaults to **disabled** buffered logging
+- Severity level defaults to **debugging (7)**
+
+### ✅ Step 4 – External Syslog Server
+
+```
+R1(config)# logging 192.168.1.100
+R1(config)# logging trap debugging
+```
+
+- Syslog server = SRV1
+- Only available level = `debugging`
+
+🔎 On SRV1:
+
+- Go to `Services > Syslog`
+- View messages received from R1
+
+---
+
+### 📘 Boson NetSim – CCNP ENCOR Lab: System Message Logging
+
+### Topology
+
+- Router1, Switch1, Switch2, PCs, SyslogServer (10.1.0.10)
+
+### Task Summary
+
+1. **Ping Syslog Server** from R1:
+
+```
+R1# ping 10.1.0.10
+```
+
+1. **Enable Syslog on Router1**:
+
+```
+R1(config)# logging 10.1.0.10
+```
+
+1. **Check default severity level**:
+
+```
+R1# show logging
+```
+
+- Default trap level: informational (6)
+1. **Trap Logging Levels**:
+
+```
+R1(config)# logging trap warnings
+```
+
+- Levels logged: 0 to 4
+1. **Enable Syslog on Switch1 & Switch2**:
+
+```
+S1(config)# logging 10.1.0.10
+S1(config)# logging trap warnings
+```
+
+1. **Verify Configuration**:
+
+```
+S1# show logging
+```
+
+- Confirm trap level = warnings
+1. **Grade Lab**: All green checks for valid config
+
+---
+
+### 🔁 Key Takeaways
+
+- `terminal monitor` is session-specific (important in real IOS)
+- `logging trap LEVEL` controls which messages are sent to server
+- Higher severity = lower number (0 is most critical)
+- `logging buffered` stores logs in RAM (view with `show logging`)
+- Accurate timestamps are essential for production networks

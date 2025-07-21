@@ -1,0 +1,106 @@
+# **Day 20 | Spanning Tree Protocol (Part 1) | CCNA 200-301 Complete Course**
+
+### **Day 20 Summary – STP (Spanning Tree Protocol) - Part 1**
+
+### 🔹 **Introduction**
+
+- STP prevents Layer 2 loops in Ethernet networks.
+- CCNA focuses on Rapid STP (RSTP), but classic STP (IEEE 802.1D) must be understood first.
+
+---
+
+### **1. Why STP is Needed – Redundancy & Loops**
+
+- **Redundancy** is critical in network design to ensure high availability.
+- **Layer 2 loops** can form in redundant designs.
+- Without STP, **broadcast storms** occur due to Ethernet frames looping infinitely (no TTL at Layer 2).
+- **MAC address flapping**: switches constantly update MAC tables with frames looping from multiple interfaces.
+
+---
+
+### **2. STP Basics**
+
+- STP creates a **loop-free topology** by blocking redundant paths.
+- **Blocking ports**: Do not forward frames but still listen for BPDUs.
+- **Forwarding ports**: Regular operation for frame forwarding.
+
+---
+
+### **3. Bridges vs Switches**
+
+- STP terminology uses "bridge" (legacy term); in practice, bridges = switches.
+
+---
+
+### **4. STP Operation Steps Overview**
+
+### Step 1: **Root Bridge Election**
+
+- Switch with the **lowest Bridge ID** becomes the root bridge.
+- **Bridge ID = Priority (16 bits) + MAC Address (48 bits)**
+    - Default priority = 32768.
+    - Tie-breaker: lowest MAC wins.
+
+### Step 2: **Root Port Selection (on non-root switches)**
+
+- Each non-root switch chooses **one Root Port** (lowest-cost path to root).
+- **STP Cost Values**:
+    - 10 Mbps → 100
+    - 100 Mbps → 19
+    - 1 Gbps → 4
+    - 10 Gbps → 2
+- In case of a **tie**, the port:
+    1. Connected to neighbor with **lowest Bridge ID** is preferred.
+    2. If still tied, connected to neighbor’s **lowest Port ID**.
+
+### Step 3: **Designated Port Selection**
+
+- One **Designated Port** per collision domain (segment) – forwards traffic.
+- The **other port** becomes a **Non-Designated Port** – goes into blocking.
+- Designated port is on the switch with:
+    - Lowest root cost, then
+    - Lowest bridge ID.
+
+---
+
+### **5. STP Port Roles**
+
+| Port Role | Function |
+| --- | --- |
+| Root Port (RP) | Best path to root bridge (one per switch) |
+| Designated Port (DP) | Best port on a segment, forwards traffic |
+| Non-Designated Port | Blocking state to prevent loops |
+
+---
+
+### **6. Extended System ID / PVST**
+
+- Cisco uses **PVST (Per VLAN Spanning Tree)**.
+- Each VLAN has a separate STP instance.
+- **Bridge ID** now includes **VLAN ID** (Extended System ID = 12 bits).
+- Bridge Priority is now adjustable in **increments of 4096**.
+
+---
+
+### **7. Important CLI Insight**
+
+- `show spanning-tree` command shows:
+    - Port ID = Priority (default 128) + Interface number
+    - This is used in tie-breakers during root port selection.
+
+---
+
+### **8. Quiz Topics Covered**
+
+- Identify root bridge (lowest priority + MAC).
+- Determine root ports, designated ports, and blocking ports.
+- Understand influence of FastEthernet vs GigabitEthernet on cost.
+- Use of neighbor’s port ID for tie-breaks.
+
+---
+
+### **9. Boson ExSim Preview Question**
+
+- Covered **PortFast**, a feature not explained yet.
+- Global command `spanning-tree portfast default` impacts **access ports only**.
+- (Answer and explanation in next video.)

@@ -1,0 +1,25 @@
+**Video 2: Using Flashcards (Anki) for CCNA**
+
+**Overview**
+
+- Flashcards provided to reinforce learning for CCNA 200-301.
+- Anki app is recommended for efficient, daily review using spaced repetition.
+
+**Key Steps to Set Up Flashcards**
+
+| **Step** | **Action** |
+| --- | --- |
+| Download Anki | Install Anki from official website (available for PC/Mac/Linux/iOS/Android). |
+| Create a Deck | Create a new Anki deck to store all CCNA flashcards. |
+| Download Flashcards | Get Jeremy’s CCNA flashcards (link shared in the course description). |
+| Import Flashcards | Import .apkg file into Anki to start studying. |
+| Adjust Settings | Increase “Daily New Cards” and “Reviews” settings for faster learning pace. |
+| Make Sub-Decks (Optional) | Organize flashcards into smaller decks based on topics (e.g., Switching, Routing). |
+| Daily Review | Spend time reviewing flashcards every day to strengthen memory over time. |
+
+**Summary Tips**
+
+- Use spaced repetition to remember better long-term.
+- Increase Daily New Cards if you can handle more new concepts per day.
+- Break down large decks into Sub-Decks to stay organized.
+- Consistency is more important than speed.

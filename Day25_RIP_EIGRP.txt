@@ -1,0 +1,132 @@
+# **Day 25 | RIP & EIGRP | CCNA 200-301 Complete Course**
+
+## 📘 **Day 25 – RIP & EIGRP (Overview & Configurations)**
+
+> RIP and EIGRP are not on the official CCNA exam topics list but may still appear in questions. Learning them also builds a strong foundation for understanding OSPF.
+> 
+
+---
+
+### 🛰️ **RIP (Routing Information Protocol)**
+
+### 📌 Key Features
+
+- Type: Distance Vector IGP
+- Metric: **Hop count** (Max = 15 hops)
+- Versions: RIP v1, RIP v2 (IPv4), RIPng (IPv6 – *not covered*)
+- Message Types: **Request**, **Response**
+- Update interval: **Every 30 seconds**
+
+### 🔍 Differences: RIP v1 vs. v2
+
+| Feature | RIP v1 | RIP v2 |
+| --- | --- | --- |
+| Addressing | Classful only | Classless (supports VLSM/CIDR) |
+| Advertisements | Broadcast (255.255.255.255) | Multicast (224.0.0.9) |
+| Subnet mask info | Not included | Included |
+| Modern use | Obsolete | Used in labs/small networks |
+
+### 🛠️ Basic Configuration (RIP v2)
+
+```bash
+bash
+CopyEdit
+router rip
+ version 2
+ no auto-summary
+ network 10.0.0.0
+ network 172.16.0.0
+ passive-interface G2/0
+
+```
+
+- `network`: Classful command, matches interfaces based on class.
+- `passive-interface`: Stops advertisements but still advertises the network.
+- `default-information originate`: Advertises default route via RIP.
+
+### 📋 Useful Commands
+
+- `show ip protocols` – See neighbors, networks, timers, passive interfaces, AD (default = 120).
+- `distance <value>` – Change administrative distance (1–255).
+- `maximum-paths <1–32>` – Control ECMP paths.
+
+---
+
+### 🛰️ **EIGRP (Enhanced Interior Gateway Routing Protocol)**
+
+### 📌 Key Features
+
+- Cisco proprietary (mostly) → Now partly open
+- Type: **Advanced Distance Vector / Hybrid IGP**
+- Multicast: **224.0.0.10**
+- Metric: Bandwidth + Delay (K1 & K3 used by default)
+- Supports **Unequal-cost load balancing**
+
+### 📘 AD Values
+
+- Internal EIGRP: **90**
+- External EIGRP: **170**
+
+### 🛠️ Basic Configuration
+
+```bash
+bash
+CopyEdit
+router eigrp 1
+ no auto-summary
+ passive-interface G2/0
+ network 10.0.0.0
+ network 172.16.1.0 0.0.0.15
+
+```
+
+- **AS Number** must match between neighbors.
+- Wildcard masks used instead of subnet masks.
+- Use same prefix length as interface for simplicity.
+
+### 📋 Wildcard Mask Shortcut
+
+- Wildcard Mask = `255 - Subnet Mask`
+- Example:
+    - /28 (255.255.255.240) → 0.0.0.15
+    - /25 (255.255.255.128) → 0.0.0.127
+
+### 🆔 EIGRP Router ID
+
+1. Manual config (highest priority)
+2. Highest IP on **loopback**
+3. Highest IP on **physical interface**
+
+```bash
+bash
+CopyEdit
+eigrp router-id 1.1.1.1
+
+```
+
+### 📋 Useful Commands
+
+- `show ip protocols` – Shows router ID, K-values, neighbors, AD, networks.
+- `show ip route` – EIGRP routes marked with `D`.
+
+---
+
+### 🧠 Quiz Recap
+
+1. **Advertise default route via RIP?**
+    - ✅ A. `default-information originate` (on R1)
+2. **EIGRP command to activate two interfaces?**
+    - ✅ A. `network 128.0.0.0 127.255.255.255`
+3. **EIGRP Router ID priority?**
+    - ✅ D. Manual > Loopback > Physical interface
+4. **When are AD values used?**
+    - ✅ D. Same destination, different routing protocols
+
+---
+
+### 📦 Key Takeaways
+
+- RIP is outdated but simple and useful for learning basics.
+- EIGRP is more powerful, flexible, and Cisco-specific.
+- Understanding **network commands**, **wildcard masks**, and **router ID logic** is critical.
+- Concepts here lay the foundation for OSPF (Day 26).

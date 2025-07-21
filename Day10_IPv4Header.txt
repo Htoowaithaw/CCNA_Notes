@@ -1,0 +1,117 @@
+# **Day 10 | IPv4 Header |  CCNA 200-301 Complete Course**
+
+An in-depth look at the **IPv4 header** — understanding the fields that make up Layer 3 packets used for routing.
+
+---
+
+### 📅 **Main Topics Covered**
+
+- Position of IPv4 header in OSI PDUs
+- Detailed breakdown of each field in the IPv4 header
+- Packet fragmentation concepts
+- Packet TTL (Time to Live)
+- Checksums and encapsulated data
+- Wireshark analysis of IPv4 headers
+- IPv4 Header Quiz Review
+
+---
+
+### ⚙️ **IPv4 Header Structure**
+
+### ✅ 1. **Version (4 bits)**
+
+- Identifies IP version
+- Value = `4` for IPv4 (`0100` in binary)
+
+### ✅ 2. **IHL (Internet Header Length, 4 bits)**
+
+- Indicates header length in 4-byte increments
+- Min = 5 (20 bytes), Max = 15 (60 bytes)
+
+### ✅ 3. **DSCP (6 bits)** + **ECN (2 bits)**
+
+- DSCP: Used for Quality of Service (QoS)
+- ECN: Signals congestion without dropping packets
+
+### ✅ 4. **Total Length (16 bits)**
+
+- Total size of the IPv4 packet (header + data)
+- Max value: `65,535` bytes
+
+### ✅ 5. **Identification (16 bits)**
+
+- Used during fragmentation to identify fragments belonging to the same packet
+
+### ✅ 6. **Flags (3 bits)**
+
+- Bit 0: Reserved, always 0
+- Bit 1: Don't Fragment (DF)
+- Bit 2: More Fragments (MF)
+
+### ✅ 7. **Fragment Offset (13 bits)**
+
+- Position of the fragment in the original packet
+
+### ✅ 8. **Time to Live (TTL, 8 bits)**
+
+- Prevents infinite routing loops
+- Decremented by 1 at each router
+- Packet dropped at 0
+
+### ✅ 9. **Protocol (8 bits)**
+
+- Specifies encapsulated L4 protocol:
+    - TCP = `6`
+    - UDP = `17`
+    - ICMP = `1`
+    - OSPF = `89`
+
+### ✅ 10. **Header Checksum (16 bits)**
+
+- Used for error detection in IPv4 header only
+
+### ✅ 11. **Source IP (32 bits)** / **Destination IP (32 bits)**
+
+- Self-explanatory: identifies sender and recipient
+
+### ✅ 12. **Options (variable)**
+
+- Optional field, max 40 bytes
+- IHL value > 5 indicates options are present
+
+---
+
+### 📊 **Wireshark Demo Highlights**
+
+- Dissected a ping (ICMP) packet to show IPv4 header fields
+- TTL = `255`, IHL = `5`, Total Length = `100`
+- Demonstrated fragmentation with large ping (10,000 bytes)
+- Used `df-bit` to block fragmentation intentionally
+
+---
+
+### 💰 **CCNA Quiz Review**
+
+**Q1.** What is the binary value of the Version field?
+
+✉️ Answer: `0100`
+
+**Q2.** Which field causes the packet to be dropped at 0?
+
+✉️ Answer: `TTL`
+
+**Q3.** How are errors in encapsulated data detected?
+
+✉️ Answer: By the encapsulated protocol (e.g. TCP, UDP)
+
+**Q4.** Which field is variable in length?
+
+✉️ Answer: `Options`
+
+**Q5.** Which bit is set in all fragments except the last?
+
+✉️ Answer: `More Fragments (MF)`
+
+---
+
+###

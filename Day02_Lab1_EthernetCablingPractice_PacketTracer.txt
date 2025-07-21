@@ -1,0 +1,109 @@
+# **Day 2 – Lab 1: Ethernet Cabling Practice (Packet Tracer)**
+
+**Overview**
+
+- In this lab, you will apply what you learned about cabling in Day 2’s lecture.
+- You will connect devices using different types of cables:
+    - Copper straight-through
+    - Copper crossover
+    - Fiber optic connections
+- 
+
+**Lab Setup**
+
+- Various network devices: PCs, Servers, Switches, and Routers.
+- Assume Auto MDI-X is disabled → you must choose the correct cable manually.
+- Packet Tracer does not differentiate between single-mode and multimode fiber cables.
+
+**Step-by-Step Instructions**
+
+**1. Connect PCs to Switches**
+
+**(Use Straight-Through Cable)**
+
+- PCs transmit on pins 1 and 2, receive on pins 3 and 6.
+- Switches are opposite:
+    - Switches transmit on pins 3 and 6, receive on pins 1 and 2.
+- 
+- Therefore, straight-through cables are used.
+
+Connection Plan:
+
+- PC1 → SW3
+- PC2 → SW4
+- PC3 → SW7
+- SRV1 (Server) → SW8
+
+**2. Connect Switches Together**
+
+**(Use Crossover Cable)**
+
+- Switch-to-switch connections require crossover cables.
+- If using wrong cable (like straight-through), transmit and receive pins won’t align → no communication.
+
+Connection Plan:
+
+- SW3 → SW1
+- SW1 → SW2
+- SW4 → SW2
+- SW7 → SW5
+- SW5 → SW6
+- SW8 → SW6
+
+**3. Connect Switches to Routers**
+
+**(Use Straight-Through Cable)**
+
+- Routers behave like PCs in terms of pin behavior.
+- Use straight-through cables for switch-to-router connections.
+
+Connection Plan:
+
+- SW1 → R2
+- SW2 → R2
+- SW5 → R4
+- SW6 → R4
+
+**4. Connect Routers to Each Other**
+
+**(Consider Distance and Cable Type)**
+
+- Routers are same type → crossover cables needed for copper connections.
+
+Distance-based decision:
+
+- R1 and R2 (50m) → Copper crossover cable (under 100m allowed).
+- R1 and R3 (3km apart) → Need fiber-optic cable (copper not enough).
+    - Use single-mode fiber for long distance (30km+ supported).
+- 
+- R3 and R4 (250m apart) → Use multimode fiber (good up to 550m).
+
+**5. Important Packet Tracer Notes**
+
+- In Packet Tracer:
+    - No differentiation between single-mode and multimode fiber cables.
+    - But in real world, always choose fiber based on distance!
+- 
+
+**Summary of Cable Types Used**
+
+| **Connection** | **Cable Type** |
+| --- | --- |
+| PC ↔ Switch | Straight-Through |
+| Switch ↔ Switch | Crossover |
+| Switch ↔ Router | Straight-Through |
+| Router ↔ Router (close) | Copper Crossover |
+| Router ↔ Router (long distance) | Fiber (Single-mode / Multimode) |
+
+**Self-Quiz (Quick Review)**
+
+- When should you use straight-through vs crossover cable?
+- How does distance affect fiber optic cable choice?
+- Why is Auto MDI-X important?
+
+# **Quick Takeaways**
+
+- Correct cable type matters based on device types and distance.
+- Remember: PCs/Switches use different pins, Switches/Switches same pins.
+- Always think about distance when deciding copper vs fiber.
+- In real networks, Auto MDI-X often simplifies cabling.

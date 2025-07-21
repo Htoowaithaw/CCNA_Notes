@@ -1,0 +1,138 @@
+# **Day 29 Lab | Configuring HSRP | CCNA 200-301 Complete Course**
+
+## 🧪 Jeremy’s IT Lab – HSRP Lab Walkthrough (CCNA Day 29 Lab)
+
+---
+
+### 🧒 **Explain Like I’m 5**
+
+### 🖥️ Computers Need a Guide to Go Online
+
+When your computer wants to talk to the internet (like visit Google), it needs a helper (called a **default gateway**) to guide it.
+
+### 🔁 What If the Helper Goes Away?
+
+If that helper disappears, the computer doesn’t know who to ask next and gets lost. So we give it **two helpers**, but they wear the **same name and costume**, so the computer doesn't get confused.
+
+### 💪 One is Leader, One is Backup
+
+We pick one as the **main helper** and the other as the **backup helper**. If the main one goes away, the backup takes over. When the main one comes back, it becomes the helper again.
+
+---
+
+### 👨‍💻 **Explain Like a Network Technician**
+
+### 🔹 Goal
+
+Test and configure **HSRP Version 2** on routers and switches to provide **gateway redundancy**. Verify that clients can maintain connectivity even if one router fails.
+
+---
+
+## 🧱 Lab Steps Overview
+
+### 🔧 **Step 1: Test Initial Connectivity**
+
+- Verify PCs can ping `8.8.8.8`.
+- Check default gateway = `10.0.1.253` (R1).
+- Use `tracert` to confirm first hop is R1.
+
+### 🔧 **Step 2: Configure HSRP**
+
+On **R1 (preferred active)**:
+
+```bash
+bash
+CopyEdit
+interface g0/0
+ standby version 2
+ standby 1 ip 10.0.1.254
+ standby 1 priority 200
+ standby 1 preempt
+
+```
+
+On **R2** (standby):
+
+```bash
+bash
+CopyEdit
+interface g0/0
+ standby version 2  # must match version
+ standby 1 ip 10.0.1.254
+ standby 1 priority 50
+
+```
+
+🛑 *Mismatch between version 1 and version 2 causes both routers to think they are active → use version 2 on both sides!*
+
+---
+
+### 🔧 **Step 3: Set PCs’ Default Gateway**
+
+On **PC1 & PC2**:
+
+- Set default gateway to `10.0.1.254` (the **virtual IP**).
+
+Check with:
+
+```bash
+bash
+CopyEdit
+ping 8.8.8.8
+arp -a
+
+```
+
+🧠 Expected: Virtual MAC should be `0000.0c9f.f001` for group 1 in HSRP v2.
+
+---
+
+### 🔧 **Step 4: Simulate R1 Failure**
+
+- Turn off R1.
+- R2 becomes active router.
+- Confirm with `tracert` — first hop should now be `10.0.1.252` (R2’s real IP).
+
+---
+
+### 🔧 **Step 5: Turn R1 Back On**
+
+- Since **preemption** was enabled, R1 will reclaim active role.
+- Confirm with `tracert` — first hop should again be `10.0.1.253`.
+
+---
+
+## 🧪 Boson NetSim Lab Preview
+
+### 🧱 Bonus Lab: CCNP HSRP Configuration
+
+- Lab done using **Layer 3 switches (DSW1 & DSW2)** instead of routers.
+- Create HSRP group 3 with VIP `172.16.3.1` on both distribution switches.
+
+Example:
+
+```bash
+bash
+CopyEdit
+interface vlan1
+ standby 3 ip 172.16.3.1
+
+```
+
+### 💡 Workstation Setup in NetSim
+
+- Clients: Use `ipconfig /dg 172.16.3.1`
+- Switches: Use `ip default-gateway 172.16.3.1`
+
+🧠 *Layer 2 switches use `ip default-gateway` instead of static routes.*
+
+---
+
+## ✅ Final Notes
+
+### 🚨 HSRP Tips
+
+- Always match **HSRP version** across devices.
+- Virtual MAC for HSRP v2: `0000.0c9f.fXXX` (X = group number).
+- Preemption allows active router to regain its role automatically.
+- Traceroute shows **actual router IP**, not the VIP.

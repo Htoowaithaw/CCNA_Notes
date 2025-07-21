@@ -1,0 +1,101 @@
+## 🚧 CCNA: Port Security (L2 Security Feature)
+
+---
+
+### 🔐 **What is Port Security?**
+
+| Concept | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Port Security** | Like a boarding gate that only lets through passengers with valid boarding passes. | Controls which MAC addresses (and how many) are allowed on a switch port. |
+| **Default Behavior** | If someone without a pass enters, security shuts the gate down. | Violations put the port in `err-disabled` state (interface shuts down). |
+| **Interface-specific** | Only some gates may need this strict control. | Configured per-interface, typically access ports. |
+
+---
+
+### 🛂 **Why Use Port Security?**
+
+| ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- |
+| Prevent people from entering staff-only areas without ID. | Prevent unauthorized devices from connecting to the network. |
+| Prevent overloading the gate area with fake IDs. | Prevent MAC flooding/DHCP starvation attacks with thousands of spoofed MACs. |
+
+---
+
+### ⚙️ **Basic Configuration Steps**
+
+1. Change port to **static access**:
+    
+    `switchport mode access`
+    
+2. Enable port security:
+    
+    `switchport port-security`
+    
+3. Optionally set max MACs:
+    
+    `switchport port-security maximum <number>`
+    
+4. Optionally specify MAC:
+    
+    `switchport port-security mac-address <MAC>`
+    
+5. Check with:
+    
+    `show port-security interface <int>`
+    
+
+---
+
+### 💥 **Violation Modes**
+
+| Mode | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Shutdown (default)** | Gate locked, no one can go in or out. | Port goes `err-disabled`, syslog sent once, violation count = 1. |
+| **Restrict** | Unauthorized people blocked, security logs all attempts. | Drops traffic, logs via syslog/SNMP, violation counter increases. |
+| **Protect** | Unauthorized blocked, but no one knows it happened. | Drops traffic silently, no log, no counter increase. |
+
+---
+
+### 🛠️ **Re-Enabling a Port**
+
+| Action | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Manual** | Remove intruder → Reset the gate. | `shutdown` + `no shutdown` after disconnecting device. |
+| **Auto Recovery** | Security gate opens again after timeout (if set). | Use: `errdisable recovery cause psecure-violation` & set timer. |
+
+---
+
+### 🧠 **MAC Address Handling**
+
+| Type | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Static MAC** | Staff name manually written on authorized list. | Set manually, doesn’t age out unless explicitly allowed. |
+| **Dynamic MAC** | First person to scan ID becomes the valid user. | First MAC learned dynamically (default), not saved permanently. |
+| **Sticky MAC** | Auto-filled name on the authorized list. | Learned dynamically **and** saved in running config. Use: |
+| `switchport port-security mac-address sticky` |  |  |
+
+> 🔧 Save to startup config with write memory or else they vanish on reboot.
+> 
+
+---
+
+### ⌛ **MAC Address Aging**
+
+| Aging Type | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Absolute** | Pass expires even if person uses it. | MAC removed after set time no matter what. |
+| **Inactivity** | Pass only expires if not used for a while. | Timer resets with each frame, ages out only if idle. |
+| **Command Examples**: |  |  |
+- `switchport port-security aging time 30`
+- `switchport port-security aging type inactivity`
+- `switchport port-security aging static` (for static MACs too)
+
+---
+
+### 📋 **Useful Show Commands**
+
+| Command | What It Shows |
+| --- | --- |
+| `show port-security interface <int>` | Port security status, violation count, secure MACs |
+| `show port-security` | Summary of all port security-configured ports |
+| `show mac address-table secure` | Lists secure MACs (static/dynamic/sticky) |

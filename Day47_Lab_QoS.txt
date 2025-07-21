@@ -1,0 +1,83 @@
+## ✅ **Day 47 – QoS Configuration Lab**
+
+### 🎯 **Lab Objective**
+
+- Mark HTTPS traffic as **AF31** and assign to a **priority queue** (min 10% bandwidth).
+- Mark HTTP traffic as **AF32** (no priority queue, min 10% bandwidth).
+- Mark ICMP traffic as **CS2** (min 5% bandwidth).
+- Apply these QoS policies **outbound on R1’s G0/0/0 interface**.
+
+---
+
+### 🔍 **Default Behavior**
+
+- Before configuration, all traffic (ICMP, HTTP, HTTPS) is marked with **DSCP 0** (Default Forwarding).
+- No automatic marking or QoS behavior by routers/switches.
+
+---
+
+### 🧱 **Configuration Steps**
+
+### 1. **Create Class Maps** – Match specific traffic
+
+```bash
+bash
+CopyEdit
+class-map HTTPS_MAP
+ match protocol https
+
+class-map HTTP_MAP
+ match protocol http
+
+class-map ICMP_MAP
+ match protocol icmp
+
+```
+
+### 2. **Create Policy Map** – Define treatment per traffic type
+
+```bash
+bash
+CopyEdit
+policy-map G0/0/0_OUT
+ class HTTPS_MAP
+  set ip dscp af31
+  priority percent 10
+
+ class HTTP_MAP
+  set ip dscp af32
+  bandwidth percent 10
+
+ class ICMP_MAP
+  set ip dscp cs2
+  bandwidth percent 5
+
+```
+
+### 3. **Apply Service Policy**
+
+```bash
+bash
+CopyEdit
+interface g0/0/0
+ service-policy output G0/0/0_OUT
+
+```
+
+---
+
+### 🔎 **Simulation Mode Verification**
+
+- **ICMP** marked as **CS2 → DSCP 16 → hex 0x10**
+- **HTTP** marked as **AF32 → DSCP 28 → hex 0x1C**
+- **HTTPS** marked as **AF31 → DSCP 26 → hex 0x1A**
+
+---
+
+### 📌 **Concept Recap**
+
+| Traffic Type | DSCP | Hex Value | Bandwidth | Priority Queue |
+| --- | --- | --- | --- | --- |
+| HTTPS | AF31 | 0x1A | 10% | ✅ Yes |
+| HTTP | AF32 | 0x1C | 10% | ❌ No |
+| ICMP | CS2 | 0x10 | 5% | ❌ No |

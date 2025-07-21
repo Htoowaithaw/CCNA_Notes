@@ -1,0 +1,86 @@
+### ✅ **VLSM Lab Objective**
+
+- Subnet the network `192.168.5.0/24` into 5 subnets of varying sizes using **VLSM**.
+- Assign:
+    - First usable address to **PC**
+    - Last usable address to **Router interface**
+- Configure **static routes** so all hosts can communicate across LANs.
+
+---
+
+### 📋 **Subnet Assignment Order (Largest to Smallest)**
+
+1. **LAN2** – Needs 64 hosts → `/25`
+2. **LAN1** – Needs 45 hosts → `/26`
+3. **LAN3** – Needs 14 hosts → `/28`
+4. **LAN4** – Needs 9 hosts → `/28`
+5. **Point-to-point link** – Needs 2 hosts → `/30`
+
+---
+
+### 🔢 **Subnet Details**
+
+### **LAN2** – `/25`
+
+- Network: `192.168.5.0/25`
+- Broadcast: `192.168.5.127`
+- PC2: `192.168.5.1`
+- R1 (G0/1): `192.168.5.126`
+
+### **LAN1** – `/26`
+
+- Network: `192.168.5.128/26`
+- Broadcast: `192.168.5.191`
+- PC1: `192.168.5.129`
+- R1 (G0/0): `192.168.5.190`
+
+### **LAN3** – `/28`
+
+- Network: `192.168.5.192/28`
+- Broadcast: `192.168.5.207`
+- PC3: `192.168.5.193`
+- R2 (G0/0): `192.168.5.206`
+
+### **LAN4** – `/28`
+
+- Network: `192.168.5.208/28`
+- Broadcast: `192.168.5.223`
+- PC4: `192.168.5.209`
+- R2 (G0/1): `192.168.5.222`
+
+### **Point-to-point link** – `/30`
+
+- Network: `192.168.5.224/30`
+- Broadcast: `192.168.5.227`
+- R1 (G0/0/0): `192.168.5.225`
+- R2 (G0/0/0): `192.168.5.226`
+
+---
+
+### 🛠 **Static Routes**
+
+### On R1:
+
+```bash
+bash
+CopyEdit
+ip route 192.168.5.192 255.255.255.240 192.168.5.226  ! LAN3
+ip route 192.168.5.208 255.255.255.240 192.168.5.226  ! LAN4
+
+```
+
+### On R2:
+
+```bash
+bash
+CopyEdit
+ip route 192.168.5.128 255.255.255.192 192.168.5.225  ! LAN1
+ip route 192.168.5.0 255.255.255.128 192.168.5.225    ! LAN2
+
+```
+
+---
+
+### ✅ **Ping Test**
+
+- From `PC1 (192.168.5.129)` to `PC4 (192.168.5.209)` succeeded — indicates correct routing.

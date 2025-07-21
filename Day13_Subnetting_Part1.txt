@@ -1,0 +1,58 @@
+**Jeremy's IT Lab - Day 13 Summary: Subnetting Part 1**
+
+**Introduction**
+
+- Subnetting is a crucial and frequently tested skill in the CCNA exam.
+- Many learners struggle with it, but it is a simple concept when broken into steps.
+- Jeremy's approach avoids shortcuts and instead focuses on understanding the basics thoroughly.
+
+**Topics Covered**
+
+1. **IPv4 Address Classes Review**
+    - Class A: 0.0.0.0 to 127.255.255.255 (/8)
+    - Class B: 128.0.0.0 to 191.255.255.255 (/16)
+    - Class C: 192.0.0.0 to 223.255.255.255 (/24)
+    - Class D (Multicast): 224.0.0.0 to 239.255.255.255
+    - Class E (Experimental): 240.0.0.0 to 255.255.255.255
+2. **Address Waste with Classful Addressing**
+    - Class A, B, and C networks often waste large amounts of IP addresses due to rigid subnetting.
+    - Example: Using a /24 (Class C) network for a point-to-point link between R1 and R2 wastes 252 addresses.
+    - A company needing 5,000 addresses may be assigned a Class B (/16) network, wasting over 60,000 addresses.
+3. **CIDR (Classless Inter-Domain Routing)**
+    - Introduced in 1993 by the IETF to solve inefficiencies.
+    - Allows use of variable-length subnet masks (VLSM).
+    - Enables breaking large networks into smaller, efficient subnets.
+4. **CIDR Subnetting Examples**
+    - Example: Subnetting 203.0.113.0/24 for a point-to-point link.
+        - /24 = 254 usable addresses (too many)
+        - /25 = 126 usable addresses
+        - /26 = 62 usable
+        - /27 = 30 usable
+        - /28 = 14 usable
+        - /29 = 6 usable
+        - /30 = 2 usable (perfect for P2P)
+        - /31 = 2 addresses, usable for P2P as network & broadcast are unnecessary
+        - /32 = 1 IP (used for identifying a single host, e.g. in static routes)
+5. **CIDR Notation Overview**
+    - CIDR notation uses slash format (e.g. /24) to specify subnet mask length.
+    - More flexible than dotted-decimal system.
+    - Allows subnetting of Class A/B/C networks into smaller blocks.
+6. **Subnetting Scenario**
+    - Given: 192.168.1.0/24 needs to be divided into 4 subnets with at least 45 hosts each.
+    - Calculation:
+        - Each subnet needs 47 addresses (45 hosts + network + broadcast).
+        - /26 = 62 usable addresses (2^6 - 2)
+        - Therefore, /26 is the correct prefix length.
+    - Subnet 1: 192.168.1.0/26
+    - Task: Find Subnet 2, 3, and 4 using broadcast address incrementing.
+
+**Quiz Task**
+
+- Identify the next 3 subnets after 192.168.1.0/26.
+- Hint: Increment from the previous subnet's broadcast address.
+
+**Conclusion**
+
+- Subnetting is a key skill to understand address efficiency and routing.
+- CIDR enables flexible and efficient subnetting, reducing IP waste.
+- Next video will include hands-on practice problems to reinforce these concepts.

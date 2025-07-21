@@ -1,0 +1,95 @@
+# **Day 54 (part 3) | VRF | CCNA 200-301 Complete Course**
+
+### **VRF (Virtual Routing and Forwarding)**
+
+### 🧠 Explain Like I'm in Ground Staff (Simple)
+
+- VRF lets one router act like many routers.
+- It’s like creating separate "lanes" on the same road so different companies don’t bump into each other.
+- Each lane (VRF) has its own set of directions (routing table).
+- Just like VLANs split a switch, VRFs split a router.
+- Great for service providers so different customers stay isolated.
+- Even if they all use the same addresses like 192.168.1.0, there’s no problem.
+
+### 💻 Technical IT Explanation
+
+- **VRF-lite** is a Cisco feature that allows a router to maintain **multiple independent routing tables**.
+- Like VLANs for switches, VRFs isolate traffic within a router.
+- Interfaces assigned to different VRFs cannot forward traffic between each other unless **VRF leaking** is configured (advanced).
+- Allows **overlapping IP addressing** (same subnets used by different customers).
+- Common use case: **Service providers** offering services to multiple customers using a single physical router.
+
+---
+
+### **Key Concepts**
+
+- 🟢 VRF = virtual router
+- 🟢 Each VRF has its own routing table
+- 🟢 Router interfaces (Layer 3) can be assigned to specific VRFs
+- 🔴 Not supported in Packet Tracer (use CML or real routers)
+- 🟢 No traffic between VRFs unless explicitly allowed (VRF leaking)
+- 🟢 Useful in **multi-tenant environments**
+
+---
+
+### **Commands Used**
+
+1. **Create VRF**
+    
+    ```
+    nginx
+    CopyEdit
+    ip vrf CUSTOMER1
+    ip vrf CUSTOMER2
+    
+    ```
+    
+2. **Assign Interface to VRF**
+    
+    ```
+    nginx
+    CopyEdit
+    interface g0/0
+    ip vrf forwarding CUSTOMER1
+    ip address 192.168.1.1 255.255.255.252
+    
+    ```
+    
+3. **View VRFs**
+    
+    ```
+    sql
+    CopyEdit
+    show ip vrf
+    
+    ```
+    
+4. **View Routing Table of a VRF**
+    
+    ```
+    sql
+    CopyEdit
+    show ip route vrf CUSTOMER1
+    
+    ```
+    
+5. **Ping inside a VRF**
+    
+    ```
+    nginx
+    CopyEdit
+    ping vrf CUSTOMER1 192.168.1.2
+    
+    ```
+    
+
+---
+
+### 🧪 Quiz Highlights
+
+- **Q1:** If IP is missing after `ip vrf forwarding` → IP must be reconfigured.
+- **Q2:** Ping fails if VRF isn’t specified because global routing table is empty.
+- **Q3:** True statements:
+    - VRFs divide routers into separate routing tables.
+    - VLANs divide switches into broadcast domains.
+    - VRFs allow duplicate IPs in different VRFs.

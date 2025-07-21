@@ -1,0 +1,144 @@
+# **Day 43 | FTP & TFTP | CCNA 200-301 Complete Course**
+
+**Day 43 – FTP & TFTP**
+
+---
+
+### 🧒 Explain Like I’m 5 (Kid-Level Summary)
+
+- 🗂️ **FTP** and **TFTP** are both ways to move files from one computer to another.
+- 🎮 Think of it like sending game files from one PC to another.
+- 🔐 **FTP** asks for a **username and password**. It’s like needing a key to enter.
+- 🚪 **TFTP** doesn’t ask for anything — like an open door — but it’s **less safe**.
+- 🧃 TFTP is simple. You can only say “Give me that file” or “Take this file”.
+- 📚 FTP is smarter. You can ask, “What files do you have?” or “Can you make a new folder?”
+- 🚓 Use TFTP in safe places (like home), but FTP in public needs extra locks.
+- 🔧 Network engineers use these to update Cisco routers with a new system (IOS).
+
+---
+
+### 👨‍💻 Technical Summary
+
+### 📁 Protocol Purpose
+
+- **FTP (File Transfer Protocol)**
+    - Standard since 1971
+    - Uses **TCP ports 20 (data)** and **21 (control)**
+    - Allows login, navigation, upload/download
+    - **No encryption** by default
+- **TFTP (Trivial File Transfer Protocol)**
+    - Standard since 1981
+    - Uses **UDP port 69**
+    - Simple read/write only — no file listing, deletion, or login
+    - No authentication, no encryption
+
+### 🧪 Typical Use Case
+
+- Commonly used to **upgrade IOS** images on Cisco devices
+- Transfer files from **FTP/TFTP server** to **router/switch flash memory**
+
+---
+
+### 🔒 FTP Details
+
+- **TCP-based** (connection-oriented)
+- Uses two connections:
+    - **Control (port 21)** for commands like login, change dir
+    - **Data (port 20)** for file transfer
+- **Active mode**: server initiates data connection
+- **Passive mode**: client initiates data connection (used if behind a firewall)
+- FTP uses plain-text credentials unless upgraded (FTPS/SFTP)
+
+---
+
+### ☁️ TFTP Details
+
+- **UDP-based** (connectionless but reliable)
+- Basic reliability built-in (ACKs + retransmissions)
+- Simpler protocol:
+    - Can’t list, delete, or navigate directories
+    - Client knows exact filename beforehand
+- Uses **Transfer Identifiers (TIDs)**: random UDP ports after initial contact
+- Lightweight – ideal for simple transfers in safe environments
+
+---
+
+### 🖥️ Cisco IOS File System Overview
+
+- View file systems: `show file systems`
+- Types:
+    - **disk0: / flash: / usbflash0:** – storage
+    - **nvram:** – holds startup-config
+    - **network:** – external (TFTP, FTP)
+- IOS runs from RAM but loads from **flash**
+
+---
+
+### 📦 IOS Upgrade via TFTP Example
+
+```
+copy tftp: flash:
+# Provide server IP and source filename
+# Accept default save name or change
+```
+
+- Verify with: `show flash`
+- Set boot preference:
+
+```
+boot system flash:filename.bin
+```
+
+- Save config: `write memory` or `copy run start`
+- Reboot: `reload`
+- Remove old file: `delete flash:oldfile.bin`
+
+---
+
+### 📦 IOS Upgrade via FTP Example
+
+```
+ip ftp username cisco
+ip ftp password cisco
+copy ftp: flash:
+# Provide IP, filename, destination
+```
+
+- Remainder is same as TFTP (boot, save, reload, delete)
+
+---
+
+### 🧠 Comparison – FTP vs TFTP
+
+| Feature | FTP | TFTP |
+| --- | --- | --- |
+| Transport | TCP (Ports 20, 21) | UDP (Port 69) |
+| Authentication | Yes (Username/Password) | No |
+| Encryption | No (Use FTPS or SFTP) | No |
+| Functions | Full (list, delete, dirs) | Simple (upload/download) |
+| Mode Support | Active & Passive | N/A |
+| Use Case | Secure, large file transfer | Lightweight, quick transfer |
+
+---
+
+### 📝 Command Review
+
+```
+copy tftp: flash:
+copy ftp: flash:
+boot system flash:filename.bin
+delete flash:filename.bin
+show flash
+show version
+```
+
+---
+
+### ✅ Quiz Review
+
+1. **Ports for FTP** – TCP 21 (control), TCP 20 (data)
+2. **Command for TFTP to flash** – `copy tftp: flash:`
+3. **R1 behind firewall?** – Use **FTP passive mode**
+4. **File system for startup-config** – `NVRAM`
+5. **TFTP limitations** – Can’t list or create directories
+6. **Uses UDP?** – TFTP and SNMP (not HTTP/SMTP)

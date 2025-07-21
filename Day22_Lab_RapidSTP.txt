@@ -1,0 +1,198 @@
+## 🔧 RSTP Lab Walkthrough – Jeremy’s IT Lab
+
+📺 *Video: RSTP Lab + Boson NetSim Preview*
+
+---
+
+### 🧪 Lab Objective
+
+- Analyze **Rapid Spanning Tree Protocol (RSTP)** in action.
+- Identify **port roles, port states, and link types**.
+- Apply and verify **RSTP configurations**.
+- Reinforce with **Boson NetSim** bonus demo.
+
+---
+
+### 🧩 Step 1: Identify the Root Bridge
+
+- All switches have **priority 32769** (default 32768 + VLAN1 ID 1).
+- **SW1** has the **lowest MAC address**, so it becomes the **root bridge**.
+- Normally: *All root bridge ports are designated*, but…
+
+### ⚠ Exception:
+
+- If **multiple interfaces** on the root bridge connect to the **same collision domain** (via a **hub**):
+    - Only **one becomes designated**
+    - Others become **backup ports** (discarding state)
+
+📝 **Key Rule**: Only **one designated port per collision domain**, even on the root bridge.
+
+---
+
+### 🧩 Step 2: Determine Remaining Port Roles & States (Without CLI)
+
+### ✅ **Root Ports**
+
+| Switch | Interface | Reason |
+| --- | --- | --- |
+| SW2 | F0/1 | Direct path to root (SW1) |
+| SW3 | F0/2 | Hub doesn't add STP cost |
+| SW4 | F0/1 | SW3 has lower MAC than SW2 |
+
+### ✅ **Designated Ports**
+
+- SW3 F0/1 (opposite SW4’s root port)
+- SW3 G0/1 (lower Bridge ID than SW2)
+- SW2 F0/2 (lower root cost than SW4)
+
+### ❌ **Alternate Ports (Discarding)**
+
+- SW4 F0/2 (connected to SW2)
+- SW2 G0/1 (connected to SW3)
+
+📝 **End host ports** are always designated ports.
+
+---
+
+### 🔍 CLI Verification Summary
+
+| Switch | Root Port | Designated | Alternate/Backup |
+| --- | --- | --- | --- |
+| SW1 | — | F0/1, F0/2, F0/24 | F0/3 (Backup) |
+| SW2 | F0/1 | F0/2, F0/23, F0/24 | G0/1 (Alternate) |
+| SW3 | F0/2 | G0/1, F0/1, F0/24 | — |
+| SW4 | F0/1 | F0/24 | F0/2 (Alternate) |
+
+---
+
+### 🛠️ Step 3: Configure RSTP Link Types
+
+### 🎯 SW4
+
+```bash
+bash
+CopyEdit
+conf t
+int range f0/1 - 2
+spanning-tree link-type point-to-point
+
+int f0/24
+spanning-tree portfast
+
+```
+
+- Note: **Edge + Full-duplex** port shows as **point-to-point** in Packet Tracer.
+- On a real switch → shows as **edge + point-to-point**
+
+---
+
+### 🎯 SW3
+
+```bash
+bash
+CopyEdit
+int f0/24
+spanning-tree portfast
+
+```
+
+- F0/2 (connected to hub) is **shared** → auto-detected
+- F0/1 and G0/1 are full-duplex → **point-to-point**
+
+---
+
+### 🎯 SW2
+
+```bash
+bash
+CopyEdit
+int range f0/23 - 24
+spanning-tree portfast
+
+```
+
+- All links are full-duplex → auto point-to-point
+- Manually enabling PortFast for host ports
+
+---
+
+### 🎯 SW1
+
+```bash
+bash
+CopyEdit
+int f0/24
+spanning-tree portfast
+
+```
+
+- F0/2, F0/3, F0/24 → connected to a hub → **shared**
+- F0/24 is also an edge port (connected to end hosts)
+- Again, **edge + shared** only visible on real switches
+
+---
+
+### 🧠 Link Type Summary
+
+| Link Type | Definition | CLI Command |
+| --- | --- | --- |
+| **Edge** | To end host, no negotiation needed | `spanning-tree portfast` |
+| **Point-to-Point** | Full-duplex switch-to-switch | `spanning-tree link-type point-to-point` |
+| **Shared** | Half-duplex, hub-connected | `spanning-tree link-type shared` (auto-detected) |
+
+---
+
+## 🧪 Boson NetSim CCNP Lab Preview
+
+⚠️ Spanning Tree not in CCNA NetSim, demo shown from **CCNP ENCOR**.
+
+---
+
+### 🧪 Lab Tasks (Spanning Tree 1)
+
+### ✅ Task 1: VLAN & Trunk Config
+
+- Configure:
+    - Hostnames
+    - Trunk ports
+    - VLAN 3
+    - Access ports
+
+```bash
+bash
+CopyEdit
+hostname Switch1
+int range f0/1 - 3
+switchport mode trunk
+
+vlan 3
+exit
+
+```
+
+### ✅ Task 2: Router Setup (Skipped in video)
+
+### ✅ Task 3: Observe STP Behavior (Skipped in video)
+
+🧪 Uses multiple features: Trunking, VLANs, Inter-VLAN Routing, and STP
+
+---
+
+### 🔍 NetSim Highlights
+
+- Labs integrate **multiple topics**, reinforcing prior knowledge
+- Built-in **grading system**
+- **Lab solutions** with full command references and explanations
+
+📝 Strongly recommended for hands-on practice
+
+---
+
+## 🧠 Key Takeaways
+
+- **Root Bridge** = lowest priority + MAC address
+- One **designated port per collision domain**
+- **RSTP port roles** = Root, Designated, Alternate, Backup
+- **Link types** determine duplex and topology connection
+- **Edge ports** = PortFast
+- Practice config and analysis with **Packet Tracer** or **Boson NetSim**

@@ -1,0 +1,85 @@
+# **Day 48 | Security Fundamentals | CCNA 200-301 Complete Course**
+
+## 🛡️ CCNA: Security Fundamentals Notes
+
+---
+
+### 🔐 **CIA Triad – Why Security Matters**
+
+| Concept | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **C - Confidentiality** | Only authorized staff (e.g. manager) should open HR files. | Data should only be accessed by authorized users. |
+| **I - Integrity** | Ensure flight records aren't changed by mistake or by unauthorized people. | Data must be accurate and not tampered with. |
+| **A - Availability** | The flight system or walkie system should always work during operations. | Systems and services must be up and running for users. |
+
+---
+
+### 🧱 **Key Security Concepts**
+
+| Term | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Vulnerability** | A gate left unlocked. Not a problem yet, but risky. | A weakness in a system. |
+| **Exploit** | A rock that could break the gate lock. | Something used to attack a vulnerability. |
+| **Threat** | A person planning to use that rock to break in. | The possibility of a vulnerability being exploited. |
+| **Mitigation** | Locking the gate or adding a guard. | Security measures to prevent threats. |
+
+---
+
+### 💥 **Common Attacks**
+
+| Attack Type | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **DoS (Denial-of-Service)** | So many people calling airport hotline that no real calls go through. | Overloads system so legitimate users can't access it. |
+| **DDoS** | Many people around the country all call at once. | Multiple devices (botnet) flood a service. |
+| **Spoofing** | Pretending to be a manager to enter restricted areas. | Fake source IP/MAC to trick the system. |
+| **Reflection/Amplification** | Tricking someone else to flood your target with messages. | Attacker spoofs IP → DNS/NTP replies flood the victim. |
+| **Man-in-the-Middle** | Someone secretly listening to your radio conversation. | Intercepts and possibly alters communication between two parties. |
+| **Reconnaissance** | Looking up airline schedules and contact info to plan scams. | Scanning/collecting public info to prepare an attack. |
+| **Malware** | USB with a virus given by someone posing as IT. | Harmful software: virus, worm, trojan. |
+| **Social Engineering** | Someone calls pretending to be IT asking for your password. | Tricks people into giving up info or access. |
+| **Password Attacks** | Guessing or brute-forcing your system password. | Includes guessing, dictionary, brute force. |
+
+---
+
+### 🔑 **Passwords & Multi-Factor Authentication (MFA)**
+
+| Concept | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Strong Passwords** | Not “changeme123” – use complex, unpredictable words. | Use >8 characters, mix of cases, numbers, special chars. |
+| **MFA** | Swipe pass + PIN to enter crew room. | Uses two or more: Something you **know**, **have**, or **are**. |
+| **Digital Certificate** | Valid ID badge to prove you work here. | Websites use digital certs to prove they are legit. |
+
+---
+
+### 🧾 **AAA – Authentication, Authorization, Accounting**
+
+| AAA Component | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **Authentication** | Showing your airport pass. | Verify identity (e.g., login). |
+| **Authorization** | Your pass lets you into baggage hall, not cockpit. | What you can access after login. |
+| **Accounting** | Logging time you entered/exited secure area. | Track user activity (e.g., login times, changes). |
+
+> 🎯 Protocols:
+> 
+- **RADIUS**: Open standard (UDP 1812, 1813)
+- **TACACS+**: Cisco-only (TCP 49)
+
+---
+
+### 🧷 **Security Program Elements**
+
+| Element | ✈️ Ground Handling | 🧑‍💻 Tech Explanation |
+| --- | --- | --- |
+| **User Awareness** | Fake phishing emails test how careful you are. | Simulate attacks to train staff to be alert. |
+| **User Training** | Security induction at job start and yearly refreshers. | Teaches safe behavior, strong passwords, etc. |
+| **Physical Access Control** | Only engineers can enter data center via badge + fingerprint. | Controls access to physical locations and equipment. |
+
+---
+
+### 🔁 **Quick Review Recap**
+
+- **CIA Triad** = Confidentiality, Integrity, Availability
+- **Common Attacks** = DoS, spoofing, malware, MITM, etc.
+- **MFA** = Uses at least two of: knowledge, possession, or biometrics
+- **AAA** = Auth, Authz, Accounting for access control and logging
+- **Security Programs** = Awareness, training, physical control

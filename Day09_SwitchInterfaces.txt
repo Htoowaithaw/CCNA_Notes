@@ -1,0 +1,120 @@
+**Jeremy's IT Lab - Lecture 9: Switch Interfaces**
+
+---
+
+### 🔎 Overview
+
+This lecture covers Layer 1 characteristics of **switch interfaces**, focusing on:
+
+- Speed & Duplex settings
+- Autonegotiation
+- Interface status types
+- Interface errors and counters
+- Key Cisco CLI commands for interface inspection
+
+---
+
+### ⚙️ Router vs Switch Interfaces
+
+- **Router interfaces**: Shutdown by default (administratively down)
+- **Switch interfaces**: Enabled by default
+    - If connected: **up/up** (Layer 1/2)
+    - If unconnected: **down/down**
+
+---
+
+### 📁 Interface Speed & Duplex
+
+- **Speed**: 10 / 100 / 1000 Mbps
+- **Duplex**:
+    - **Half Duplex**: Can either send or receive (not both)
+    - **Full Duplex**: Can send & receive simultaneously
+
+---
+
+### ⚖️ Autonegotiation
+
+- Default setting on switches: `speed auto`, `duplex auto`
+- Devices negotiate best shared capabilities
+- **If autonegotiation is OFF on the peer device**:
+    - Speed is sensed
+    - Duplex:
+        - 10 or 100 Mbps → **half duplex**
+        - ≥1000 Mbps → **full duplex**
+- **Duplex mismatch** leads to **collisions** and **poor performance**
+
+---
+
+### 📊 Useful Commands
+
+- `show ip interface brief`
+    - Layer 1/2 status (up/down)
+    - IP assignment (L3 only)
+- `show interfaces status`
+    - Port, Name (description), Status (connected/notconnect/disabled), VLAN, Duplex, Speed
+- `show interfaces`
+    - Detailed info per interface
+    - Includes counters like **runts**, **giants**, **CRC**, **frame**, **input/output errors**
+- `show interfaces description`
+    - Lists interface descriptions along with status
+
+---
+
+### ✏️ Configuration Examples
+
+- **Set speed & duplex**:
+    
+    ```
+    interface f0/1
+      speed 100
+      duplex full
+      description #Connected to R1
+    ```
+    
+- **Disable unused ports**:
+    
+    ```
+    interface range f0/5 - 12
+      description #DISABLED
+      shutdown
+    ```
+    
+- **Selective range config**:
+    
+    ```
+    interface range f0/5 - 6, f0/9 - 12
+      no shutdown
+    ```
+    
+
+---
+
+### ⚡ Interface Error Types
+
+- **Runts**: < 64 bytes
+- **Giants**: > 1518 bytes
+- **CRC errors**: Frame Check Sequence failed
+- **Frames**: Malformed frames
+- **Input errors**: Total of above issues
+- **Output errors**: Sending failed
+
+---
+
+### 🎮 Quiz Recap
+
+1. Duplex mismatch (autonegotiation off) → **collisions** occur
+2. **CSMA/CD** is used for half-duplex collision handling
+3. `show interfaces` displays error counters
+4. Valid errors: **Runts, Giants, CRC**
+5. Autonegotiation disabled on peer: switch uses sensed speed, defaults to **half duplex** at 10/100 Mbps
+
+---
+
+### 🎓 Practice Tips
+
+- Use **Anki** for spaced repetition of quiz concepts
+- Practice CLI with **Packet Tracer lab** in the next video
+
+---
+
+End of Lecture 9 Summary ✅

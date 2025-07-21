@@ -1,0 +1,107 @@
+# **Day 38 | DNS | CCNA 200-301 Complete Course**
+
+**Jeremy’s IT Lab – Day 39: DNS (Domain Name System) Summary**
+
+---
+
+### 🧒 Kid-Level Summary (Explain Like I’m 5)
+
+Imagine your friend tells you, “Let’s go to Sarah’s house,” but you don’t know where she lives. So, you ask someone who knows Sarah’s address, and they tell you where to go.
+
+That’s what **DNS** does. When you want to visit a website like **youtube.com**, your computer doesn’t know the IP address (the real ‘address’ of the site), so it asks a **DNS server**, which tells it the correct IP address. Then your computer goes to that address.
+
+- You type **youtube.com** → your computer asks a DNS server → DNS server replies with an IP address like **172.217.25.110** → your computer connects to that address.
+
+Without DNS, we’d have to remember all the number addresses like **8.8.8.8**, which is hard!
+
+---
+
+### 🧠 Technical Summary
+
+### ✅ Purpose of DNS
+
+- DNS converts **domain names** (like youtube.com) into **IP addresses**.
+- Humans prefer names; computers need IPs.
+- A **DNS query** is how a device asks a DNS server for the IP address of a name.
+
+### 🔌 How DNS Works
+
+1. User types a domain name (e.g., `youtube.com`) into a browser.
+2. Computer sends a **DNS query** to the DNS server (e.g., **8.8.8.8**, Google's server).
+3. DNS server replies with the corresponding IP address.
+4. The computer uses this IP to access the website.
+
+### 📁 DNS Records
+
+- **A record**: Maps a domain to an **IPv4** address.
+- **AAAA (quad-A) record**: Maps a domain to an **IPv6** address.
+- **CNAME**: Maps a domain to another domain (alias).
+
+### ⚙️ DNS Settings on Devices
+
+- DNS servers can be manually set or learned via **DHCP**.
+- Use `ipconfig /all` (Windows) to see DNS info.
+- Use `nslookup <hostname>` to query the DNS server.
+- Use `ipconfig /displaydns` to view the DNS cache.
+- Use `ipconfig /flushdns` to clear the DNS cache.
+
+### 🖥 Hosts File (Manual Mapping)
+
+- Located at `C:\Windows\System32\drivers\etc\hosts`
+- Allows manual hostname → IP mapping.
+- Useful for small networks or overrides.
+
+### 📶 Router as DNS Server & Client
+
+- Routers normally just forward DNS packets.
+- But Cisco routers **can act as DNS servers or clients**.
+
+**To make a router a DNS server:**
+
+```
+ip dns server
+ip host PC1 192.168.1.10
+ip name-server 8.8.8.8
+ip domain-lookup
+```
+
+**To make a router a DNS client:**
+
+```
+ip name-server 8.8.8.8
+ip domain-lookup
+```
+
+- `ip domain-name jeremysitlab.com` sets a default domain (e.g., PC1 becomes `PC1.jeremysitlab.com`).
+- `show hosts` displays cached and configured mappings.
+
+### 📦 DNS & Transport Layer
+
+- DNS uses **UDP port 53** for standard queries/responses.
+- Uses **TCP port 53** only if messages >512 bytes.
+
+### 📊 Packet Capture (via Wireshark)
+
+- Observe A and AAAA record requests.
+- Queries and responses are sent via UDP unless large.
+
+---
+
+### 📌 Quiz Review (CCNA Style)
+
+1. **Commands to view DNS server in Windows?**
+    - `ipconfig /all`
+    - `nslookup`
+2. **What maps hostname to IPv4?** → `A record`
+3. **Router needs DNS config to forward queries?** → No
+4. **Command to view DNS cache in IOS?** → `show hosts`
+5. **Protocol to learn DNS server address?** → `DHCP`
+
+---
+
+### 🧠 Bonus: Boson ExSim Practice Question Summary
+
+- Scenario: HostA sends HTTP request to a web server for the first time.
+- It doesn’t know the IP, so it queries DNS using **UDP**.
+- Final TCP connection is made **only** with the web server (for HTTP).
+- So the correct answer is: **D. only WWW_server**.

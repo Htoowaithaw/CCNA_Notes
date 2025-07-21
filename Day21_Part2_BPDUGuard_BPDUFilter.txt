@@ -1,0 +1,149 @@
+# **Day 21 (part 2) | CCNA 200-301 |BPDU Guard & BPDU Filter (STP Toolkit) |**
+
+**Jeremy's IT Lab - BPDU Guard & BPDU Filter (Notion Notes)**
+
+---
+
+### ✅ **STP Toolkit - BPDU Guard & BPDU Filter**
+
+### 🔹 Overview:
+
+- Continuing the STP Toolkit section.
+- Focus: **BPDU Guard** & **BPDU Filter**, often used with **PortFast**.
+- Help control how ports handle **BPDUs** (Bridge Protocol Data Units).
+
+---
+
+### 🛋️ PortFast & BPDUs
+
+- **PortFast-enabled** ports immediately enter **Forwarding** state.
+- They still **send BPDUs** but shouldn't receive them.
+- If a BPDU is received, **PortFast is disabled** and the port behaves like a regular STP port.
+
+---
+
+### ⚠️ **BPDU Guard**
+
+### ❌ The Problem:
+
+- A user (e.g., Bob) plugs a personal switch into a wall jack meant for an end host.
+- This new switch starts sending BPDUs.
+- If it has a lower Bridge ID, it may become the root bridge.
+- Can disrupt the STP topology (e.g., blocking optimized paths to the router).
+
+### ✔️ The Solution:
+
+- **BPDU Guard** disables the port (err-disable) upon receiving a BPDU.
+- Prevents unauthorized switches from altering the topology.
+
+### ⚖️ Configuration:
+
+- **Per-Port:**
+    
+    ```
+    interface G0/1
+      spanning-tree bpduguard enable
+    ```
+    
+- **Global (Default on all PortFast-enabled ports):**
+    
+    ```
+    spanning-tree portfast bpduguard default
+    ```
+    
+- **To disable on specific port:**
+    
+    ```
+    interface G0/1
+      spanning-tree bpduguard disable
+    ```
+    
+
+### ❄️ ErrDisable Handling:
+
+- Triggered by BPDU Guard on violation.
+- **Recovery Options:**
+    - Manual:
+        
+        ```
+        interface G0/1
+          shutdown
+          no shutdown
+        ```
+        
+    - Automatic:in global config mode (not interface mode)s
+        
+        ```
+        errdisable recovery cause bpduguard
+        errdisable recovery interval 300
+        ```
+        
+    - Show Recovery Settings:
+        
+        ```
+        show errdisable recovery
+        ```
+        
+
+---
+
+### ⚠️ **BPDU Filter**
+
+### ❌ The Problem:
+
+- Even with PortFast, ports still send BPDUs to end hosts.
+- Unnecessary + can expose topology info.
+
+### ✔️ The Solution:
+
+- **BPDU Filter** prevents ports from sending BPDUs.
+
+### ⚖️ Configuration:
+
+- **Per-Port:**
+    
+    ```
+    interface G0/1
+      spanning-tree bpdufilter enable
+    ```
+    
+    - Port ignores received BPDUs.
+    - **Disables STP** on that port.
+    - **Use with extreme caution** (can cause permanent loops).
+- **Global (Default on PortFast-enabled ports):**
+    
+    ```
+    spanning-tree portfast bpdufilter default
+    ```
+    
+    - Port won't send BPDUs.
+    - If a BPDU is received:
+        - PortFast & BPDU Filter are disabled.
+        - Port operates as normal STP port.
+- **Disable per-port if needed:**
+    
+    ```
+    interface G0/1
+      spanning-tree bpdufilter disable
+    ```
+    
+
+---
+
+### 🧳 My Recommendation
+
+- **BPDU Guard:** Use either per-port or globally.
+- **BPDU Filter:** Use only **globally**. Avoid enabling it per-port unless absolutely necessary.
+
+### 📝 Combined Use:
+
+- **If configured globally** and BPDU is received:
+    - BPDU Filter disables.
+    - BPDU Guard triggers -> port disabled.
+- **If BPDU Filter is per-port enabled**:
+    - BPDU is ignored.
+    - BPDU Guard has no effect.
+
+---
+
+### 📊 Summary

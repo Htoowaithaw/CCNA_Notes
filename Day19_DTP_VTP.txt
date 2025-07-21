@@ -1,0 +1,151 @@
+# **Day 19 | DTP/VTP | CCNA 200-301 Complete Course**
+
+## 📘 CCNA – DTP & VTP Summary – Jeremy’s IT Lab
+
+### 🎯 Objective
+
+Understand the purpose, operation, configurations, and security implications of:
+
+- **DTP (Dynamic Trunking Protocol)**
+- **VTP (VLAN Trunking Protocol)**
+
+---
+
+## 🔹 DTP (Dynamic Trunking Protocol)
+
+### 🧠 What is DTP?
+
+- Cisco **proprietary protocol** used to automatically form **trunk links** between switches.
+- Allows interfaces to **negotiate trunking status** (access or trunk) without manual config.
+- **Enabled by default** on Cisco switch interfaces.
+
+### 🛑 Best Practice:
+
+- **Disable DTP** for security. Use **manual configuration** (`switchport mode access/trunk`).
+
+---
+
+### 🔧 DTP Modes
+
+| Mode | Behavior |
+| --- | --- |
+| `dynamic desirable` | Actively tries to form trunk |
+| `dynamic auto` | Waits for the other end to initiate trunking |
+| `trunk` | Forces trunk, still sends DTP frames |
+| `access` | Forces access, disables DTP |
+| `nonegotiate` | Stops sending DTP frames (used with `trunk` mode) |
+
+---
+
+### 🧪 DTP Pairing Outcomes
+
+| SW1 (Mode) | SW2 (Mode) | Result |
+| --- | --- | --- |
+| Desirable | Desirable | Trunk |
+| Desirable | Auto | Trunk |
+| Auto | Auto | Access |
+| Auto | Trunk | Trunk |
+| Trunk | Access | ❌ Misconfig |
+| Access | Access | Access |
+
+> ✅ Use show interfaces [int] switchport to check admin & operational mode.
+> 
+
+---
+
+## 🔹 VTP (VLAN Trunking Protocol)
+
+### 🧠 What is VTP?
+
+- Cisco **proprietary protocol** for **synchronizing VLANs** across switches.
+- Reduces VLAN config tasks in **large networks**.
+- **Not recommended in modern networks** due to risk of VLAN wipe via higher revision number.
+
+---
+
+### 🏷️ VTP Modes
+
+| Mode | Can Modify VLANs | Forwards VLAN Info | Syncs VLAN DB | Stores in NVRAM |
+| --- | --- | --- | --- | --- |
+| **Server** | ✅ | ✅ | ✅ | ✅ |
+| **Client** | ❌ | ✅ | ✅ | ❌ *(except VTPv3)* |
+| **Transparent** | ✅ | ✅ *(if same domain)* | ❌ | ✅ |
+
+---
+
+### ⚠️ VTP Revision Number
+
+- Increments on every VLAN add/delete.
+- Highest revision number wins during sync.
+- **DANGER**: Plugging in an old switch with a **higher revision** can erase VLAN DB network-wide.
+
+**Reset revision number**:
+
+- Change to **VTP transparent mode**
+- Change to **new/unused domain name**
+
+---
+
+### 🧪 VTP Configuration Tips
+
+```bash
+bash
+CopyEdit
+vtp domain cisco
+vtp mode server/client/transparent
+vtp version 1/2/3
+
+```
+
+> Use show vtp status and show vlan brief for verification.
+> 
+
+---
+
+### 🧾 VTP Version Notes
+
+| Version | Notes |
+| --- | --- |
+| v1 | Default. Limited to VLANs 1–1005 |
+| v2 | Adds support for Token Ring VLANs |
+| v3 | Supports VLANs 1–4094, better authentication and MST support (Not CCNA scope) |
+
+---
+
+## ✅ Quiz Recap
+
+### **Quiz 1: Why did a trunk form with an old switch?**
+
+✅ **Answer**: Old switches default to `dynamic desirable`
+
+### **Quiz 2: You want SW2 to forward but not sync VLAN DB?**
+
+✅ **Answer**: `vtp mode transparent`
+
+### **Quiz 3: How to reset VTP revision number?**
+
+✅ **Answers**:
+
+- Change domain to a new one
+- Change to transparent mode
+
+---
+
+## 🎯 Boson ExSim Highlight – DTP Drag & Drop
+
+**Drag scenarios**:
+
+- **Trunk + Trunk → Trunk**
+- **Auto + Desirable → Trunk**
+- **Auto + Auto → Access**
+- **Trunk + Access → ❌ Misconfig**
+
+🛡️ Takeaway: Never manually trunk on one end and access on the other — will result in a **mismatch**.
+
+---
+
+## 📦 Extras
+
+- ✅ Packet Tracer Lab: DTP & VTP configuration practice
+- ✅ Anki Flashcard Deck: Review key concepts
+- ✅ Boson ExSim: Highly recommended for real exam prep

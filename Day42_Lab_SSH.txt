@@ -1,0 +1,140 @@
+# **Day 42 Lab | SSH | CCNA 200-301 Complete Course**
+
+**Day 42 – SSH Lab**
+
+---
+
+### 👨‍💻 SSH and Console Configuration Lab (Packet Tracer + Boson NetSim)
+
+### 🧪 Objective
+
+Configure secure access to a switch using the console port and SSH. Restrict remote access using ACLs. Verify SSH operation. Then repeat and deepen the process in a Boson NetSim lab.
+
+---
+
+### 🛠️ Packet Tracer – Step-by-Step
+
+### ✅ Step 1 – Basic Setup on SW2
+
+```
+hostname SW2
+enable secret ccna
+username jeremy secret ccna
+```
+
+- `enable secret` is needed to access privileged mode remotely
+- `secret` encrypts better than `password`
+
+### ✅ Step 2 – Management IP and Gateway
+
+```
+interface vlan 1
+ ip address 192.168.2.253 255.255.255.0
+ no shutdown
+exit
+ip default-gateway 192.168.2.254
+```
+
+- Allows remote devices to reach the switch via SSH
+
+### ✅ Step 3 – Console Line Security
+
+```
+line console 0
+ login local
+ exec-timeout 5
+```
+
+- `login local`: uses locally configured username/password
+- `exec-timeout`: auto-logout after 5 minutes idle
+
+### ✅ Step 4 – SSH Configuration
+
+```
+ip domain-name jeremysitlab.com
+crypto key generate rsa modulus 2048
+```
+
+- RSA keys required for SSH
+
+### ✅ Step 5 – ACL and VTY Line Configuration
+
+```
+access-list 1 permit host 192.168.1.1
+line vty 0 15
+ login local
+ exec-timeout 5
+ transport input ssh
+ access-class 1 in
+```
+
+- Only PC1 (192.168.1.1) can SSH in
+
+### ✅ Step 6 – Test SSH Access
+
+- From R2 (not allowed by ACL): SSH fails
+- From PC1: SSH succeeds with username `jeremy`, password `ccna`
+
+---
+
+### 📘 Boson NetSim – SSH Configuration Lab (Router1)
+
+### 🔍 Task 1 – Initial Testing
+
+- Ping Router1 (10.10.0.1) from PC1: ✅ Success
+- Telnet to Router1: ✅ Works
+- SSH to Router1: ❌ Fails (SSH disabled)
+
+### 🔧 Task 2 – Enable SSH on Router1
+
+```
+ip domain-name boson.com
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh time-out 90
+```
+
+- `ip ssh version 2`: enables SSHv2
+- `ip ssh time-out`: sets idle timeout to 90 seconds (default = 120s)
+
+### 👤 User Setup with Privilege
+
+```
+username admin privilege 15 password boson
+enable secret boson
+```
+
+- `privilege 15`: full administrative rights
+
+### 🔒 VTY Line Configuration
+
+```
+line vty 0 15
+ transport input ssh
+ login local
+```
+
+- Only SSH allowed (Telnet blocked)
+
+### 🔍 Task 3 – Verification
+
+- SSH from PC1: ✅ Success
+- Show session details:
+
+```
+show ssh
+```
+
+- Output includes SSH version, encryption used, session ID, and username
+- Telnet attempt fails due to `transport input ssh`
+
+---
+
+### 🔁 Key Takeaways
+
+- SSH requires hostname, domain name, and RSA keys
+- `show ip ssh` checks if SSH is enabled
+- `show ssh` displays active sessions
+- Use `access-class` to restrict SSH source IPs
+- SSH is preferred over Telnet for security
+- Use `username` with `privilege 15` to allow full access without enable password (only if desired)

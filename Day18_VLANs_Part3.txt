@@ -1,0 +1,147 @@
+# **Day 18 | VLANs (Part 3) | CCNA 200-301 Complete Course**
+
+## 📘 CCNA – VLANs (Part 2) Summary – Jeremy’s IT Lab
+
+### 🧠 Key Topics Covered
+
+- Native VLAN on a Router (ROAS)
+- Dot1Q Tagging with Wireshark
+- Layer 3 Switches / Multilayer Switching
+- Switch Virtual Interfaces (SVIs)
+- Inter-VLAN Routing using Layer 3 Switches
+- SVI Up/Down Conditions
+- Quiz & Boson ExSim Practice
+
+---
+
+### 🔸 Native VLAN on a Router
+
+**Two Configuration Methods:**
+
+1. **Using Subinterface:**
+    
+    ```
+    java
+    CopyEdit
+    interface g0/0.10
+    encapsulation dot1Q 10 native
+    ip address 192.168.1.X 255.255.255.0
+    
+    ```
+    
+2. **Using Physical Interface:**
+    
+    ```
+    kotlin
+    CopyEdit
+    interface g0/0
+    ip address 192.168.1.X 255.255.255.0
+    
+    ```
+    
+    - No `encapsulation dot1Q` needed.
+
+**Recommendation:** Set native VLAN to an unused VLAN for security.
+
+---
+
+### 🔍 Wireshark Analysis – Dot1Q Tag
+
+- Tagged frames have a **0x8100 TPID**.
+- VLAN ID is visible (e.g., VLAN 20).
+- **Native VLAN traffic is untagged** on trunk ports.
+
+---
+
+### 🔄 Inter-VLAN Routing – 3 Methods
+
+1. **Multiple Interfaces on Router (per VLAN)**
+2. **Router on a Stick (ROAS)** – Single trunk
+3. **Layer 3 Switch (Multilayer Switch)** – Uses **SVIs**
+
+---
+
+### 🖥️ Layer 3 Switch Features
+
+- Performs routing and switching
+- Supports **SVIs** & **routed ports**
+- Can assign IP addresses to interfaces
+- Requires `ip routing` command
+
+---
+
+### 🔧 Configuring Routed Port
+
+```bash
+bash
+CopyEdit
+interface g0/1
+no switchport
+ip address 192.168.1.193 255.255.255.252
+
+```
+
+- Enables Layer 3 routing on interface
+- Use `ip routing` to enable routing globally
+
+---
+
+### 🛠️ Configuring SVIs (Switch Virtual Interfaces)
+
+```bash
+bash
+CopyEdit
+interface vlan10
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+
+```
+
+- Use for routing between VLANs inside switch
+- Must use `no shutdown`
+
+---
+
+### ⚠️ SVI 'UP/UP' Requirements
+
+1. VLAN must exist
+2. At least 1 **access port (up/up)** OR trunk allowing VLAN (up/up)
+3. VLAN must **not be shutdown**
+4. SVI itself must be **no shutdown**
+
+---
+
+### ✅ Quiz Highlights
+
+**Q1: Valid Native VLAN Configs (ROAS)**
+
+✅ B – `encapsulation dot1Q 10 native` on subinterface
+
+✅ C – IP configured on physical interface (no subinterface)
+
+**Q2: SVI stays down/down**
+
+✅ A – VLAN doesn't exist
+
+✅ D – No up/up interfaces in that VLAN
+
+**Q3: Configure routed port**
+
+✅ A – `no switchport`
+
+---
+
+### 🧪 Boson ExSim Sample Question
+
+- **Config:**
+    
+    ```bash
+    bash
+    CopyEdit
+    switchport trunk native vlan 44
+    
+    ```
+    
+- **Correct Answer:**
+    
+    ✅ B – VLAN 44 traffic will be untagged

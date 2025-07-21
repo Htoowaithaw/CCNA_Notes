@@ -1,0 +1,175 @@
+# **Day 51 | Dynamic ARP Inspection | CCNA 200-301 Complete Course**
+
+## 🔒 **Dynamic ARP Inspection (DAI) – CCNA Topic 5.7**
+
+---
+
+### 🧠 **Purpose of DAI**
+
+- L2 security feature that **inspects ARP messages** on **untrusted** ports.
+- Prevents **ARP poisoning / man-in-the-middle** attacks.
+- Similar to DHCP snooping in function and trust model.
+
+---
+
+### 📌 **Default Behavior**
+
+| Setting | Default |
+| --- | --- |
+| Port trust state | Untrusted |
+| Rate limiting on untrusted ports | Enabled (15 pps) |
+| Rate limiting on trusted ports | Disabled |
+| Validation checks (optional) | Disabled |
+
+---
+
+### 🧪 **Basic Operation**
+
+- Checks **sender MAC and IP address** of ARP messages.
+- Compares against the **DHCP snooping binding table** or **ARP ACLs**.
+- If no match, ARP message is **dropped**.
+- DAI **only inspects ARP** messages, not others.
+
+---
+
+### 🧰 **Basic Configuration**
+
+```bash
+bash
+CopyEdit
+# Enable DAI for VLAN 1
+ip arp inspection vlan 1
+
+# Trust port (uplinks to other switches/routers)
+interface g0/0
+ ip arp inspection trust
+
+# Repeat on other trusted interfaces
+
+```
+
+---
+
+### 📊 **DAI Rate Limiting**
+
+```bash
+bash
+CopyEdit
+# Configure rate: 25 packets per 2 seconds
+interface g0/1
+ ip arp inspection limit rate 25 burst interval 2
+
+# Alternate syntax (default burst = 1 sec)
+interface g0/3
+ ip arp inspection limit rate 10
+
+```
+
+If exceeded, interface is `err-disabled`.
+
+Recovery options:
+
+```bash
+bash
+CopyEdit
+# Manual
+shutdown
+no shutdown
+
+# Auto recovery
+errdisable recovery cause arp-inspection
+errdisable recovery interval 30
+
+```
+
+---
+
+### 🔍 **Optional Validation Checks**
+
+```bash
+bash
+CopyEdit
+ip arp inspection validate ip src-mac dst-mac
+
+```
+
+| Validation Type | Description |
+| --- | --- |
+| `ip` | Blocks invalid IPs (0.0.0.0, 255.255.255.255, multicast) |
+| `src-mac` | Ethernet header source MAC ≠ ARP sender MAC → drop |
+| `dst-mac` | Ethernet header dest MAC ≠ ARP target MAC → drop |
+
+> ✅ Must be entered in one command. Later commands overwrite previous ones.
+> 
+
+---
+
+### 🔓 **ARP ACLs (for static IP hosts)**
+
+**Issue:** Static hosts (e.g., SRV1) are **not** in DHCP snooping table → ARP packets dropped.
+
+**Solution:**
+
+```bash
+bash
+CopyEdit
+arp access-list ARP-ACL-1
+ permit ip host 192.168.1.100 mac host aaaa.bbbb.cccc
+
+ip arp inspection filter ARP-ACL-1 vlan 1
+
+```
+
+Optional static ACL setting (beyond CCNA):
+
+```bash
+bash
+CopyEdit
+ip arp inspection filter ARP-ACL-1 vlan 1 static
+
+```
+
+- Static ACL enforces **implicit deny**.
+- Without `static`, DHCP snooping table is still used as fallback.
+
+---
+
+### 🖥️ **Useful Show Commands**
+
+```bash
+bash
+CopyEdit
+show ip arp inspection
+show ip arp inspection interfaces
+show ip arp inspection statistics
+show ip dhcp snooping binding
+show errdisable recovery
+
+```
+
+---
+
+### 🧩 **Command Summary**
+
+| Command | Purpose |
+| --- | --- |
+| `ip arp inspection vlan 1` | Enable DAI on VLAN 1 |
+| `ip arp inspection trust` | Mark port as trusted |
+| `ip arp inspection validate ip src-mac dst-mac` | Enable optional validation |
+| `ip arp inspection limit rate X burst interval Y` | Set rate limits |
+| `arp access-list NAME` + `ip arp inspection filter` | Permit static IP hosts |
+| `errdisable recovery cause arp-inspection` | Auto recovery from err-disabled |
+
+---
+
+### ✅ **Quiz Answers Recap**
+
+**Q1**: After `ip arp inspection vlan 1`, all ports = **untrusted** ✅
+
+**Q2**: Only the **last** `validate` command takes effect unless all are entered in one line ✅
+
+**Q3**: DAI rate limiting is **enabled** on untrusted ports by default at **15 pps** ✅
+
+**Q4**: DAI checks ARP against **DHCP Snooping Table** and **ARP ACLs** ✅
+
+**Q5**: `limit rate 15` and `limit rate 45 burst 3` = both average **15 pps** ✅

@@ -1,0 +1,101 @@
+# 📚 Networking Basics: OSI Model and TCP/IP Suite (CCNA Notes)
+
+---
+
+## 1. Importance of Protocols and Networking Models
+
+- **Protocols** = Logical rules about communication between devices (not physical standards).
+- **Networking Models** = Frameworks that categorize protocols and help devices from different makers communicate.
+- **Without Standardization**: Dell PCs and iMacs could not talk to each other.
+
+---
+
+## 2. OSI Model Overview
+
+- **OSI = Open Systems Interconnection** (ISO standard, late 1970s–80s).
+- **Conceptual Model**: 7 layers.
+- **Function**: Categorize and standardize network functions.
+
+---
+
+## 3. OSI Model Layers
+
+| Layer | Name | Function |
+| --- | --- | --- |
+| 7 | Application | Interfaces with software (HTTP, HTTPS). |
+| 6 | Presentation | Data translation, encryption/decryption. |
+| 5 | Session | Session management (establish, maintain, terminate). |
+| 4 | Transport | Segmentation, reassembly, end-to-end (host-to-host). |
+| 3 | Network | Logical addressing (IP), path selection (routing). |
+| 2 | Data Link | Node-to-node transfer, MAC addressing, framing. |
+| 1 | Physical | Physical medium (voltage, cable specs, signals). |
+
+---
+
+## 4. Data Encapsulation and De-Encapsulation
+
+- **Encapsulation**: Data processed down OSI layers, headers/trailers added.
+- **De-Encapsulation**: Headers/trailers stripped off at the receiving device.
+- **Adjacent-Layer Interaction**: Interaction between neighboring layers.
+- **Same-Layer Interaction**: Communication between the same layer on two devices.
+
+---
+
+## 5. Protocol Data Units (PDUs)
+
+| Layer | PDU Name | Notes |
+| --- | --- | --- |
+| 7-5 | Data | Application, Presentation, Session |
+| 4 | Segment | Transport layer PDU |
+| 3 | Packet | Network layer PDU (IP address added) |
+| 2 | Frame | Data Link layer PDU (MAC address) |
+| 1 | Bits | Physical signals |
+
+---
+
+## 6. Helpful Acronyms for OSI Layers
+
+- **Top-Down (7 → 1)**:
+    
+    `All People Seem To Need Data Processing`
+    
+- **Bottom-Up (1 → 7)**:
+    
+    `Please Do Not Teach Students Pointless Acronyms`
+    
+
+---
+
+## 7. TCP/IP Model Overview
+
+- **Used in the real world** (Internet).
+- Developed by **DARPA** (U.S. Department of Defense).
+- **Fewer layers** than OSI.
+
+| TCP/IP Layer | Corresponding OSI Layers |
+| --- | --- |
+| Application | Application + Presentation + Session |
+| Transport | Transport |
+| Internet | Network |
+| Link | Data Link + Physical |
+
+**Key Note**: Engineers refer to OSI layer numbers when discussing network issues (e.g., "Layer 4 problem").
+
+---
+
+## 8. Data Flow Example (Host A to Host B)
+
+- **Host A** → Router 1 → Router 2 → **Host B**.
+- **Routers** operate mainly at Internet (Network) and Link layers.
+- **Encapsulation** happens at Host A; **De-encapsulation** happens at Host B.
+- **Same-layer interaction** occurs between corresponding layers (e.g., Transport ↔ Transport).
+
+---
+
+## 9. Key Quiz Highlights
+
+- **Same-layer interaction**: HTTP data from YouTube server to browser.
+- **Frame**: HTTP data encapsulated with 3 headers + 1 trailer.
+- **Most relevant OSI layers for Network Engineers**: Transport, Network, Data Link, Physical.
+- **TCP/IP Link layer = OSI Data Link + Physical layers**.
+- **Host-to-host communication** is handled at the **Transport Layer**.
